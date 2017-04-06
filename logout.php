@@ -1,9 +1,0 @@
-<html>
-<?php 
-session_name("Project");
-session_start();
-session_destroy();
-header("Location:index.php");
-exit;
-?>
-</html>

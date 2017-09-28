@@ -1,4 +1,4 @@
-# Contributing to Atom
+# Contributing to Crux
 
 Thank you for taking time to contribute to Crux. We really appreciate your effort.
 

@@ -43,7 +43,7 @@ You can do the following -
 Those who started this, we are people working in IT company a regular day job. We are not necessarily regular programmers.
 
 ### Why did you start this project?
-We needed a tool for managing finances of our project. Excel templates that created were unweildy and market did not offer anything interesting. So we thought let us sharpen our programming skills and started this.
+We needed a tool for managing finances of our project. Excel templates that we created were unweildy and market did not offer anything interesting. So we thought let us sharpen our programming skills and started this.
 
 ## Coding
 

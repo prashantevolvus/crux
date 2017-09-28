@@ -1,6 +1,10 @@
+# Contributing to Atom
+
 Thank you for taking time to contribute to Crux. We really appreciate your effort.
 
 The following is a set of guidelines for contributing to Crux and its packages, which are hosted in the [crux] (https://github.com/prashantevolvus/crux) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+
+Sometimes the Original Authors might have erred in following guidelines. Please feel free to point out all the errors.
 
 #### Table Of Contents
 

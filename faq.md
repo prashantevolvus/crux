@@ -2,7 +2,7 @@
 
 This is a working document, and if it makes sense, pull requests will be taken to help make it better.
 
-##General
+## General
 
 ### Why another Project Management tool?
 There are many tools in the market that facilitates automation of various aspects of project management. 
@@ -24,10 +24,10 @@ That's how we defined the objectives of Crux.
 ### Can I deploy it in my company server and use it free of cost?
 Yes.
 
-###Can I rebrand it, sell it and make money?
+### Can I rebrand it, sell it and make money?
 Yes. Please go ahead. Don't forget to share your success story with the community.
 
-###How can I contribute?
+### How can I contribute?
 You can do the following - 
 1. Download and Start using it. Provide your regular feedback.
 2. Run Tests and raise issues
@@ -39,10 +39,10 @@ You can do the following -
 8. Any other reviews
 9. Anything else you can think of
 
-###Who are you?
+### Who are you?
 Those who started this, we are people working in IT company a regular day job. We are not necessarily regular programmers.
 
-###Why did you start this project?
+### Why did you start this project?
 We needed a tool for managing finances of our project. Excel templates that created were unweildy and market did not offer anything interesting. So we thought let us sharpen our programming skills and started this.
 
 ## Coding
@@ -50,10 +50,10 @@ We needed a tool for managing finances of our project. Excel templates that crea
 ### Why did you use PHP?
 It looked the easiest of all. I am sure there could have been a better choice. Alas it has been made.
 
-###Why did you not use those awesome PHP frameworks?
+### Why did you not use those awesome PHP frameworks?
 We wanted zero learning curve. We are open to suggestions and contributions to introduce PHP framework in Crux. Make sure that we can implement it incrementally and progressively. A rewrite of entire Crux should not be the agenda.
 
-###Why did you not use templating for UI?
+### Why did you not use templating for UI?
 Help us...
 
 

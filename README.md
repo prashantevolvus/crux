@@ -2,10 +2,14 @@
 
 Simple Project Management tool for defining, tracking and closing projects with special emphasis on financial controls.
 
-No tool, currently available, can cover the entire gamut of Project Management. It would be foolish to even attempt to build such a tool that automates the entire project management ecosystem. Of course, great explorers and inventors where foolish and acomplished great things. Our attempt is not to attempt great things.
+No tool, currently available, can cover the entire gamut of Project Management. It would be foolish to even attempt to build such a tool that automates the entire project management ecosystem. Of course, great explorers and inventors where foolish and accomplished great things. Our attempt is not to attempt great things.
 There are amazing tools available that covers various aspects of Project Management. We are trying to plug those areas where there is definite lacuna.
 
 That's how we defined the objectives of Crux.
+
+Two goals -
+1) Financial Management
+2) Ability to plug into various tools that cover other areas of project management.
 
 ## Getting Started
 

@@ -5,9 +5,9 @@ This is a working document, and if it makes sense, pull requests will be taken t
 ## General
 
 ### Why another Project Management tool?
-There are many tools in the market that facilitates automation of various aspects of project management. 
+There are many tools in the market that facilitates automation of various aspects of project management.
 
-Project Management in itself is a vast area comprising of - 
+Project Management in itself is a vast area comprising of -
 1. Initiation
 2. Planning
 3. Execution
@@ -16,8 +16,8 @@ Project Management in itself is a vast area comprising of -
 
 In addition you need to consider the SDLC model like Waterfall, Agile, etc. Then there is aspects like tracking Project Financials, Project Quality, Project Risks and whole lot of other things. Reporting is one more aspect that really drains current project managers.
 
-No tool, currently available, can cover the entire gamut of Project Management. It would be foolish to even attempt to build such a tool that automates the entire project management ecosystem. Of course, great explorers and inventors where foolish and acomplished great things. Our attempt is not to attempt great things. 
-There are amazing tools available that covers various aspects of Project Management. We are trying to plug those areas where there is definite lacuna. 
+No tool, currently available, can cover the entire gamut of Project Management. It would be foolish to even attempt to build such a tool that automates the entire project management ecosystem. Of course, great explorers and inventors where foolish and accomplished great things. Our attempt is not to attempt great things. 
+There are amazing tools available that covers various aspects of Project Management. We are trying to plug those areas where there is definite lacuna.
 
 That's how we defined the objectives of Crux.
 
@@ -28,7 +28,7 @@ Yes.
 Yes. Please go ahead. Don't forget to share your success story with the community.
 
 ### How can I contribute?
-You can do the following - 
+You can do the following -
 1. Download and Start using it. Provide your regular feedback.
 2. Run Tests and raise issues
 3. Request for Features
@@ -55,8 +55,3 @@ We wanted zero learning curve. We are open to suggestions and contributions to i
 
 ### Why did you not use templating for UI?
 Help us...
-
-
-
-
-

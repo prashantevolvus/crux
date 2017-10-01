@@ -81,4 +81,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Thanks to the entire Open source communit and the Evolvus Team
+* Thanks to the entire Open Source community for all those wonderful contributions. A big thank you to the Evolvus Solutions development team for taking time from their very busy schedule to contribute to this project. Also to the PMO team in Evolvus Solutions for testing and giving those helpful inputs. 

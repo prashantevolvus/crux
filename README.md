@@ -7,6 +7,11 @@ There are amazing tools available that covers various aspects of Project Managem
 
 That's how we defined the objectives of Crux.
 
+
+Two goals -
+1) Financial Management
+2) Ability to plug into various tools that cover other areas of project management.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.

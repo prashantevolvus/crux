@@ -58,22 +58,25 @@ Give an example
 
 ## Built With
 
-* [PHP] (http://php.net) - scripting language
+* [PHP](http://php.net) - scripting language
 * [Maira DB](https://mariadb.org) - Database
+
+## Code of Conduct
+Please read the code of conduct here - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for submitting pull requests to us.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/prashantevolvus/crux/tags). 
 
 ## Authors
 
 * **Prashant Maroli** - *Initial work* - [prashantevolvus](https://github.com/prashantevolvus)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/prashantevolvus/crux/contributors) who participated in this project.
 
 ## License
 
@@ -81,4 +84,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Thanks to the entire Open Source community for all those wonderful contributions. A big thank you to the Evolvus Solutions development team for taking time from their very busy schedule to contribute to this project. Also to the PMO team in Evolvus Solutions for testing and giving those helpful inputs. 
+Thanks to the entire Open Source community for all those wonderful contributions. A big thank you to the Evolvus Solutions development team for taking time from their very busy schedule to contribute to this project. Also to the PMO team in Evolvus Solutions for testing and giving those helpful inputs. 

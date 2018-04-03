@@ -22,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 3) Apache Webserver
 
 ### Installing
-No installation required just copy the files.
+No installation required just copy the files. (We are working on this.)
 Change database setting in db_conf.php and that's it.
 
 

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpmailer
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpmailer/LICENSE
+END
+phpmailer.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpmailer/phpmailer.php
+END
+pop3.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpmailer/pop3.php
+END
+smtp.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpmailer/smtp.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpmailer/index.html
+END

@@ -1,0 +1,22 @@
+<html>
+<body>
+<b>There has been an update to the project - %PROJNAME%</b>
+<br>
+<br>
+The update was done by %EMPNAME%.
+<br>
+The current status of the project is %STATUSCHG%.
+<br>
+Please check the link for more details
+<a href='http://www.evolvus.com/project/viewprojdetails.php?proj_id=%PROJID%'>%PROJNAME%</a>
+<br>
+<br>
+Please do not reply to this mail. It will go nowhere.
+<br>
+Regards
+<br>
+IT Systems Team
+<br>
+Evolvus Solutions
+</html>
+</body>

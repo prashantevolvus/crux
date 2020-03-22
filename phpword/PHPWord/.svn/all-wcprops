@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord
+END
+Section.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/Section.php
+END
+TOC.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/TOC.php
+END
+DocumentProperties.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/DocumentProperties.php
+END
+Template.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/Template.php
+END
+Autoloader.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/Autoloader.php
+END
+IOFactory.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/IOFactory.php
+END
+Media.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/Media.php
+END
+Style.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/phpword/PHPWord/Style.php
+END

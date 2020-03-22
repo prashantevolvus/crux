@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata
+END
+test_public_key.pem
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/test_public_key.pem
+END
+cacert.json
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/cacert.json
+END
+privkey.pem
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/privkey.pem
+END
+ComputeEngineAuthTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/ComputeEngineAuthTest.php
+END
+test.ini
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/test.ini
+END
+cert.p12
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/cert.p12
+END
+cacert.pem
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/general/testdata/cacert.pem
+END

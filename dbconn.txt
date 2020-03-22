@@ -1,0 +1,240 @@
+<?php
+/*
+session_start();
+if(!isset($_SESSION["user"]))
+{
+        echo "<script>window.top.location.href='login.php'</script>";
+        //header("Location:login.php");
+}
+*/
+function js_redirect($url, $seconds=1) 
+            {  
+                echo "<script language=\"JavaScript\">\n";  
+                echo "<!-- hide from old browser\n\n";       
+                echo "function redirect() {\n";  
+                echo "window.location = \"" . $url . "\";\n";  
+                echo "}\n\n";  
+                echo "timer = setTimeout('redirect()', '" . ($seconds*1000) . "');\n\n";  
+                echo "-->\n";  
+                echo "</script>\n";  
+                return true;  
+            }
+
+function getOrangeConnection()
+{
+
+require 'db_inc.php';
+	$con=mysqli_connect($db_host,$db_user,$db_password,$db_orangehrm,$port);
+// Check connection
+	if (mysqli_connect_errno())
+  	{
+  		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  	}
+	return $con;
+}
+
+function getConnection()
+{
+
+require 'db_inc.php';
+//.$db_user.$db_password.$db_proj.$port;
+	$con=mysqli_connect($db_host,$db_user,$db_password,$db_proj,$port);
+// Check connection
+	if (mysqli_connect_errno())
+  	{
+  		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  	}
+	return $con;
+
+}
+function debug($str)
+{
+	
+require 'db_inc.php';
+	if($debugger =="yes")
+	{
+		echo "SQL Error ";
+		die($str);		
+	}
+	else
+	{
+		die("There has been an error");
+
+	}
+
+}
+
+function closeConnection($con)
+{
+	mysqli_close($con);
+}
+
+function checkPermission($check)
+{
+	$con=getConnection();
+	$sql="
+	 select view_perm,create_perm,
+        edit_perm,pay_perm,auth_perm,del_perm
+        from expense_perm_matrix
+        left join  hr_mysql_live.ohrm_user on emp_id = emp_number
+        where emp_id = 0 or user_name ='".$_SESSION['user']."'" ;
+	
+	
+	$result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>".mysql_error());
+
+	while($row = mysqli_fetch_array($result))
+  	{
+		if($check == "CREATE" and $row[create_perm] == 1 )
+			return true;
+		
+		if($check == "EDIT" and $row[edit_perm] == 1 )
+			return true;
+		
+		if($check == "AUTH" and $row[auth_perm] == 1 )
+			return true;
+		
+		if($check == "DELETE" and $row[del_perm] == 1 )
+			return true;
+		
+		if($check == "PAY" and $row[pay_perm] == 1 )
+			return true;
+		
+		if($check == "VIEW" and $row[view_perm] == 1 )
+			return true;
+  	}
+	return false;
+closeConnection($con);
+}
+
+function checkProjectPermission($check)
+{
+        $con=getOrangeConnection();
+        $sql="select custom4 from ohrm_user a
+		left join  hs_hr_employee b on b.emp_number = a.emp_number
+		where emp_status not in (4,6)
+		and deleted = 0 and user_name = '".$_SESSION['user']."'";
+
+        $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>".mysql_error());
+
+        while($row = mysqli_fetch_array($result))
+        {
+		$emp=$row[custom4];
+		if($emp == "All")
+			return true;
+                if($check == "INITIATE")
+		{	
+			if($emp == "Manager" )
+                        	return true;
+			else
+				return false;
+		}
+		if($check == "MASTEREDIT")
+                {
+                        if($emp == "Authoriser" )
+                                return true;
+                        else
+                                return false;
+                }
+
+		if($check == "AUTHORISE")
+                {
+                        if($emp == "Authoriser" )
+                                return true;
+                        else
+                                return false;
+                }
+		if($check == "APPROVE")
+                {
+                        if($emp == "Reviewer" )
+                                return true;
+                        else
+                                return false;
+                }
+		if($check == "UPDATE")
+                {
+                        if($emp == "Authoriser" )
+                                return true;
+                        else
+                                return false;
+                }
+
+ 		if($check == "INITCLOSE")
+                {
+                        if($emp == "Manager" )
+                                return true;
+                        else
+                                return false;
+                }
+                if($check == "AUTHCLOSE")
+                {
+                        if($emp == "Authoriser" )
+                                return true;
+                        else
+                                return false;
+                }
+                if($check == "CLOSE")
+                {
+                        if($emp == "Reviewer" )
+                                return true;
+                        else
+                                return false;
+                }
+
+	        if($check == "DELETE")
+                {
+                        if($emp == "Authoriser" )
+                                return true;
+                        else
+                                return false;
+                }
+                if($check == "DELIVER")
+                {
+                        if($emp == "Manager" or $emp == "Authoriser")
+                                return true;
+                        else
+                                return false;
+                }
+                if($check == "EDIT")
+                {
+                        if($emp == "Manager" or $emp == "Authoriser")
+                                return true;
+                        else
+                                return false;
+                }
+                if($check == "WARRANTY")
+                {
+                        if($emp == "Manager" or $emp == "Authoriser")
+                                return true;
+                        else
+                                return false;
+                }
+                if($check == "VIEW")
+                {
+                        if($emp == "Manager" or $emp == "Authoriser" or $emp == "Reviewer")
+                                return true;
+                        else
+                                return false;
+                }
+		if($check == "ACTIVATE")
+                {
+                        if($emp == "Authoriser")
+                                return true;
+                        else
+                                return false;
+                }
+
+
+
+
+
+        }
+        return false;
+closeConnection($con);
+}
+function checkUserSession($loggedinuser)
+{
+
+	return !(!isset($loggedinuser) || trim($loggedinuser)=="");
+}
+
+?>

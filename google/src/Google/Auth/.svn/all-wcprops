@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth
+END
+Simple.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/Simple.php
+END
+AppIdentity.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/AppIdentity.php
+END
+LoginTicket.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/LoginTicket.php
+END
+Exception.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/Exception.php
+END
+ComputeEngine.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/ComputeEngine.php
+END
+OAuth2.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/OAuth2.php
+END
+Abstract.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/Abstract.php
+END
+AssertionCredentials.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Auth/AssertionCredentials.php
+END

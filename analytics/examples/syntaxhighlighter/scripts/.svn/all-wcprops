@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts
+END
+shCore.js
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shCore.js
+END
+shCore.min.js
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shCore.min.js
+END
+shAutoloader.js
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shAutoloader.js
+END
+shAutoloader.min.js
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shAutoloader.min.js
+END
+shBrushJScript.js
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shBrushJScript.js
+END
+shBrushJScript.min.js
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shBrushJScript.min.js
+END
+shBrushXml.js
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shBrushXml.js
+END
+shBrushXml.min.js
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/analytics/examples/syntaxhighlighter/scripts/shBrushXml.min.js
+END

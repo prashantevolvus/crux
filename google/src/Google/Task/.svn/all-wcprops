@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Task
+END
+Retryable.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Task/Retryable.php
+END
+Runner.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Task/Runner.php
+END
+Exception.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Task/Exception.php
+END

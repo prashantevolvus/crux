@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests
+END
+BaseTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/BaseTest.php
+END
+bootstrap.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/bootstrap.php
+END
+OAuthHelper.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/OAuthHelper.php
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/tests/README
+END

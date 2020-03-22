@@ -1,0 +1,449 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service
+END
+AdSense.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/AdSense.php
+END
+Datastore.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Datastore.php
+END
+Resource.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Resource.php
+END
+Gmail.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Gmail.php
+END
+Urlshortener.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Urlshortener.php
+END
+Games.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Games.php
+END
+Translate.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Translate.php
+END
+Exception.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Exception.php
+END
+AdExchangeBuyer.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/AdExchangeBuyer.php
+END
+Reports.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Reports.php
+END
+Oauth2.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Oauth2.php
+END
+Directory.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Directory.php
+END
+Drive.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Drive.php
+END
+Deploymentmanager.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Deploymentmanager.php
+END
+Compute.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Compute.php
+END
+Books.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Books.php
+END
+Appsactivity.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Appsactivity.php
+END
+Blogger.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Blogger.php
+END
+Container.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Container.php
+END
+ShoppingContent.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/ShoppingContent.php
+END
+MapsEngine.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/MapsEngine.php
+END
+Webfonts.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Webfonts.php
+END
+Analytics.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Analytics.php
+END
+Coordinate.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Coordinate.php
+END
+Bigquery.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Bigquery.php
+END
+Admin.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Admin.php
+END
+GamesManagement.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/GamesManagement.php
+END
+PlusDomains.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/PlusDomains.php
+END
+Pubsub.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Pubsub.php
+END
+Dataflow.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Dataflow.php
+END
+TagManager.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/TagManager.php
+END
+SiteVerification.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/SiteVerification.php
+END
+SQLAdmin.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/SQLAdmin.php
+END
+Replicapool.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Replicapool.php
+END
+Manager.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Manager.php
+END
+Fitness.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Fitness.php
+END
+Webmasters.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Webmasters.php
+END
+AdSenseHost.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/AdSenseHost.php
+END
+QPXExpress.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/QPXExpress.php
+END
+Dns.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Dns.php
+END
+Cloudlatencytest.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Cloudlatencytest.php
+END
+GroupsMigration.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/GroupsMigration.php
+END
+YouTube.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/YouTube.php
+END
+IdentityToolkit.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/IdentityToolkit.php
+END
+Prediction.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Prediction.php
+END
+Customsearch.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Customsearch.php
+END
+Spectrum.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Spectrum.php
+END
+Storage.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Storage.php
+END
+Audit.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Audit.php
+END
+Taskqueue.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Taskqueue.php
+END
+Mirror.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Mirror.php
+END
+Licensing.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Licensing.php
+END
+Reseller.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Reseller.php
+END
+AppState.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/AppState.php
+END
+Plus.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Plus.php
+END
+GamesConfiguration.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/GamesConfiguration.php
+END
+Dfareporting.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Dfareporting.php
+END
+Tasks.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Tasks.php
+END
+DoubleClickBidManager.php
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/DoubleClickBidManager.php
+END
+AdExchangeSeller.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/AdExchangeSeller.php
+END
+AndroidPublisher.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/AndroidPublisher.php
+END
+Fusiontables.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Fusiontables.php
+END
+Replicapoolupdater.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Replicapoolupdater.php
+END
+Groupssettings.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Groupssettings.php
+END
+Pagespeedonline.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Pagespeedonline.php
+END
+Autoscaler.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Autoscaler.php
+END
+YouTubeAnalytics.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/YouTubeAnalytics.php
+END
+Genomics.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Genomics.php
+END
+Resourceviews.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Resourceviews.php
+END
+Doubleclicksearch.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Doubleclicksearch.php
+END
+Calendar.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Calendar.php
+END
+CivicInfo.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/CivicInfo.php
+END
+CloudMonitoring.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/CloudMonitoring.php
+END
+Freebase.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/Service/Freebase.php
+END

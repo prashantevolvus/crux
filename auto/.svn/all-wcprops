@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto
+END
+mail_templ.html
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto/mail_templ.html
+END
+mail.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto/mail.php
+END
+dbconn.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto/dbconn.php
+END
+updatedeautoactivate.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto/updatedeautoactivate.php
+END
+auto.sh
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto/auto.sh
+END
+db_inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/auto/db_inc.php
+END

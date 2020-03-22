@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/IO
+END
+Stream.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/IO/Stream.php
+END
+Exception.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/IO/Exception.php
+END
+cacerts.pem
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/IO/cacerts.pem
+END
+Abstract.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/IO/Abstract.php
+END
+Curl.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/source-repository/crux/!svn/ver/108/tags/crux-1.0.6/google/src/Google/IO/Curl.php
+END

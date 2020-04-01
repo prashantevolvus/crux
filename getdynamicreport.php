@@ -126,7 +126,7 @@ while($row = mysqli_fetch_array($result))
 		}
 		if($col[$i][1]=="amount")
 		{
-			setlocale(LC_MONETARY, 'en_IN');
+			setlocale(LC_MONETARY, 'en_US');
 			//$amt=money_format('%!.0n', $row[$i]);
 			$amt=number_format($row[$i],0);
 			echo "<td align='right'>".$amt."</td>";
@@ -153,7 +153,7 @@ while($row = mysqli_fetch_array($result))
 				$qstr .= "&f4_id=".($gets[3] ?? '');
 				$qstr .= "&f5_id=".($gets[4] ?? '');
 				$ref = "dynamicdrilldown.php?qry_id=".$col[$i][2].$qstr;
- 				setlocale(LC_MONETARY, 'en_IN');
+ 				setlocale(LC_MONETARY, 'en_US');
 				$amt=money_format('%!.0n', $data[0]);
 				echo "<td align='right'>";
 				echo "<a href='".$ref."'>";
@@ -161,7 +161,7 @@ while($row = mysqli_fetch_array($result))
 			}
 			else
 			{
-				setlocale(LC_MONETARY, 'en_IN');
+				setlocale(LC_MONETARY, 'en_US');
 				$amt=money_format('%!.0n', $row[$i]);//
 			 	echo "<td align='right'>".$amt."</td>";
 			}

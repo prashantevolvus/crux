@@ -32,7 +32,7 @@ left join hr_mysql_live.ohrm_timesheet b on a.emp_number = b.employee_id and mon
 where  mon_date between DATE_SUB(NOW(), INTERVAL 1 YEAR) and
 date_sub(curdate(), interval WEEKDAY(curdate()) + 1 day) and a.emp_number not in (31,260)
 and (b.employee_id is null or b.state <> 'APPROVED')
-    
+
 ";
 $sql .= " and 1=1 ";
 if($q!="" and strpos($q,"NOT SUBMITTED")==FALSE)
@@ -62,7 +62,7 @@ if($q3=="PAST")
 } );
 
 </script>
-<?php 
+<?php
 echo "<div class='table-responsive'>";
 
 echo "<table class='table table-bordered'  id='timesheet' width='100%'";
@@ -70,7 +70,7 @@ echo "<br><thead><tr>";
 echo "<th><b>Date</b></th>";
 
 echo "<th><b>Employee Name</b></th>";
-	
+
 	echo "<th><b>Supervisor</b></th>";
 echo "<th><b>Status</b></th>";
 
@@ -79,24 +79,23 @@ echo "</tr></thead><tbody>";
 while($row = mysqli_fetch_array($result))
   {
 	echo "<tr>";
-		$dt = date("d-M-Y", strtotime($row[mon_date]));
+		$dt = date("d-M-Y", strtotime($row['mon_date']));
 
         echo "<td>$dt</td>";
-        echo "<td>$row[Employee_Name]</td>";
+        echo "<td>".$row['Employee_Name']."</td>";
 
 	    echo "<td>$row[supervisor]</td>";
-	    if($row[state] != "SUBMITTED")
+	    if($row['state'] != "SUBMITTED")
 	    	echo "<td>$row[state]</td>";
 	    else
 	    {
-	    	$url = "http://www.evolvus.com/orangehrm/symfony/web/index.php/time/viewPendingApprovelTimesheet?";
-	    	$url = $url . "timesheetId=".$row[timesheet_Id];
-	    	$url = $url . "&employeeId=".$row[emp_number];
-	    	$url = $url . "&timesheetStartday=".date("Y-m-d", strtotime($row[mon_date]));
-	    	echo "<td><a href = '".$url."' target='_blank'>".$row[state]."</a></td>";
+	    	$url = $orange_timesheet_url . "timesheetId=".$row['timesheet_Id'];
+	    	$url = $url . "&employeeId=".$row['emp_number'];
+	    	$url = $url . "&timesheetStartday=".date("Y-m-d", strtotime($row['mon_date']));
+	    	echo "<td><a href = '".$url."' target='_blank'>".$row['state']."</a></td>";
 	    }
-	    	
-	
+
+
 	echo "</tr>";
   }
 echo "</tbody></table>";
@@ -105,4 +104,3 @@ echo "</tbody></table>";
 
 closeConnection($con);
 ?>
-

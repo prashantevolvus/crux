@@ -16,9 +16,9 @@ $f3=$_GET["f3_id"];
 $f4=$_GET["f4_id"];
 $f5=$_GET["f5_id"];
 
-$con=getConnection(); 
+$con=getConnection();
 $sql=
-"select * from dynamic_drilldown where id = ".$qryid; 
+"select * from dynamic_drilldown where id = ".$qryid;
 
 $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>".mysql_error());
 $row = mysqli_fetch_array($result);
@@ -44,8 +44,8 @@ $col=array();
 $i = 0;
 foreach($col_names as $col_name)
 {
-	$col[]= array($col_name,$col_types[$i],$href_text[$i],$href_val[$i]);
-	
+	$col[]= array($col_name,$col_types[$i] ?? '',$href_text[$i] ?? '',$href_val[$i] ?? '');
+
 	$i=$i+1;
 }
 $noofcol=count($col);
@@ -92,7 +92,7 @@ var tableToExcel = (function () {
 
         }
     })()
-    
+
   $(document).ready( function () {
     $('#<?php echo $qryid;?>').DataTable({
 
@@ -100,12 +100,12 @@ var tableToExcel = (function () {
   "lengthMenu": [ [10, 25, 50, 100,-1], [10, 25, 50, 100,"All"] ],
   "pageLength": 50,
 	"autoWidth": true,
-	 "orderMulti": true 
-  <?php 
+	 "orderMulti": true
+  <?php
   	if($order != "")
   		echo ", 'order':[[".$order.",'desc']]";
   	else
-  		echo ",  'order': []"; 
+  		echo ",  'order': []";
   ?>
   ,buttons: [
         'colvis',
@@ -118,7 +118,7 @@ var tableToExcel = (function () {
 </script>
 
  <div class="row">
- 
+
 <input type="button" class="btn btn-default" onclick="tableToExcel('<?php echo $qryid;?>', 'Crux Report', 'cruxReport.xls')" value="Export to MS Excel">
 
 <a id="dlink"  style="display:none;"></a>
@@ -143,7 +143,7 @@ echo "<thead><tr>";
 	{
 		echo "<th><div>".$col[$i][0]."</div></th>";
 	}
-	
+
 echo "</tr></thead><tbody>";
 while($row = mysqli_fetch_array($result))
 {
@@ -156,7 +156,7 @@ while($row = mysqli_fetch_array($result))
 		}
 		if($col[$i][1]=="amount")
 		{
-			setlocale(LC_MONETARY, 'en_IN');
+			setlocale(LC_MONETARY, 'en_US');
 			$amt=money_format('%!.0n', $row[$i]);//
 			//$amt=number_format($row[$i],2);
 			echo "<td align='right'>".$amt."</td>";
@@ -170,8 +170,8 @@ while($row = mysqli_fetch_array($result))
 		{
 			//echo $row[$col[$i][3]];
 			echo "<td><a href='".$col[$i][2].$row[$col[$i][3]]."'>".$row[$i]."</a></td>";
-			
-		}			
+
+		}
 	}
 	echo "</tr>";
 }
@@ -186,4 +186,3 @@ closeConnection($con);
 
 require_once('bodyend.php');
 ?>
-

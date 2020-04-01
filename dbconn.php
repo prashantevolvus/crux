@@ -1,4 +1,5 @@
 <?php
+
 /*
 session_start();
 if(!checkUserSession($_SESSION["user"]))

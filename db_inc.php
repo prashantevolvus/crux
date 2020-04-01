@@ -10,8 +10,8 @@ if(!checkUserSession($_SESSION["user"]))
 /*Database settings*/
 $db_host="evolvus.com";
 $db_port="3306";
-$db_user="o123";
-$db_password="e123";
+$db_user="orangehrm";
+$db_password="orangehrm*code@098";
 $db_orangehrm="hr_mysql_live";
 $db_proj="project_management";
 
@@ -34,4 +34,6 @@ $mail_pass="sprento";
 $mail_secure="ssl";
 //$mail_default_addr="prashant.maroli@evolvussolutions.com";
 $mail_default_addr="pubc.c@evolvussolutions.com";
+
+$orange_timesheet_url="http://www.evolvus.com/orangehrm/symfony/web/index.php/time/viewPendingApprovelTimesheet?";
 ?>

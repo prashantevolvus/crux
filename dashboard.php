@@ -11,7 +11,7 @@ require_once('common.php');
 	$rowdash = mysqli_fetch_array($resultdash);
 
 
-	echo "<ul class='nav nav-tabs'>";
+	echo "<ul class='nav nav-pills'>";
 	echo "<li class='active'><a data-toggle='tab' href=#TABX".$rowdash['id'].">".$rowdash['name']."</a></li>";
 
   	while($rowdash = mysqli_fetch_array($resultdash))

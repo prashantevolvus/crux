@@ -7,16 +7,7 @@ require_once('bodystart.php');
 
 <script type="text/javascript">
 
-function fillDropDown(url,control) {
-  $.getJSON(url, function (data) {
 
-      $(control).find('option').remove();
-      $.each(data, function (index, value) {
-          // APPEND OR INSERT DATA TO SELECT ELEMENT.
-          $(control).append('<option value="' + value.id + '">' + value.name + '</option>');
-      });
-  });
-}
 
 function emptyDropDown(control) {
   $(control).find('option').remove();
@@ -227,7 +218,7 @@ $(document).ready(function() {
    <div class="clearfix"></div>
      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
        <label for="startDate">Start Date</label>
-       <input type="date" class="form-control" id="startDate" name="startDate" placeholder="Enter State Date (YYYY-MM-DD)" required>
+       <input type="date" data-provide="datepicker" class="form-control" id="startDate" name="startDate" placeholder="Enter State Date (YYYY-MM-DD)" required>
      </div>
      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
        <label for="closureDate">Expected Closure Date</label>
@@ -239,7 +230,7 @@ $(document).ready(function() {
         <button class="btn btn-primary btn-md" type="submit">Add Oppurtunity</button>
       </div>
   </form>
-
+</div>
 
 <?php
 

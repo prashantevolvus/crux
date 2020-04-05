@@ -8,6 +8,7 @@ require_once('bodystart.php');
 <script type="text/javascript">
     $(document).ready(function(){
       refreshTable();
+      fillDropDown("api/getSalesStage.php","#salesStage",true);
     });
 
     $(document).ready( function () {
@@ -24,12 +25,12 @@ require_once('bodystart.php');
         q='';
       }
       var stat="";
-      $('#status :selected').each(function(i, sel){
+      $('#salesStage :selected').each(function(i, sel){
         stat="'"+$(sel).val()+"' "+stat;
       	//alert(stat);
         console.log(stat);
         });
-        s = stat.search("All") != -1 ? "" : stat.trim().replace(' ',',');
+        s = stat.search("0") != -1 ? "" : stat.trim().replace(' ',',');
 
 
         $('#tableHolder').load('getpoppurtunities.php?q='+q+'&q1='+s, function(){
@@ -57,61 +58,42 @@ require_once('bodystart.php');
 
 <legend>Sales Oppurtunities Information</legend>
 
-
-<form class="form-horizontal">
-
-<!-- Select Multiple -->
-<div class="form-group">
-  <div class="col-md-4">
+<div class="row">
+<form id="oppurtunity-search">
+  <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
     <label class="control-label" for="status">Status</label>
-    <select id="status" name="status" class="form-control" multiple="multiple">
-      <option value="All" selected>All</option>
-      <option value="HotProspect">Hot Prospect</option>
-      <option value="Prospect">Prospect</option>
-      <option value="Suspect">Suspect</option>
-      <option value="Lead">Lead</option>
-      <option value="Won">Won</option>
-      <option value="Lost">Lost</option>
+    <select id="salesStage" name="salesStage" class="form-control" multiple="multiple">
+      <option value="0">All</option>
     </select>
   </div>
-
-<!-- Multiple Checkboxes -->
-  <label class="control-label" for="Active"></label>
-  <div class="col-md-4">
-  <div class="checkbox">
+  <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
     <label for="Active-0">
       <input type="checkbox" name="Active" id="oppCheck" value="1">
-      Active
+        Active
     </label>
   </div>
-  </div>
-  <div class="form-group">
-                <a href="addoppurtunities.php"  class="btn btn-success btn-lg float-right"
+  <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                <a href="addoppurtunities.php"  class="btn btn-primary btn-lg float-right"
                         type="button">
                         <span class="glyphicon glyphicon-plus"></span>
                      Add Oppurtunities
                 </a>
       </div>
-</div>
+  <div class="clearfix"></div>
+  <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
 
-<!-- Button -->
-<div class="form-group">
-  <div class="col-md-4">
-    <button id="det" name="det" type="button">
+    <button id="det" name="det" type="button" class="btn btn-primary btn-sm">
       <span class="glyphicon glyphicon-search"></span>
       Search
     </button>
+
+
   </div>
-
-
+</form>
 </div>
 
 
-</fieldset>
 
-
-
-</form>
 <br>
   <form>
 

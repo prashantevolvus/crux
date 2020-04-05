@@ -23,7 +23,7 @@ $con=getConnection();
     opp_name	,customer_id	, opp_det	,
     initial_quote	,current_quote	,no_regret_quote	,
     start_date	, expected_close_date	,
-    Assigned_to	,sales_stage	,social_stage	,
+    Assigned_to	,sales_stage_id	,social_stage_id	,
     project_type_id	,base_product_id	,project_id	,
     change_request	,new_business	,
     proposal_set_path	, active
@@ -35,7 +35,9 @@ $insert_arr["oppname"]  ."',". $insert_arr["customer"]  .",'". $insert_arr["oppt
 $insert_arr["initAmt"]  .",". $insert_arr["currAmt"]   .",". $insert_arr["noRegAmt"]   .",'".
 $insert_arr["startDate"]."','". $insert_arr["startDate"] ."',".
 $insert_arr["assigned"] .",". $insert_arr["salesStage"].",". $insert_arr["socialStage"].",".
-($insert_arr["projType"] ?? "null") .",". ($insert_arr["baseProd"] ?? "null") .",". ($insert_arr["proj"] ?? "null")      .",".
+(isset($insert_arr["projType"]) ? $insert_arr["projType"] : "null") .",".
+(isset($insert_arr["baseProd"]) ? $insert_arr["baseProd"] : "null") .",".
+(isset($insert_arr["proj"])     ? $insert_arr["proj"]     : "null") .",".
 ($insert_arr["typeOppur"] == 1? 0 : 1).",". ($insert_arr["newExisting"] == 1? 1 : 0).",'".
 $insert_arr["propPath"]."',1)";
 $sql .= $chk;

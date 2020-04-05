@@ -1,7 +1,7 @@
 <?php
 require_once('../dbconn.php');
 
-$custid=$_GET["cust"] ?? '';
+$custid=isset($_GET["cust"]) ? $_GET["cust"] : '';
 
 $con=getConnection();
 $sql="

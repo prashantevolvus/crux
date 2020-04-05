@@ -8,10 +8,10 @@ require_once('common.php');
 <link rel="shortcut icon" href="favicon.ico">
 <head>
 	<title>Crux - Project tool</title>
-	
-	<meta charset="utf-8"> 
+
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.css"/>
 <!-- <link rel="stylesheet" type="text/css" href="script/jquery.magicsearch.css"> -->
@@ -19,13 +19,15 @@ require_once('common.php');
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
- 
+
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.js"></script>
-	
+
 	<script type="text/javascript" src="script/typeahead.bundle.min.js"></script>
-	
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
-	
+
+<script type="text/javascript" src="script/crux.js"></script>
+
 <script>
 $(".tt-hint").addClass("form-control");
 </script>
@@ -72,7 +74,7 @@ $(".tt-hint").addClass("form-control");
   color: #fff;
   background-color: #0097cf;
 
-} 
+}
 
 .twitter-typeahead {
   width: 100%;
@@ -81,7 +83,7 @@ $(".tt-hint").addClass("form-control");
 .input-group .input-group-addon {
      line-height: 1!important;
  }
- 
+
 
 #custom-templates .empty-message {
   padding: 5px 10px;
@@ -91,6 +93,6 @@ $(".tt-hint").addClass("form-control");
 
 </style>
 
-  
-  	
+
+
 </head>

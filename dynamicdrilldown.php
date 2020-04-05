@@ -44,7 +44,10 @@ $col=array();
 $i = 0;
 foreach($col_names as $col_name)
 {
-	$col[]= array($col_name,$col_types[$i] ?? '',$href_text[$i] ?? '',$href_val[$i] ?? '');
+	$col[]= array($col_name,(isset($col_types[$i]) ? $col_types[$i] : ''),
+		(isset($href_text[$i]) ? $href_text[$i] : ''),
+		(isset($href_val[$i]) ? $href_val[$i] : '')
+	);
 
 	$i=$i+1;
 }

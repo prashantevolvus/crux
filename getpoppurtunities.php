@@ -10,18 +10,20 @@ if(!checkUserSession($_SESSION["user"]))
         //header("Location:login.php");
 }
 
-$q =$_GET["q"] ?? '';
-$q1=$_GET["q1"] ?? '';
+$q = isset($_GET["q"]) ? $_GET["q"] : '';
+$q1= isset($_GET["q1"]) ? $_GET["q1"] : '';
 
-$q1 = strcmp($q1 , "'HotProspect'") == 0 ? "'Hot Prospect'" : $q1;
 
 
 $con=getConnection();
 $sql =
-"select opp_name, b.name,current_quote,no_regret_quote,start_date,expected_close_date,sales_stage from opp_details a
-inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id where 1=1 "
+"select opp_name, b.name,current_quote,no_regret_quote,start_date,expected_close_date,sales_stage
+from opp_details a
+inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id
+inner join opp_sales_stage c on a.sales_stage_id = c.id
+where 1=1 "
 .(!empty($q)? " and active = 1":" ")
-.(!empty($q1)? " and sales_stage in (".$q1.")" : " ")
+.(!empty($q1)? " and sales_stage_id in (".$q1.")" : " ")
 ." order by start_date desc";
 
 $result = mysqli_query($con,$sql) ;
@@ -98,11 +100,14 @@ while($row = mysqli_fetch_array($result))
   $amt=number_format($row['no_regret_quote'],0);
   echo "<td align='right'>".$amt."</td>";
 
+  $sortDate = strtotime($row['start_date']);
   $dt = date("d-M-Y", strtotime($row['start_date']));
-  echo "<td>$dt</td>";
+  echo "<td data-sort='".$sortDate."'>$dt</td>";
 
+  $sortDate = strtotime($row['expected_close_date']);
   $dt = date("d-M-Y", strtotime($row['expected_close_date']));
-  echo "<td>$dt</td>";
+  echo "<td data-sort='".$sortDate."'>$dt</td>";
+
 
   echo "<td>".$row['sales_stage']."</td>";
 

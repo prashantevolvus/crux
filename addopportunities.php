@@ -29,28 +29,28 @@ $(document).ready(function() {
 
 
 
-    if($('#typeOppur-1').is(":checked")) {
+    if($('#typeOppor-1').is(":checked")) {
       fillDropDown("api/getProjectList.php?cust="+$('#customer').val(),"#proj");
     }
   });
 
 
-    	$('input[name="typeOppur"]').click(function() {
+    	$('input[name="typeOppor"]').click(function() {
 
           $('.togglehid').addClass('hidden');
           // code changed here --> add the class hidden to all div's with class togglehid
 
-      	if($(this).attr('id') == 'typeOppur-0')
+      	if($(this).attr('id') == 'typeOppor-0')
         {
-        	$("#typeOppur-0-container").toggleClass('hidden');
+        	$("#typeOppor-0-container").toggleClass('hidden');
           emptyDropDown("#proj");
           fillDropDown("api/getProjectTypeList.php","#projType");
           fillDropDown("api/getProductList.php","#baseProd");
 
         }
-        else if($(this).attr('id') == 'typeOppur-1')
+        else if($(this).attr('id') == 'typeOppor-1')
         {
-        	$("#typeOppur-1-container").toggleClass('hidden');
+        	$("#typeOppor-1-container").toggleClass('hidden');
           console.log($('#customer').val());
           emptyDropDown("#projType");
           emptyDropDown("#baseProd");
@@ -63,7 +63,7 @@ $(document).ready(function() {
 
 
 
-      $('#oppurtunity-form').on('submit', function (e) {
+      $('#opportunity-form').on('submit', function (e) {
 
               // if the validator does not prevent form submit
               if (!e.isDefaultPrevented()) {
@@ -90,9 +90,9 @@ $(document).ready(function() {
                           // If we have messageAlert and messageText
                           if (messageAlert && messageText) {
                               // inject the alert to .messages div in our form
-                              $('#oppurtunity-form').find('.messages').html(alertBox);
+                              $('#opportunity-form').find('.messages').html(alertBox);
                               // empty the form
-                              $('#oppurtunity-form')[0].reset();
+                              $('#opportunity-form')[0].reset();
                           }
                       }
                   });
@@ -105,23 +105,23 @@ $(document).ready(function() {
 </script>
 
 
-<legend>Add Sales Oppurtunities</legend>
+<legend>Add Sales Opportunities</legend>
 
 
 <div class="row">
-  <form id="oppurtunity-form" method="post" action="api/createOpp.php" role="form">
+  <form id="opportunity-form" method="post" action="api/createOpp.php" role="form">
     <div class="messages"></div>
 
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <!-- Multiple Radios (inline) -->
-      <label for="newExisting">Oppurtunity Type</label>
+      <label for="newExisting">Opportunity Type</label>
       <br>
-        <label for="typeOppur-0">
-          <input type="radio" name="typeOppur" id="typeOppur-0" value="1" checked="checked">
+        <label for="typeOppor-0">
+          <input type="radio" name="typeOppor" id="typeOppor-0" value="1" checked="checked">
           New Project
         </label>
-        <label class="radio-inline" for="typeOppur-1">
-          <input type="radio" name="typeOppur" id="typeOppur-1" value="2">
+        <label class="radio-inline" for="typeOppor-1">
+          <input type="radio" name="typeOppor" id="typeOppor-1" value="2">
           Change Request
         </label>
     </div>
@@ -144,8 +144,8 @@ $(document).ready(function() {
          </select>
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-      <label for="oppname">Oppurtunity Name</label>
-      <input type="text" class="form-control" id="oppname" name="oppname" placeholder="Enter Oppurtunity Name"  required>
+      <label for="oppname">Opportunity Name</label>
+      <input type="text" class="form-control" id="oppname" name="oppname" placeholder="Enter Opportunity Name"  required>
       <div class="form-control-feedback"></div>
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -155,9 +155,9 @@ $(document).ready(function() {
     <div class="clearfix"></div>
 
     <div class="form-group col-xm-10 col-sm-4 col-md-4 col-lg-4">
-      <label for="oppname">Oppurtunity Details</label>
+      <label for="oppname">Opportunity Details</label>
 
-      <textarea class="form-control" id="opptext" name="opptext" rows="5" placeholder="Enter Oppurtunity Details" required></textarea>
+      <textarea class="form-control" id="opptext" name="opptext" rows="5" placeholder="Enter Opportunity Details" required></textarea>
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <label for="assigned">Assigned to</label>
@@ -165,7 +165,7 @@ $(document).ready(function() {
          </select>
     </div>
   <div class="clearfix"></div>
-    <div id="typeOppur-0-container" class="togglehid ">
+    <div id="typeOppor-0-container" class="togglehid ">
       <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
         <label for="projType">Project Type</label>
         <select id="projType" name="projType" class="form-control">
@@ -193,7 +193,7 @@ $(document).ready(function() {
    </div>
    <div class="clearfix"></div>
 
-   <div id="typeOppur-1-container" class="togglehid hidden">
+   <div id="typeOppor-1-container" class="togglehid hidden">
      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
        <label for="proj">Project</label>
        <select id="proj" name="proj" class="form-control">
@@ -227,7 +227,7 @@ $(document).ready(function() {
 
       <div class="clearfix"></div>
       <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-        <button class="btn btn-primary btn-md" type="submit">Add Oppurtunity</button>
+        <button class="btn btn-primary btn-md" type="submit">Add Opportunity</button>
       </div>
   </form>
 </div>

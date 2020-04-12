@@ -17,7 +17,7 @@ $q1= isset($_GET["q1"]) ? $_GET["q1"] : '';
 
 $con=getConnection();
 $sql =
-"select opp_name, b.name,current_quote,no_regret_quote,start_date,expected_close_date,sales_stage
+"select a.id, opp_name, b.name,current_quote,no_regret_quote,start_date,expected_close_date,sales_stage
 from opp_details a
 inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id
 inner join opp_sales_stage c on a.sales_stage_id = c.id
@@ -76,7 +76,7 @@ var tableToExcel = (function () {
 <thead>
   <tr>
     <th><b>Customer Name</b></th>
-    <th><b>Oppurtunity Name</b></th>
+    <th><b>Opportunity Name</b></th>
     <th><b>Current Quote</b></th>
     <th><b>No Regret Quote</b></th>
     <th><b>Start Date</b></th>
@@ -90,7 +90,7 @@ while($row = mysqli_fetch_array($result))
 {
 	echo "<tr>";
   echo "<td>".$row['name']."</td>";
-  echo "<td>".$row['opp_name']."</td>";
+  echo "<td> <a href='viewopportunity.php?oppid=".$row['id']."'>".$row['opp_name']."</a></td>";
 
   setlocale(LC_MONETARY, 'en_US');
   $amt=number_format($row['current_quote'],0);

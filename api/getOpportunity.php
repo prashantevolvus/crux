@@ -5,11 +5,12 @@ require_once('../dbconn.php');
 $con=getConnection();
 $sql="
 select a.id,
-opp_name	,b.name	customer_name, opp_det	,
+opp_name	,b.name	customer_name, a.customer_id , opp_det	,
     initial_quote	,current_quote	,no_regret_quote	,
     start_date	, expected_close_date	,
-    concat(emp_firstname,' ',emp_middle_name,' ',emp_lastname) emp_name	,sales_stage	,social_stage	,
-    project_type	,product_name	,project_name	,
+    concat(emp_firstname,' ',emp_middle_name,' ',emp_lastname) emp_name	, assigned_to,
+    sales_stage, sales_stage_id,social_stage , social_stage_id	,
+    project_type, 	f.project_type_id , product_name	, a.base_product_id , project_name	, a.project_id ,
     change_request	,new_business	,
     proposal_set_path	, active
  from opp_details a

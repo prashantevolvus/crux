@@ -62,7 +62,7 @@ $(document).ready(function() {
         </li>
       </ul>
 
-    <ul class="nav navbar-nav navbar-left">
+    <!-- <ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Project Risks<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -70,9 +70,9 @@ $(document).ready(function() {
            <li class='last'><a href='viewrisk.php'><span>View Risk</span></a></li>
           </ul>
         </li>
-    </ul>
+    </ul> -->
 
-    <ul class="nav navbar-nav navbar-left">
+    <!-- <ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Project Status Report<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -80,7 +80,7 @@ $(document).ready(function() {
          		<li><a href='viewprojectreport.php'><span>View Report</span></a></li>
           </ul>
         </li>
-    </ul>
+    </ul> -->
 
     <ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
@@ -107,10 +107,6 @@ $(document).ready(function() {
 			<li><a href='addinvoice.php'><span>Add Invoice</span></a></li>
          		<li class='last'><a href='viewinvoice.php'><span>View Invoice</span></a></li>
 
-			<li role="separator" class="divider"></li>
-			<li class='last'><a href='addOverHeads.php'><span>Add Overheads</span></a></li>
-			<li class='last'><a href='editViewOverHeads.php'><span>View/Edit Overheads</span></a></li>
-
 
           </ul>
         </li>
@@ -123,6 +119,16 @@ $(document).ready(function() {
              	<li><a href='viewtimesheet.php?STATUS=CURRENT'><span>Pending Timesheets</span></a></li>
 <li><a href='viewtimesheet.php?STATUS=PAST'><span>Pending Past Employee Timesheets</span></a></li>
              	<li><a href='vieworgchart.php'><span>Organisation Structure</span></a></li>
+          </ul>
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-left">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sales Opportunities<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href='opportunities.php'><span>Opportunities</span></a></li>
+        	<li><a href='addopportunities.php'><span>Add Opportunity</span></a></li>
           </ul>
         </li>
     </ul>

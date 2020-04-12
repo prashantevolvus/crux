@@ -13,8 +13,8 @@ $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
 $return_arr = array();
 while($row = mysqli_fetch_array($result))
 {
-   $row_array['id'] = $row['emp_number'];
-   $row_array['name'] = $row['emp_name'];
+   $row_array['value'] = $row['emp_number'];
+   $row_array['text'] = $row['emp_name'];
    array_push($return_arr,$row_array);
 }
 header('Content-Type: application/json');

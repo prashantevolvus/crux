@@ -14,8 +14,8 @@ $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
 $return_arr = array();
 while($row = mysqli_fetch_array($result))
 {
-   $row_array['id'] = $row['id'];
-   $row_array['name'] = $row['sales_stage'];
+   $row_array['value'] = $row['id'];
+   $row_array['text'] = $row['sales_stage'];
    array_push($return_arr,$row_array);
 }
 header('Content-Type: application/json');

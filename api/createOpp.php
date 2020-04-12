@@ -1,8 +1,8 @@
 <?php
 require_once('../dbconn.php');
 
-$errorMessage = 'There was an error while adding the oppurtunity. Please try again.';
-$okMessage = 'Oppurtunity successfully submitted.';
+$errorMessage = 'There was an error while adding the opportunity. Please try again.';
+$okMessage = 'Opportunity successfully submitted.';
 
 $insert_arr = array();
 
@@ -38,7 +38,7 @@ $insert_arr["assigned"] .",". $insert_arr["salesStage"].",". $insert_arr["social
 (isset($insert_arr["projType"]) ? $insert_arr["projType"] : "null") .",".
 (isset($insert_arr["baseProd"]) ? $insert_arr["baseProd"] : "null") .",".
 (isset($insert_arr["proj"])     ? $insert_arr["proj"]     : "null") .",".
-($insert_arr["typeOppur"] == 1? 0 : 1).",". ($insert_arr["newExisting"] == 1? 1 : 0).",'".
+($insert_arr["typeOppor"] == 1? 0 : 1).",". ($insert_arr["newExisting"] == 1? 1 : 0).",'".
 $insert_arr["propPath"]."',1)";
 $sql .= $chk;
 
@@ -48,7 +48,7 @@ $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
 $newid=0;
 $newid = mysqli_insert_id($con);
 
-$responseArray = array('type' => 'success', 'message' => 'Oppurtunity Successfully created. ','navigate' =>'viewOppurtunity.php?oppid='.$newid);
+$responseArray = array('type' => 'success', 'message' => 'Opportunity Successfully created. ','navigate' =>'viewOpportunity.php?oppid='.$newid);
 
 // if requested by AJAX request return JSON response
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {

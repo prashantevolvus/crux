@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 ?>
 <tr valign="bottom">
@@ -30,18 +30,8 @@
             </ul>
         </li>
 
-        <li class='has-sub'><a href='#'><span>Project Risk</span></a>
-            <ul>
-                <li><a href='createrisk.php'><span>New Risk</span></a></li>
-                <li class='last'><a href='viewrisk.php'><span>View Risk</span></a></li>
-            </ul>
-        </li>
-        <li class='has-sub'><a href='#'><span>Project Status Report</span></a>
-            <ul>
-                <li><a href='generateprojreport.php'><span>Generate Report</span></a></li>
-                <li><a href='viewprojectreport.php'><span>View Report</span></a></li>
-            </ul>
-        </li>
+
+
         <li class='has-sub'><a href='#'><span>Analytics</span></a>
             <ul>
                 <li><a href='date_cost.php'><span>Cost Trend</span></a></li>
@@ -64,6 +54,14 @@
 
             </ul>
         </li>
+
+        <li class='has-sub'><a href='#'><span>Sales Opportunity</span></a>
+            <ul>
+              <li><a href='opportunities.php'><span>Opportunities</span></a></li>
+              <li><a href='addopportunities.php'><span>Add Opportunity</span></a></li>
+            </ul>
+        </li>
+
         <li class='last'><a href='viewtimesheet.php'><span>Pending Timesheet</span></a></li>
 
         <li class='has-sub'><a href='#'><span>Reports</span></a>
@@ -90,4 +88,4 @@
         </li>
         <li class='last'><a href='logout.php'><span>Logout</span></a></li>
     </ul>
-</div> 
+</div>

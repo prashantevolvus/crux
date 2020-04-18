@@ -1,0 +1,207 @@
+
+[15-Apr-2020 07:51:36 Europe/Zurich] opportunity-id
+[15-Apr-2020 07:51:36 Europe/Zurich] 13
+[15-Apr-2020 07:53:07 Europe/Zurich] opportunity-id
+[15-Apr-2020 07:53:07 Europe/Zurich] 13
+[15-Apr-2020 07:57:42 Europe/Zurich] opportunity-id
+[15-Apr-2020 07:57:42 Europe/Zurich] 13
+[15-Apr-2020 08:01:37 Europe/Zurich] opportunity-id
+[15-Apr-2020 08:01:37 Europe/Zurich] 13
+[15-Apr-2020 08:04:06 Europe/Zurich] opportunity-id
+[15-Apr-2020 08:04:06 Europe/Zurich] 13
+[15-Apr-2020 08:11:10 Europe/Zurich] opportunity-id
+[15-Apr-2020 08:11:10 Europe/Zurich] 13
+[15-Apr-2020 08:16:52 Europe/Zurich] opportunity-id
+[15-Apr-2020 08:16:52 Europe/Zurich] 13
+[15-Apr-2020 15:35:29 Europe/Zurich] opportunity-id
+[15-Apr-2020 15:35:29 Europe/Zurich] 23
+[15-Apr-2020 15:38:53 Europe/Zurich] opportunity-id
+[15-Apr-2020 15:38:53 Europe/Zurich] 23
+[15-Apr-2020 16:55:46 Europe/Zurich] opportunity-id
+[15-Apr-2020 16:55:46 Europe/Zurich] 23
+[16-Apr-2020 12:45:34 Europe/Zurich] opportunity-id
+[16-Apr-2020 12:45:35 Europe/Zurich] 41
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP Notice:  Undefined variable: _SESSION in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 19
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP Stack trace:
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP Notice:  Undefined variable: con in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 22
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP Stack trace:
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 22
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP Stack trace:
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[16-Apr-2020 12:45:35 Europe/Zurich] PHP   2. mysqli_query() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:22
+[16-Apr-2020 12:57:27 Europe/Zurich] PHP Notice:  Undefined variable: _SESSION in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 9
+[16-Apr-2020 12:57:27 Europe/Zurich] PHP Stack trace:
+[16-Apr-2020 12:57:27 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[16-Apr-2020 12:57:27 Europe/Zurich] 
+[16-Apr-2020 13:01:37 Europe/Zurich] prashantm
+[16-Apr-2020 13:02:01 Europe/Zurich] prashantm
+[16-Apr-2020 13:02:58 Europe/Zurich] prashantm
+[16-Apr-2020 13:02:58 Europe/Zurich] 3
+[16-Apr-2020 13:03:57 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:03:57 Europe/Zurich] 41
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP Notice:  Undefined variable: con in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 26
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP Stack trace:
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 26
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP Stack trace:
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[16-Apr-2020 13:03:57 Europe/Zurich] PHP   2. mysqli_query() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:26
+[16-Apr-2020 13:04:43 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:04:43 Europe/Zurich] 41
+[16-Apr-2020 13:10:29 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:10:29 Europe/Zurich] 41
+[16-Apr-2020 13:15:10 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:15:10 Europe/Zurich] 41
+[16-Apr-2020 13:16:11 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:16:11 Europe/Zurich] 41
+[16-Apr-2020 13:16:58 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:16:58 Europe/Zurich] 41
+[16-Apr-2020 13:18:33 Europe/Zurich] opportunity-id
+[16-Apr-2020 13:18:33 Europe/Zurich] 41
+[16-Apr-2020 14:25:14 Europe/Zurich] opportunity-id
+[16-Apr-2020 14:25:14 Europe/Zurich] 48
+[16-Apr-2020 15:20:44 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:20:44 Europe/Zurich] 48
+[16-Apr-2020 15:26:17 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:26:17 Europe/Zurich] 48
+[16-Apr-2020 15:28:23 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:28:23 Europe/Zurich] 48
+[16-Apr-2020 15:29:24 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:29:24 Europe/Zurich] 48
+[16-Apr-2020 15:29:58 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:29:58 Europe/Zurich] 48
+[16-Apr-2020 15:31:49 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:31:49 Europe/Zurich] 48
+[16-Apr-2020 15:34:29 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:34:30 Europe/Zurich] 48
+[16-Apr-2020 15:38:26 Europe/Zurich] opportunity-id
+[16-Apr-2020 15:38:26 Europe/Zurich] 48
+[17-Apr-2020 20:18:55 Europe/Zurich] PHP Notice:  Undefined index: opportunity-id in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 22
+[17-Apr-2020 20:18:55 Europe/Zurich] PHP Stack trace:
+[17-Apr-2020 20:18:55 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[17-Apr-2020 20:18:56 Europe/Zurich] PHP Notice:  Undefined index: opportunity-id in /Users/prashantm/development/GitHub/crux/api/updateOppFile.php on line 22
+[17-Apr-2020 20:18:56 Europe/Zurich] PHP Stack trace:
+[17-Apr-2020 20:18:56 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppFile.php:0
+[18-Apr-2020 21:45:59 Europe/Zurich] UPDATE opp_invoices SET OPP_ID = '53' , milestone = 'M3' , milestone_desc = 'UAT completion' , invoice_date = '2021-01-10' , payment_date = '2021-02-10' , invoice_amount = '3360000.000'   WHERE id = 69
+[18-Apr-2020 21:46:49 Europe/Zurich] UPDATE opp_invoices SET OPP_ID = '53' , milestone = 'M3' , milestone_desc = 'UAT completion' , invoice_date = '2021-01-10' , payment_date = '2021-02-10' , invoice_amount = '3360000.000'   WHERE id = 69
+[18-Apr-2020 21:54:39 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M4',
+            milestone_desc = 'Go-live',
+            invoice_date =  '2021-01-25',
+            payment_date = '2021-02-25',
+            invoice_pcnt = '31',
+            invoice_amount = '5040000.000'
+            WHERE id = '70'
+  
+[18-Apr-2020 21:55:03 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M4',
+            milestone_desc = 'Go-live',
+            invoice_date =  '2021-01-25',
+            payment_date = '2021-02-25',
+            invoice_pcnt = '30',
+            invoice_amount = '5040000.000'
+            WHERE id = '70'
+  
+[18-Apr-2020 22:58:55 Europe/Zurich] PHP Notice:  Undefined index: invoice-amount in /Users/prashantm/development/GitHub/crux/api/updateOppInv.php on line 34
+[18-Apr-2020 22:58:55 Europe/Zurich] PHP Stack trace:
+[18-Apr-2020 22:58:55 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppInv.php:0
+[18-Apr-2020 22:58:55 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M1',
+            milestone_desc = 'Contract signoff',
+            invoice_date =  '2021-10-20',
+            payment_date = '2021-11-20',
+            invoice_pcnt = '25',
+            invoice_amount = ''
+            WHERE id = '67'
+  
+[18-Apr-2020 23:00:02 Europe/Zurich] PHP Notice:  Undefined index: invoice-amount in /Users/prashantm/development/GitHub/crux/api/updateOppInv.php on line 34
+[18-Apr-2020 23:00:02 Europe/Zurich] PHP Stack trace:
+[18-Apr-2020 23:00:02 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppInv.php:0
+[18-Apr-2020 23:00:02 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M1',
+            milestone_desc = 'Contract signoff',
+            invoice_date =  '2021-10-20',
+            payment_date = '2021-11-20',
+            invoice_pcnt = '30',
+            invoice_amount = ''
+            WHERE id = '67'
+  
+[18-Apr-2020 23:04:22 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M1',
+            milestone_desc = 'Contract signoff',
+            invoice_date =  '2021-10-20',
+            payment_date = '2021-11-20',
+            invoice_pcnt = '30',
+            invoice_amount = '504000000'
+            WHERE id = '67'
+  
+[18-Apr-2020 23:05:28 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M1',
+            milestone_desc = 'Contract signoff',
+            invoice_date =  '2021-10-20',
+            payment_date = '2021-11-20',
+            invoice_pcnt = '30',
+            invoice_amount = '5040000'
+            WHERE id = '67'
+  
+[18-Apr-2020 23:05:41 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M2',
+            milestone_desc = 'Delivery',
+            invoice_date =  '2021-11-10',
+            payment_date = '2021-12-20',
+            invoice_pcnt = '25',
+            invoice_amount = '4200000'
+            WHERE id = '68'
+  
+[18-Apr-2020 23:05:56 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M2',
+            milestone_desc = 'Delivery',
+            invoice_date =  '2021-11-10',
+            payment_date = '2021-12-20',
+            invoice_pcnt = '20',
+            invoice_amount = '3360000'
+            WHERE id = '68'
+  
+[18-Apr-2020 23:06:32 Europe/Zurich] PHP Notice:  Undefined index: invoice_pcnt in /Users/prashantm/development/GitHub/crux/api/updateOppInv.php on line 24
+[18-Apr-2020 23:06:32 Europe/Zurich] PHP Stack trace:
+[18-Apr-2020 23:06:32 Europe/Zurich] PHP   1. {main}() /Users/prashantm/development/GitHub/crux/api/updateOppInv.php:0
+[18-Apr-2020 23:06:32 Europe/Zurich] INSERT INTO opp_invoices (
+              opp_id, milestone, milestone_desc,
+              invoice_date, payment_date, invoice_pcnt,
+              invoice_amount
+            )
+            VALUES (
+              '53','M5','testing',
+              '2020-12-12','2020-12-31',
+              '','3360000')
+[18-Apr-2020 23:07:10 Europe/Zurich] UPDATE opp_invoices SET
+            OPP_ID = '53',
+            milestone = 'M5',
+            milestone_desc = 'testing',
+            invoice_date =  '2020-12-12',
+            payment_date = '2020-12-31',
+            invoice_pcnt = '20',
+            invoice_amount = '3360000'
+            WHERE id = '93'
+  
+[18-Apr-2020 23:09:03 Europe/Zurich] delete from opp_invoices where id = '93'
+[18-Apr-2020 23:12:08 Europe/Zurich] INSERT INTO opp_invoices (
+              opp_id, milestone, milestone_desc,
+              invoice_date, payment_date, invoice_pcnt,
+              invoice_amount
+            )
+            VALUES (
+              '53','M1','Testing',
+              '2020-01-21','2020-03-21',
+              '10','1680000')
+[18-Apr-2020 23:15:07 Europe/Zurich] delete from opp_invoices where id = '94'

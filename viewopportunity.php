@@ -8,7 +8,6 @@ require_once('bodystart.php');
 <script type="text/javascript">
 
 function getCustomer() {
-    console.log($("Trying "+'#3B1').text());
     return $('#3B1').text();
 }
 
@@ -17,13 +16,35 @@ $(document).ready(function() {
   var url = new URL(document.URL);
   var search_params = url.searchParams;
 
-  var oppId = search_params.get('oppid');
+  var gOppId = search_params.get('oppid');
   var cust;
   var invTable;
+  //3B2 - No regret Amount
+  var amtID = "#3B2"; //Amount control to fetch for milestone % calculation
+  var gAmtForPcnt  = 1;
 
-  $.getJSON("api/getOpportunity.php?oppid="+oppId, function (data) {
+  $('#href-proposal a').click(function(e) {
+    e.preventDefault();  //stop the browser from following
+    console.log("api/getOppFiles.php?file=proposal&oppid="+gOppId);
+    window.location.href = "api/getOppFile.php?file=proposal&oppid="+gOppId;
+  });
 
-    console.log(data);
+  $('#href-estimate a').click(function(e) {
+    e.preventDefault();  //stop the browser from following
+    console.log("api/getOppFiles.php?file=estimate&oppid="+gOppId);
+    window.location.href = "api/getOppFile.php?file=estimation&oppid="+gOppId;
+  });
+
+  $('#invoice-pcnt').blur(function(){
+
+      console.log("another try no regret " + gAmtForPcnt);
+      console.log("value % " + $('#invoice-pcnt').val());
+      $('#invoice-amount').val(gAmtForPcnt*$('#invoice-pcnt').val()/100);
+
+  });
+
+  $.getJSON("api/getOpportunity.php?oppid="+gOppId, function (data) {
+
 
     //This is not allowed to change. Create a new opportunity if you want
     $('#1B1').text((data[0]['change_request']== 1 ? "Change Request" : "New Project"));
@@ -35,7 +56,7 @@ $(document).ready(function() {
     //Opportunity Name
     $('#2B1').editable({
        sourceCache: false,
-       pk: oppId,
+       pk: gOppId,
        value: data[0]['opp_name'],
        title: "Enter Opportunity Name",
        validate: function(value) {
@@ -49,12 +70,11 @@ $(document).ready(function() {
     $('#3B1').editable({
         type: 'select',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['customer_id'],
         title: "Enter Customer Name",
         source: 'api/getCustomerList.php',
         success: function(response, newValue) {
-              console.log(" After " + newValue + '\n' + cust)
               cust=newValue;
 
               setTimeout(function() {
@@ -68,7 +88,7 @@ $(document).ready(function() {
     $('#4B1').editable({
         type: 'select',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['active'],
         title: "Is the Opportunity Active?",
         source: '[{"value":"1","text":"ACTIVE"},{"value":"0","text":"INACTIVE"}]'
@@ -78,7 +98,7 @@ $(document).ready(function() {
     $('#5B1').editable({
         type: 'url',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['proposal_set_path'],
         title: "Enter Proposal URL",
         validate: function(value) {
@@ -92,7 +112,8 @@ $(document).ready(function() {
     $('#1B4').editable({
               type: 'textarea',
               sourceCache: false,
-              pk: oppId,
+              rows: 10,
+              pk: gOppId,
               mode:'inline',
               title: "Enter Opportunity Details",
               value: data[0]['opp_det'],
@@ -107,13 +128,16 @@ $(document).ready(function() {
     $('#1B2').editable({
         type: 'number',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['initial_quote'],
         title: "Enter Initial Quote",
         validate: function(value) {
           if($.trim(value) == '') {
            return 'This field is required';
           }
+        },
+        display: function(value) {
+            $(this).text(amtFormat(value));
         }
     });
 
@@ -121,13 +145,16 @@ $(document).ready(function() {
     $('#2B2').editable({
         type: 'number',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['current_quote'],
         title: "Enter Current Quote",
         validate: function(value) {
           if($.trim(value) == '') {
            return 'This field is required';
           }
+        },
+        display: function(value) {
+            $(this).text(amtFormat(value));
         }
     });
 
@@ -135,13 +162,17 @@ $(document).ready(function() {
     $('#3B2').editable({
         type: 'number',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['no_regret_quote'],
         title: "Enter No Regret Quote",
         validate: function(value) {
           if($.trim(value) == '') {
            return 'This field is required';
           }
+        },
+        display: function(value) {
+            $(this).text(amtFormat(value));
+            gAmtForPcnt = value;
         }
     });
 
@@ -150,7 +181,7 @@ $(document).ready(function() {
     $('#1B5').editable({
         type: 'select',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['sales_stage_id'],
         title: "Enter Sales Stage",
         source: 'api/getSalesStage.php'
@@ -160,7 +191,7 @@ $(document).ready(function() {
     $('#2B5').editable({
         type: 'select',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['social_stage_id'],
         title: "Enter Social Stage",
         source: 'api/getSocialStage.php'
@@ -170,7 +201,7 @@ $(document).ready(function() {
     $('#3B5').editable({
         type: 'select',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['assigned_to'],
         title: "Enter Opportunity Assigned To",
         source: 'api/getEmpList.php'
@@ -180,7 +211,7 @@ $(document).ready(function() {
     $('#4B5').editable({
         type: 'date',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['start_date'],
         title: "Enter Opportunity Start Date",
         placement:'right',
@@ -198,7 +229,7 @@ $(document).ready(function() {
     $('#5B5').editable({
         type: 'date',
         sourceCache: false,
-        pk: oppId,
+        pk: gOppId,
         value: data[0]['expected_close_date'],
         title: "Enter Opportunity Expected Close Date",
         placement:'right',
@@ -221,7 +252,7 @@ $(document).ready(function() {
       $('#1B3A').editable({
           type: 'select',
           sourceCache: false,
-          pk: oppId,
+          pk: gOppId,
           value: data[0]['project_type_id'],
           title: "Enter Project Type",
           source: 'api/getProjectTypeList.php'
@@ -231,7 +262,7 @@ $(document).ready(function() {
       $('#2B3A').editable({
           type: 'select',
           sourceCache: false,
-          pk: oppId,
+          pk: gOppId,
           value: data[0]['base_product_id'],
           title: "Enter Base Product",
           source: 'api/getProductList.php'
@@ -240,7 +271,7 @@ $(document).ready(function() {
       $('#3B3A').editable({
           type: 'select',
           sourceCache: false,
-          pk: oppId,
+          pk: gOppId,
           value: data[0]['new_business'],
           title: "Is this New Business or Existing?",
           source: '[{"value":"1","text":"New Business"},{"value":"0","text":"Existing"}]'
@@ -253,7 +284,7 @@ $(document).ready(function() {
       $('#1B3B').editable({
           type: 'select',
           sourceCache: false,
-          pk: oppId,
+          pk: gOppId,
           value: data[0]['project_id'],
           title: "Enter Project",
           source: 'api/getProjectList.php?cust=' + cust
@@ -263,22 +294,39 @@ $(document).ready(function() {
     });
 
   invTable = $('#invoices').DataTable({
+
     "searching": false,
     "ordering": false,
     "paging": false,
     "ajax": {
         url: "api/getOppInvoices.php",
         data: function(d){
-          d.oppid = oppId;
+          d.oppid = gOppId;
         }
       },
       "columns": [
           { "data": "milestone"} ,
           { "data": "invoice_date"} ,
           { "data": "payment_date"} ,
-          { "data": "invoice_amount"},
+          {
+            "className": "text-right",
+            "data": "invoice_pcnt",
+            "render": function(data, type, row, meta){
+              return amtFormat(data)+'%';
+            }
+
+          },
+          {
+            "className": "text-right",
+            "data": "invoice_amount",
+            "render": function(data, type, row, meta){
+              return amtFormat(data);
+            }
+
+          },
           {
              "data": "id",
+             "className": "text-right",
              "render": function(data, type, row, meta){
                 if(type === 'display'){
                     data = '<button type="button" class="btn btn-default" data-dttype="Edit" data-dtinvid="'+data+'"  data-toggle="modal" data-target="#invoicelist" aria-label="Left Align"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>' +
@@ -297,12 +345,12 @@ $(document).ready(function() {
   $.fn.editable.defaults.url = 'api/editOpp.php';
   //$('#2B1').editable();
   $('#refresh').on('click', function (e) {
-      console.log("refresh");
       invTable.ajax.reload();
       return;
   })
     //Operation buttons [Add, Edit and Remove] for Invoices
     $('#invoicelist').on('show.bs.modal', function (event) {
+      console.log('invoicelist-show.bs.modal');
 
       var button = $(event.relatedTarget); // Button that triggered the modal
       var invid = button.data('dtinvid'); // Extract info from data-* attributes
@@ -313,6 +361,7 @@ $(document).ready(function() {
       $(".modal-body #milestone-desc").val('');
       $(".modal-body #invoice-date").val('');
       $(".modal-body #payment-date").val('');
+      $(".modal-body #invoice-pcnt").val('');
       $(".modal-body #invoice-amount").val('');
       $(".modal-body #invoice-id").val('');
       $(".modal-body #operation").val('');
@@ -328,14 +377,17 @@ $(document).ready(function() {
         $(".modal-body #milestone-desc").attr('disabled', 'disabled');
         $(".modal-body #invoice-date").attr('disabled', 'disabled');
         $(".modal-body #payment-date").attr('disabled', 'disabled');
+        $(".modal-body #invoice-pcnt").attr('disabled', 'disabled');
         $(".modal-body #invoice-amount").attr('disabled', 'disabled');
+
       }
       else {
         $(".modal-body #milestone").removeAttr('disabled');
         $(".modal-body #milestone-desc").removeAttr('disabled');
         $(".modal-body #invoice-date").removeAttr('disabled');
         $(".modal-body #payment-date").removeAttr('disabled');
-        $(".modal-body #invoice-amount").removeAttr('disabled');
+        $(".modal-body #invoice-pcnt").removeAttr('disabled');
+        //$(".modal-body #invoice-amount").removeAttr('disabled');
       }
 
       if(dttype!="Add") {
@@ -346,35 +398,36 @@ $(document).ready(function() {
          $(".modal-body #milestone-desc").val(data['data'][0]['milestone_desc']);
          $(".modal-body #invoice-date").val(data['data'][0]['invoice_date']);
          $(".modal-body #payment-date").val(data['data'][0]['payment_date']);
+         $(".modal-body #invoice-pcnt").val(data['data'][0]['invoice_pcnt']);
          $(".modal-body #invoice-amount").val(data['data'][0]['invoice_amount']);
          $(".modal-body #invoice-id").val(invid);
          $(".modal-body #operation").val(dttype);
-         $(".modal-body #opportunity-id").val(oppId);
+         $(".modal-body #opportunity-id").val(gOppId);
 
        });
      }
      else {
        $(".modal-body #invoice-id").val(invid);
        $(".modal-body #operation").val(dttype);
-       $(".modal-body #opportunity-id").val(oppId);
+       $(".modal-body #opportunity-id").val(gOppId);
 
      }
 
     });
 
     $('#invoicelist').on('submit', '#invoicefrm' , function (e) {
+      console.log('invoicelist-submit');
+
     //$('#invoicefrm').submit(function() {
-        console.log('submit');
         if (!e.isDefaultPrevented()) {
-          console.log('submit1');
 
           var url = "api/updateOppInv.php";
-          console.log($('#invoicefrm').serialize());
           if($(".modal-body #operation") === "View"){
             $('#invoicefrm')[0].reset();
             $('#invoicelist').modal( 'hide' );
             return false;
           }
+
 
           $.ajax({
               type: "POST",
@@ -382,21 +435,17 @@ $(document).ready(function() {
               data: $('#invoicefrm').serialize(),
               success: function (data)
               {
-                  // data = JSON object that contact.php returns
-                  console.log("Success");
 
-                  // we recieve the type of the message: success x danger and apply it to the
                   var messageAlert = 'alert-' + data.type;
                   var messageText = data.message;
-                  console.log(messageText);
 
                   // let's compose Bootstrap alert box HTML
                   var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
-                  console.log(alertBox);
                   // If we have messageAlert and messageText
                   if (messageAlert && messageText) {
                       // inject the alert to .messages div in our form
-                      $('#opportunity-form').find('.messages').html(alertBox);
+                      console.log(alertBox);
+                      $('#opportunity-form').find('.inv-messages').html(alertBox);
                       $(".alert-dismissable").fadeTo(2000, 500).slideUp(500, function(){
                           $(".alert-dismissable").alert('close');
                         });
@@ -408,11 +457,62 @@ $(document).ready(function() {
           });
           $('#invoicefrm')[0].reset();
           $('#invoicelist').modal( 'hide' );
-          console.log(invTable);
 
           return false;
 
         }
+    });
+
+    $('#fileUpload').on('show.bs.modal', function (event) {
+      console.log('fileUpload-show.bs.modal');
+
+
+      $(".modal-body #opportunity-id").val(gOppId);
+
+
+    });
+
+    $('#fileUpload').on('submit', '#uploadFilefrm' , function (e) {
+      console.log('fileUpload-submit');
+
+    //$('#invoicefrm').submit(function() {
+        if (!e.isDefaultPrevented()) {
+
+          var url = "api/updateOppFile.php";
+          var formData = new FormData(this);
+          console.log(formData);
+          $.ajax({
+              type: "POST",
+              url: url,
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function (data)
+              {
+                console.log("SUCCESS "+data);
+                var alertBox = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + 'Files Uploaded' + '</div>';
+                console.log(alertBox);
+
+                $('#opportunity-form').find('.upld-messages').html(alertBox);
+                $(".alert-dismissable").fadeTo(2000, 500).slideUp(500, function(){
+                    $(".alert-dismissable").alert('close');
+                  });
+                  invTable.ajax.reload();
+
+              },
+              error: function(data){
+                console.log("FAIL "+data);
+
+              }
+          });
+          $('#uploadFilefrm')[0].reset();
+          $('#fileUpload').modal( 'hide' );
+
+          return false;
+
+        }
+        return false;
+
     });
 
 
@@ -453,6 +553,7 @@ $(document).ready(function() {
           <th id="5A1">Proposal Link</th>
           <td id="5B1"></td>
         </tr>
+
       </table>
     </div>
 
@@ -482,17 +583,11 @@ $(document).ready(function() {
       </table>
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-      <table class="table table-striped">
-        <tr>
-          <th id="1A4">Opportunity Details</th>
-          <td id="1B4" data-type="textarea"></td>
-        </tr>
-      </table>
-    </div>
-    <div class="clearfix"></div>
+
     <div id="project" class="togglehid hidden">
-      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-        <table class="table table-striped">
+      <table class="table table-striped">
+
+
           <tr>
             <th id="1A3A">Project Type</th>
             <td id="1B3A"></td>
@@ -506,39 +601,82 @@ $(document).ready(function() {
             <td id="3B3A"></td>
           </tr>
         </table>
-      </div>
-  </div>
-  <div id="changerequest" class="togglehid hidden">
-    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-      <table class="table table-striped">
+        </div>
+      <!-- </div> -->
+      <div id="changerequest" class="togglehid hidden">
+
+        <!-- <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4"> -->
+
+          <table class="table table-striped">
+
+          <tr>
+            <th id="1A3B">ProjectX</th>
+            <td id="1B3B"></td>
+          </tr>
+        </table>
+
+        </div>
+        <div class="upld-messages"></div>
+
+        <table class="table table-striped">
         <tr>
-          <th id="1A3B">Project</th>
-          <td id="1B3B"></td>
+          <th id="6A1">Files</th>
+          <td id="href-proposal">
+          <a class="btn btn-default btn-sm"  target="_blank">
+            <span class="glyphicon glyphicon-download" aria-hidden="true">Proposal</span>
+          </a>
+        </td>
+        <td id="href-estimate">
+          <a class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-download" aria-hidden="true">Estimate</span>
+          </a>
+        </td>
+          <td id="6B1">
+            <button type="button" id="uploadBtn" class="btn btn-default btn-sm" data-dttype="upload"   data-toggle="modal" data-target="#fileUpload" aria-label="Left Align">
+              <span class="glyphicon glyphicon-upload" aria-hidden="true">Upload</span>
+            </button>
+          </td>
+
         </tr>
       </table>
-    </div>
-</div>
+      </div>
+
+
+<div class="clearfix"></div>
+
 <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
 
   <table class="table table-striped">
     <tr>
       <th id="1A2">Initial Proposed Amount</th>
-      <td id="1B2"></td>
+      <td id="1B2" class="text-right"></td>
     </tr>
     <tr>
       <th id="2A2">Current Proposed Amount</th>
-      <td id="2B2"></td>
+      <td id="2B2" class="text-right"></td>
     </tr>
     <tr>
       <th id="3A2">No Regret Amount</th>
-      <td id="3B2"></td>
+      <td id="3B2" class="text-right"></td>
     </tr>
   </table>
 </div>
 
+<div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+      <table class="table table-striped">
+        <tr>
+          <th id="1A4">Opportunity Details</th>
+          <td id="1B4" data-type="textarea"></td>
+        </tr>
+      </table>
+    </div>
+
+
+
+
 <div class="clearfix"></div>
 <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-  <div class="messages">
+  <div class="inv-messages">
   </div>
   <table id="invoices" class="table table-striped"  width="100%">
     <thead>
@@ -546,9 +684,10 @@ $(document).ready(function() {
       <th>Milestone</th>
       <th>Invoice Date</th>
       <th>Payment Date</th>
+      <th>Milestone Percent</th>
       <th>Invoice Amount</th>
       <th>
-        Action
+        Action&nbsp
         <button type="button"  class="btn btn-default pull-right" data-dttype="Add" data-dtinvid="0" data-toggle="modal" data-target="#invoicelist"  aria-label="Left Align">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
@@ -590,8 +729,12 @@ $(document).ready(function() {
             <input type="date" class="form-control" id="payment-date" name="payment-date" required>
           </div>
           <div class="form-group">
+            <label for="invoice-pcnt" class="control-label">Milestone Percentage</label>
+            <input type="number" class="form-control" id="invoice-pcnt" name="invoice-pcnt" required>
+          </div>
+          <div class="form-group">
             <label for="invoice-amount" class="control-label">Invoice Amount</label>
-            <input type="number" class="form-control" id="invoice-amount" name="invoice-amount" required>
+            <input type="number" class="form-control" id="invoice-amount" name="invoice-amount" readonly>
           </div>
           <div class="form-group">
             <input type="hidden" class="form-control" id="invoice-id" name="invoice-id" >
@@ -615,7 +758,7 @@ $(document).ready(function() {
 </div>
 
 
-<!-- Invoice Modal  -->
+<!-- File Upload Modal  -->
 <div class="modal fade" id="fileUpload" tabindex="-1" role="dialog" aria-labelledby="fileUploadLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -624,13 +767,13 @@ $(document).ready(function() {
         <h4 class="modal-title" id="fileUploadLabel">Upload Sales Files</h4>
       </div>
       <div class="modal-body">
-        <form id="invoicefrm" method="post" action="api/uploadFiles.php" role="form">
+        <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
           <div class="form-group">
-            <label for="milestone" class="control-label">Upload Proposal Document</label>
+            <label for="proposal" class="control-label">Upload Proposal Document</label>
             <input type="file" class="form-control" id="proposal" name="proposal" required>
           </div>
           <div class="form-group">
-            <label for="milestone" class="control-label">Upload Proposal Estimation</label>
+            <label for="estimate" class="control-label">Upload Proposal Estimation</label>
             <input type="file" class="form-control" id="estimate" name="estimate" required>
           </div>
           <div class="form-group">
@@ -638,7 +781,7 @@ $(document).ready(function() {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary"  form="invoicefrm">Submit</button>
+            <button type="submit" class="btn btn-primary"  form="uploadFilefrm">Submit</button>
 
           </div>
         </form>

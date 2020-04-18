@@ -1,8 +1,8 @@
 <?php
 require_once('../dbconn.php');
-// $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
-// ini_set("log_errors", TRUE);
-// ini_set('error_log', $log_file);
+$log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
+ini_set("log_errors", TRUE);
+ini_set('error_log', $log_file);
 
 $insert_arr = array();
 
@@ -12,28 +12,36 @@ foreach ($_POST as $key => $value) {
         $insert_arr[$key] = $value;
     }
 
-
 if($insert_arr["operation"] == "Add"){
-    $sql = "INSERT INTO opp_invoices (opp_id, milestone, milestone_desc, invoice_date, payment_date, invoice_amount)VALUES(";
-    $chk = "'".$insert_arr["opportunity-id"]."','".$insert_arr["milestone"]."','".$insert_arr["milestone-desc"]."','";
-    $chk .=    $insert_arr["invoice-date"]."','".$insert_arr["payment-date"]."','".$insert_arr["invoice-amount"]."')";
-    $sql .= $chk;
+    $sql = "INSERT INTO opp_invoices (
+              opp_id, milestone, milestone_desc,
+              invoice_date, payment_date, invoice_pcnt,
+              invoice_amount
+            )
+            VALUES (
+              '{$insert_arr["opportunity-id"]}','{$insert_arr["milestone"]}','{$insert_arr["milestone-desc"]}',
+              '{$insert_arr["invoice-date"]}','{$insert_arr["payment-date"]}',
+              '{$insert_arr["invoice-pcnt"]}','{$insert_arr["invoice-amount"]}')";
 }
 else if($insert_arr["operation"] == "Edit"){
-  $sql = "UPDATE opp_invoices SET ";
-  $chk = "OPP_ID = '".$insert_arr["opportunity-id"]."' , ";
-  $chk .= "milestone = '".$insert_arr["milestone"]."' , ";
-  $chk .= "milestone_desc = '".$insert_arr["milestone-desc"]."' , ";
-  $chk .= "invoice_date = '".$insert_arr["invoice-date"]."' , ";
-  $chk .= "payment_date = '".$insert_arr["payment-date"]."' , ";
-  $chk .= "invoice_amount = '".$insert_arr["invoice-amount"]."'  ";
-  $sql .= $chk." WHERE id = ".$insert_arr["invoice-id"];
+  $sql = "UPDATE opp_invoices SET
+            OPP_ID = '{$insert_arr["opportunity-id"]}',
+            milestone = '{$insert_arr["milestone"]}',
+            milestone_desc = '{$insert_arr["milestone-desc"]}',
+            invoice_date =  '{$insert_arr["invoice-date"]}',
+            payment_date = '{$insert_arr["payment-date"]}',
+            invoice_pcnt = '{$insert_arr["invoice-pcnt"]}',
+            invoice_amount = '{$insert_arr["invoice-amount"]}'
+            WHERE id = '{$insert_arr["invoice-id"]}'
+  ";
+
 }
 else if($insert_arr["operation"] == "Remove"){
-    $sql = "delete from opp_invoices where id = ".$insert_arr["invoice-id"];
+    $sql = "delete from opp_invoices where id = '{$insert_arr["invoice-id"]}'";
 }
 
 
+error_log($sql);
 
 
 $con=getConnection();

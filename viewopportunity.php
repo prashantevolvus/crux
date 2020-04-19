@@ -735,7 +735,7 @@ $(document).ready(function() {
           </div>
           <div class="form-group">
             <label for="invoice-pcnt" class="control-label">Milestone Percentage</label>
-            <input type="number" class="form-control" id="invoice-pcnt" name="invoice-pcnt" required>
+            <input type="number" class="form-control" min="1" max="100" id="invoice-pcnt" name="invoice-pcnt" required>
           </div>
           <div class="form-group">
             <label for="invoice-amount" class="control-label">Invoice Amount</label>

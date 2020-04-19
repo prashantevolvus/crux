@@ -44,6 +44,7 @@ var tableToExcel = (function () {
       "lengthMenu": [ [10, 25, 50, 100,-1], [10, 25, 50, 100,"All"] ],
       "pageLength": 50,
       "autoWidth": true,
+       "order": [],
       "orderMulti": true,
       "ajax": {
           url: "api/getOpportunityList.php",

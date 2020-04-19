@@ -1,8 +1,8 @@
 <?php
 require_once('../dbconn.php');
-$log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
-ini_set("log_errors", TRUE);
-ini_set('error_log', $log_file);
+// $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
+// ini_set("log_errors", TRUE);
+// ini_set('error_log', $log_file);
 
 $insert_arr = array();
 
@@ -41,7 +41,7 @@ else if($insert_arr["operation"] == "Remove"){
 }
 
 
-error_log($sql);
+// error_log($sql);
 
 
 $con=getConnection();

@@ -205,3 +205,12 @@
               '2020-01-21','2020-03-21',
               '10','1680000')
 [18-Apr-2020 23:15:07 Europe/Zurich] delete from opp_invoices where id = '94'
+[19-Apr-2020 09:33:18 Europe/Zurich] INSERT INTO opp_invoices (
+              opp_id, milestone, milestone_desc,
+              invoice_date, payment_date, invoice_pcnt,
+              invoice_amount
+            )
+            VALUES (
+              '66','M1','This needs to be changed',
+              '2020-08-01','2020-08-01',
+              '100','21000000')

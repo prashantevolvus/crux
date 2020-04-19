@@ -291,6 +291,11 @@ $(document).ready(function() {
       });
     }
 
+    if(data[0]['no_regret_quote'] != data[0]['invoice_amount']){
+      var alertBox = '<div class="alert alert-danger  alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Mismatch between Invoice Amount Mismatch and No Regret Amount</div>';
+      $('#opportunity-form').find('.inv-messages').html(alertBox);
+    }
+
     });
 
   invTable = $('#invoices').DataTable({

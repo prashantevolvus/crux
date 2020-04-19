@@ -3,9 +3,9 @@
   session_start();
   require_once('../dbconn.php');
 
-   $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
-   ini_set("log_errors", TRUE);
-   ini_set('error_log', $log_file);
+   // $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
+   // ini_set("log_errors", TRUE);
+   // ini_set('error_log', $log_file);
 
   $insert_arr = array();
 
@@ -13,9 +13,9 @@
   foreach ($_POST as $key => $value) {
           // If the field exists in the $fields array, include it in the email
           $insert_arr[$key] = $value;
-          error_log($key);
-
-          error_log($value);
+          // error_log($key);
+          //
+          // error_log($value);
 
       }
 

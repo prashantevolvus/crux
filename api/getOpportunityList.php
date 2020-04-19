@@ -18,7 +18,7 @@ inner join opp_sales_stage c on a.sales_stage_id = c.id
 where 1=1 "
 .(!empty($q)? " and active = 1":" ")
 .(!empty($q1)? " and sales_stage_id in (".$q1.")" : " ")
-." order by start_date desc";
+." order by c.id,current_quote desc";
 
 $result = mysqli_query($con,$sql) ;
 

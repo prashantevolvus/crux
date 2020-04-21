@@ -27,9 +27,11 @@ require_once('common.php');
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
 
 	<script type="text/javascript" src="script/crux.js"></script>
+
 	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
+	
 <script>
 $(".tt-hint").addClass("form-control");
 </script>

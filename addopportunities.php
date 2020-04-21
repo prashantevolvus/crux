@@ -24,15 +24,16 @@ $(document).ready(function() {
       fillDropDown("api/getProjectTypeList.php","#projType");
       fillDropDown("api/getProductList.php","#baseProd");
 
-  $("#customer").on("change", function(event, value){
-    console.log($('#customer').val());
+      $("#customer").on("change", function(event, value){
+        console.log($('#customer').val());
+        if($('#typeOppor-1').is(":checked")) {
+          fillDropDown("api/getProjectList.php?cust="+$('#customer').val(),"#proj");
+        }
+      });
 
-
-
-    if($('#typeOppor-1').is(":checked")) {
-      fillDropDown("api/getProjectList.php?cust="+$('#customer').val(),"#proj");
-    }
-  });
+      $(".datepicker").datepicker({
+          autoclose: true
+      });
 
 
     	$('input[name="typeOppor"]').click(function() {
@@ -218,11 +219,11 @@ $(document).ready(function() {
    <div class="clearfix"></div>
      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
        <label for="startDate">Start Date</label>
-       <input type="date" data-provide="datepicker" class="form-control" id="startDate" name="startDate" placeholder="Enter State Date (YYYY-MM-DD)" required>
+       <input type="text" data-provide="datepicker" data-date-orientation="right" data-date-format="yyyy-mm-dd" class="form-control datepicker" id="startDate" name="startDate" placeholder="Enter State Date (YYYY-MM-DD)" required>
      </div>
      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
        <label for="closureDate">Expected Closure Date</label>
-       <input type="date" class="form-control" id="closureDate" name="closureDate" placeholder="Enter Expected Closure Date (YYYY-MM-DD)" required>
+       <input type="text" data-provide="datepicker" data-date-format="yyyy-mm-dd" class="form-control datepicker" id="closureDate" name="closureDate" placeholder="Enter Expected Closure Date (YYYY-MM-DD)" required>
      </div>
 
       <div class="clearfix"></div>

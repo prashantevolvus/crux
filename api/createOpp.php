@@ -6,16 +6,10 @@ $okMessage = 'Opportunity successfully submitted.';
 
 $insert_arr = array();
 
-
 foreach ($_POST as $key => $value) {
-        // If the field exists in the $fields array, include it in the email
-        $insert_arr[$key] = $value;
-    }
-
-
-
-
-
+    // If the field exists in the $fields array, include it in the email
+    $insert_arr[$key] = $value;
+}
 
 $con=getConnection();
   $sql='
@@ -43,7 +37,7 @@ $insert_arr["propPath"]."',1)";
 $sql .= $chk;
 
 
-$result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+$result = mysqli_query($con, $sql) or debug($sql."   failed  <br/><br/>");
 
 $newid=0;
 $newid = mysqli_insert_id($con);
@@ -62,4 +56,3 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 else {
     echo $responseArray['message'];
 }
-?>

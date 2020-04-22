@@ -7,7 +7,8 @@
   select id,
   milestone, invoice_date, payment_date,ifnull(invoice_pcnt,0) invoice_pcnt,invoice_amount,milestone_desc
    from opp_invoices a
-  where 1=1 ";
+  where 
+  1=1 ";
 
   $sql .= (!empty($_GET["oppid"])  ? "and a.opp_id = ".$_GET["oppid"] : "");
   $sql .= (!empty($_GET["invid"])  ? "and a.id = ".$_GET["invid"] : "");
@@ -22,17 +23,9 @@
   $final_arr=array();
   while($row = mysqli_fetch_array($result))
   {
-     $enc_arr['milestone'] = $row['milestone'];
-     $enc_arr['invoice_date'] = $row['invoice_date'];
-     $enc_arr['payment_date'] = $row['payment_date'];
-     $enc_arr['invoice_amount'] = $row['invoice_amount'];
-     $enc_arr['invoice_pcnt'] = $row['invoice_pcnt'];
-     $enc_arr['id'] = $row['id'];
-     $enc_arr['milestone_desc'] = $row['milestone_desc'];
 
-
+     $enc_arr = $row;
      $return_arr[]=$enc_arr;
-
 
   }
   $final_arr['data']=$return_arr;

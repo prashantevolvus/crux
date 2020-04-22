@@ -6,8 +6,6 @@ function fillDropDown(url,control,keepFirst=false) {
       keepFirst ? $(control).children('option:not(:first)').remove() : $(control).find('option').remove();
       $.each(data, function (index, value) {
           // APPEND OR INSERT DATA TO SELECT ELEMENT.
-          console.log(value.value);
-          console.log(value.text);
           $(control).append('<option value="' + value.value + '">' + value.text + '</option>');
       });
   });

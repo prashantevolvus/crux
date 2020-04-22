@@ -30,14 +30,14 @@ require_once('bodystart.php');
       document.getElementById("dlink").click();
 
     }
-  })()
+  })();
 
   var table;
-  var active;
-  var stage;
+  var delStatus;
+  var region;
   $(document).ready(function() {
     //refreshTable();
-    fillDropDown("api/getSalesStage.php", "#salesStage", true);
+    fillDropDown("api/getRegionList.php", "#region", true);
   });
 
   $(document).ready(function() {
@@ -47,7 +47,7 @@ require_once('bodystart.php');
   });
 
   $(document).ready(function() {
-    table = $('#opportunity').DataTable({
+    table = $('#customer').DataTable({
       "pagingType": "full_numbers",
       "lengthMenu": [
         [10, 25, 50, 100, -1],
@@ -58,38 +58,30 @@ require_once('bodystart.php');
       "order": [],
       "orderMulti": true,
       "ajax": {
-        url: "api/getOpportunityList.php",
+        url: "api/getCustomerDetList.php",
         data: function(d) {
-          d.active = active;
-          d.salesstage = stage;
+          // console.log("delstatus - "+delStatus);
+          d.delStatus = delStatus;
+          d.region = region;
         }
       },
       "columns": [{
           "data": "name"
         },
         {
-          "data": "opp_name"
+          "data": "description"
         },
         {
-          "data": "current_quote"
+          "data": "region_name"
         },
         {
-          "data": "no_regret_quote"
+          "data": "active"
         },
         {
-          "data": "start_date"
-        },
-        {
-          "data": "expected_close_date"
-        },
-        {
-          "data": "sales_stage"
-        },
-        {
-          "data": "id",
+          "data": "customer_id",
           "render": function(data, type, row, meta) {
             if (type === 'display') {
-              data = '<a href="viewopportunity.php?oppid=' + data + '">View</a>';
+              data = '<a href="viewcustomer.php?custid=' + data + '">View</a>';
             }
             return data;
           }
@@ -104,20 +96,20 @@ require_once('bodystart.php');
 
 
   function refreshTable() {
-    var checkBox = document.getElementById("oppCheck");
+    var checkBox = document.getElementById("actCheck");
     if (checkBox.checked == true) {
-      active = 1;
+      delStatus = "A";
     } else {
-      active = '';
+      delStatus = "";
     }
     var stat = "";
-    $('#salesStage :selected').each(function(i, sel) {
+    $('#region :selected').each(function(i, sel) {
       stat = "" + $(sel).val() + " " + stat;
 
     });
-    stage = stat.search("0") != -1 ? "" : stat.trim().replace(/ /g, ',');
-    console.log("param 1 - " + stage);
-    console.log("param 0 - " + active);
+    region = stat.search("0") != -1 ? "" : stat.trim().replace(/ /g, ',');
+    // console.log("param 1 - " + region);
+    // console.log("param 0 - " + delStatus);
 
     table.ajax.reload();
 
@@ -140,26 +132,26 @@ require_once('bodystart.php');
   });
 </script>
 
-<legend>Sales Opportunities Information</legend>
+<legend>Customer Information</legend>
 
 <div class="row">
   <form id="opportunity-search">
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <label class="control-label" for="status">Status</label>
-      <select id="salesStage" name="salesStage" class="form-control" multiple="multiple">
+      <select id="region" name="region" class="form-control" multiple="multiple">
         <option value="0">All</option>
       </select>
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <label for="Active-0">
-        <input type="checkbox" name="Active" id="oppCheck" value="1">
+        <input type="checkbox" name="Active" id="actCheck" value="1">
         Active
       </label>
     </div>
     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-      <a href="addopportunities.php" class="btn btn-primary btn-lg float-right" type="button">
+      <a href="addcustomer.php" class="btn btn-primary btn-lg float-right" type="button">
         <span class="glyphicon glyphicon-plus"></span>
-        Add Opportunities
+        Add Customer
       </a>
     </div>
     <div class="clearfix"></div>
@@ -184,20 +176,18 @@ require_once('bodystart.php');
     <img id="loader" src="images/spinner.gif" style="display:none;" />
   </div>
   <div id="tableholder">
-    <input type="button" class="btn btn-default" onclick="tableToExcel('opportunity', 'Crux Report', 'cruxReport.xls')" value="Export to MS Excel">
+    <input type="button" class="btn btn-default" onclick="tableToExcel('customer', 'Crux Report', 'cruxReport.xls')" value="Export to MS Excel">
     <a id="dlink" style="display:none;"></a>
     <div class="clearfix"></div><br>
-    <table id="opportunity" class="table table-striped" width="100%">
+    <table id="customer" class="table table-striped" width="100%">
       <thead>
         <tr>
           <th>Customer Name</th>
-          <th>Opportunity Name</th>
-          <th>Current Quote</th>
-          <th>No Regret Quote</th>
-          <th>Start Date</th>
-          <th>Expected Close Date</th>
-          <th>Sales Stage</th>
-          <th>Operations</th>
+          <th>Customer Description</th>
+          <th>Region</th>
+          <th>Status</th>
+          <th>Operation</th>
+
         </tr>
       </thead>
     </table>

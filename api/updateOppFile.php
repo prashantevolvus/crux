@@ -25,21 +25,22 @@
   $con=getConnection();
 
 
-  $sql="select estimation_sheet , proposal_doc from  opp_details where id = {$oppid}";
-  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
-  list($estimation, $proposal) = mysqli_fetch_array($result);
-
-  if(!empty($estimation) && !empty($proposal)){
-    $sql="update file_data set is_deleted = 1 where id in( {$estimation}, {$proposal})";
-    $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
-  }
-
 
 
 
 
   if (count($_FILES) > 0) {
       if (is_uploaded_file($_FILES['proposal']['tmp_name'])) {
+
+          $sql="select   proposal_doc from  opp_details where id = {$oppid}";
+          $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+          list($proposal) = mysqli_fetch_array($result);
+
+          if(!empty($proposal)){
+            $sql="update file_data set is_deleted = 1 where id = {$proposal}";
+            $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+          }
+
           $fileData = addslashes(file_get_contents($_FILES['proposal']['tmp_name']));
           $filesize = $_FILES['proposal']['size'];
           $filename = $_FILES['proposal']['name'];
@@ -64,6 +65,16 @@
 
 
         if (is_uploaded_file($_FILES['estimate']['tmp_name'])) {
+
+            $sql="select   estimation_sheet from  opp_details where id = {$oppid}";
+            $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+            list($estimate) = mysqli_fetch_array($result);
+
+            if(!empty($estimate)){
+              $sql="update file_data set is_deleted = 1 where id = {$estimate}";
+              $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+            }
+            
             $fileData = addslashes(file_get_contents($_FILES['estimate']['tmp_name']));
             $filesize = $_FILES['estimate']['size'];
             $filename = $_FILES['estimate']['name'];

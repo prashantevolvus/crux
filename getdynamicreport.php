@@ -104,7 +104,7 @@ var tableToExcel = (function () {
 $con=getConnection();
 
 
-$result = mysqli_query($con,$sql) or debug($sql."<br/><br/>".mysql_error());
+$result = mysqli_query($con,$sql) or debug($sql."<br/><br/>".mysqli_error($con));
 echo "<div class='table-responsive'>";
 
 echo "<table class='table table-bordered' id='".$reportid."' >";
@@ -153,16 +153,21 @@ while($row = mysqli_fetch_array($result))
 				$qstr .= "&f4_id=".($gets[3] ?? '');
 				$qstr .= "&f5_id=".($gets[4] ?? '');
 				$ref = "dynamicdrilldown.php?qry_id=".$col[$i][2].$qstr;
- 				setlocale(LC_MONETARY, 'en_US');
-				$amt=money_format('%!.0n', $data[0]);
+
+				$fmt = new \NumberFormatter("en-US", \NumberFormatter::CURRENCY);
+				$amt = $fmt->formatCurrency($data[0],'');
+ 				// setlocale(LC_MONETARY, 'en_US');
+				// $amt=money_format('%!.0n', $data[0]);
 				echo "<td align='right'>";
 				echo "<a href='".$ref."'>";
 				echo $amt."</a></td>";
 			}
 			else
 			{
-				setlocale(LC_MONETARY, 'en_US');
-				$amt=money_format('%!.0n', $row[$i]);//
+				$fmt = new \NumberFormatter("en-US", \NumberFormatter::CURRENCY);
+				$amt = $fmt->formatCurrency($row[$i],'');
+				//setlocale(LC_MONETARY, 'en_US');
+				//$amt=money_format('%!.0n', $row[$i]);//
 			 	echo "<td align='right'>".$amt."</td>";
 			}
 		}

@@ -8,6 +8,8 @@ $okMessage = 'Opportunity successfully Edited';
 
 $fld = $_POST['name'];
 $val = $_POST['value'];
+$originalVal = $_POST['originalValue'];
+
 $oppid = $_POST['pk'];
 
 // $fld = '2B1';
@@ -36,6 +38,50 @@ $sql .= $arr[$fld]." = '".$val."' where id = ".$oppid;
 $con=getConnection();
 
 $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+
+//IF THE SALES STAGE IS CHANGED THEN WE MUST CHANGE THE ACTIVE STATE AS WELL
+if($arr[$fld] == "sales_stage_id") {
+  $sql = "select active_stage from opp_sales_stage where id = {$val}";
+  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+  list($active) = mysqli_fetch_array($result);
+
+  $sql = "update opp_details set active = {$active} where id = {$oppid}";
+  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+
+  $responseArray = array('active' => $active);
+
+  $encoded = json_encode($responseArray);
+  header('Content-Type: application/json');
+  echo $encoded;
+
+}
+
+//IF THE NO REGRET AMOUNT IS CHANGED THEN WE MUST CHANGE THE MILESTONE AMOUNT AS WELL
+if($arr[$fld] == "no_regret_quote") {
+  $sql = "update opp_invoices set invoice_amount=invoice_pcnt*{$val}/100 where opp_id = {$oppid}";
+  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+
+  $responseArray = array('update' => 'success');
+  $encoded = json_encode($responseArray);
+  header('Content-Type: application/json');
+  echo $encoded;
+
+}
+
+
+//IF THE EXPECTED CLOSE DATE  IS CHANGED THEN WE MUST CHANGE THE MILESTONE DATE AS WELL
+if($arr[$fld] == "expected_close_date") {
+  $diff = round((strtotime($val) - strtotime($originalVal))/86400);
+
+  $sql = "update opp_invoices set
+      invoice_date = DATE_ADD(invoice_date, INTERVAL {$diff} DAY),
+      payment_date = DATE_ADD(payment_date, INTERVAL {$diff} DAY)
+   where opp_id = {$oppid}";
+  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+
+  
+
+}
 
 
 ?>

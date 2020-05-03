@@ -33,7 +33,7 @@ require_once('bodystart.php');
   })();
 
   var table;
-  var delStatus;
+  var delStatus = "A";
   var region;
   $(document).ready(function() {
     //refreshTable();
@@ -144,7 +144,7 @@ require_once('bodystart.php');
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <label for="Active-0">
-        <input type="checkbox" name="Active" id="actCheck" value="1">
+        <input type="checkbox" name="Active" id="actCheck" value="1" checked>
         Active
       </label>
     </div>

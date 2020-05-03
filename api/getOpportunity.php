@@ -12,7 +12,7 @@ opp_name	,b.name	customer_name, a.customer_id , opp_det	,
     sales_stage, sales_stage_id,social_stage , social_stage_id	,
     project_type, 	f.project_type_id , product_name	, a.base_product_id , project_name	, a.project_id ,
     change_request	,new_business	,
-    proposal_set_path	, active , invoice_amount,proposal_doc,estimation_sheet
+    proposal_set_path	, a.active , invoice_amount,o1.file_name proposal_doc,o2.file_name  estimation_sheet
  from opp_details a
 inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id
 inner join opp_sales_stage c on a.sales_stage_id = c.id
@@ -22,6 +22,8 @@ left join project_type f on f.project_type_id = a.project_type_id
 left join products g on g.id = a.base_product_id
 left join project_details h on h.id = a.project_id
 LEFT JOIN (SELECT OPP_ID,SUM(INVOICE_AMOUNT) INVOICE_AMOUNT FROM opp_invoices GROUP BY OPP_ID) j on j.opp_id = a.id
+left join file_data o1 on o1.id = proposal_doc
+left join file_data o2 on o2.id = estimation_sheet
 where 1=1 ".(!empty($_GET["oppid"])  ? "and a.id = ".$_GET["oppid"] : "and a.id = 1");
 
 

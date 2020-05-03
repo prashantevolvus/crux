@@ -22,7 +22,7 @@ from opp_details a
 inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id
 inner join opp_sales_stage c on a.sales_stage_id = c.id
 where 1=1 "
-.(!empty($q)? " and active = 1":" ")
+.(!empty($q)? " and a.active = 1":" ")
 .(!empty($q1)? " and sales_stage_id in (".$q1.")" : " ")
 ." order by start_date desc";
 

@@ -11,12 +11,14 @@ $q1= isset($_GET["salesstage"]) ? $_GET["salesstage"] : '';
 
 $con=getConnection();
 $sql =
-"select a.id, opp_name, b.name,current_quote,no_regret_quote,start_date,expected_close_date,sales_stage
+"select a.id, opp_name, b.name,current_quote,no_regret_quote,start_date,expected_close_date,
+sales_stage, concat(emp_firstname,' ',emp_middle_name,' ',emp_lastname) opp_owner
 from opp_details a
 inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id
+inner join hr_mysql_live.hs_hr_employee e on a.assigned_to = e.emp_number
 inner join opp_sales_stage c on a.sales_stage_id = c.id
 where 1=1 "
-.(!empty($q)? " and active = 1":" ")
+.(!empty($q)? " and a.active = 1":" ")
 .(!empty($q1)? " and sales_stage_id in (".$q1.")" : " ")
 ." order by c.id,current_quote desc";
 
@@ -45,6 +47,8 @@ while($row = mysqli_fetch_array($result))
    $sortDate = strtotime($row['expected_close_date']);
    $dt = date("d-M-Y", strtotime($row['expected_close_date']));
    $enc_arr['expected_close_date'] = $dt;
+   $enc_arr['opp_owner'] = $row['opp_owner'];
+
 
    $enc_arr['sales_stage'] = $row['sales_stage'];
    $enc_arr['id'] = $row['id'];

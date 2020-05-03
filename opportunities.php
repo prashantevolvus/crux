@@ -83,6 +83,9 @@ require_once('bodystart.php');
           "data": "expected_close_date"
         },
         {
+          "data": "opp_owner"
+        },
+        {
           "data": "sales_stage"
         },
         {
@@ -196,6 +199,7 @@ require_once('bodystart.php');
           <th>No Regret Quote</th>
           <th>Start Date</th>
           <th>Expected Close Date</th>
+          <th>Owner</th>
           <th>Sales Stage</th>
           <th>Operations</th>
         </tr>

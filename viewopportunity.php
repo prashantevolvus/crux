@@ -6,8 +6,6 @@ require_once('bodystart.php');
 ?>
 
 <script type="text/javascript">
-
-
   $(document).ready(function() {
 
     var url = new URL(document.URL);
@@ -161,6 +159,10 @@ require_once('bodystart.php');
         display: function(value) {
           $(this).text(amtFormat(value));
           gAmtForPcnt = value;
+        },
+        success: function(response, newValue) {
+          //GET THE ACTIVE STATE FROM RESPONSE AND SET IT TO ACTIVE CONTROL
+          invTable.ajax.reload();
         }
       });
 
@@ -172,7 +174,12 @@ require_once('bodystart.php');
         pk: gOppId,
         value: data[0]['sales_stage_id'],
         title: "Enter Sales Stage",
-        source: 'api/getSalesStage.php'
+        source: 'api/getSalesStage.php',
+        success: function(response, newValue) {
+          //GET THE ACTIVE STATE FROM RESPONSE AND SET IT TO ACTIVE CONTROL
+          $('#4B1').editable('setValue', response.active);
+
+        }
       });
 
       //Social Stage
@@ -228,18 +235,32 @@ require_once('bodystart.php');
           if ($.trim(value) == '') {
             return 'This field is required';
           }
+        },
+        params: function(params) {
+          // Add originalValue to existing params
+          params.originalValue = $(this).text();
+
+          return params;
+        },
+        success: function(response, newValue) {
+          //GET THE ACTIVE STATE FROM RESPONSE AND SET IT TO ACTIVE CONTROL
+          console.log(response);
+          invTable.ajax.reload();
         }
       });
 
-      if(!data[0]['proposal_doc']){
+      if (!data[0]['proposal_doc']) {
         console.log("proposal_doc");
         $("#href-proposal").hide();
+      } else {
+        $("#6B1").text(data[0]['proposal_doc']);
       }
 
-      console.log("bbbb "+ data[0]['estimation_sheet'] );
-      if(!data[0]['estimation_sheet']){
-        console.log("estimation");
+      if (!data[0]['estimation_sheet']) {
         $("#href-estimate").hide();
+      } else {
+        console.log(data[0]['estimation_sheet']);
+        $("#6B2").text(data[0]['estimation_sheet']);
       }
 
 
@@ -480,9 +501,14 @@ require_once('bodystart.php');
     });
 
     $('#fileUpload').on('submit', '#uploadFilefrm', function(e) {
-      console.log('fileUpload-submit');
-
-      //$('#invoicefrm').submit(function() {
+      var fileProp = $(".modal-body #proposal").val();
+      var fileEst = $(".modal-body #estimate").val();
+      if (!fileProp && !fileEst) {
+        alert("Upload atleast one file");
+        return false;
+      }
+      var fileProp = $(".modal-body #proposal").val();
+      var fileEst = $(".modal-body #estimate").val();
       if (!e.isDefaultPrevented()) {
 
         var url = "api/updateOppFile.php";
@@ -495,18 +521,26 @@ require_once('bodystart.php');
           processData: false,
           contentType: false,
           success: function(data) {
-            console.log("SUCCESS " + data);
             var alertBox = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + 'Files Uploaded' + '</div>';
-            console.log(alertBox);
 
             $('#opportunity-form').find('.upld-messages').html(alertBox);
             $(".alert-dismissable").fadeTo(2000, 500).slideUp(500, function() {
               $(".alert-dismissable").alert('close');
             });
-            invTable.ajax.reload();
-            $("#href-proposal").show();
-            $("#href-estimate").show();
+            console.log("FILA " + fileProp);
 
+            if (fileProp) {
+              $("#href-proposal").show();
+              $("#6B1").contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
+
+              $("#6B1").text(fileProp.replace(/^.*[\\\/]/, ''));
+            }
+            if (fileEst) {
+              $("#href-estimate").show();
+              $("#6B2").contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
+
+              $("#6B2").text(fileEst.replace(/^.*[\\\/]/, ''));
+            }
 
 
           },
@@ -628,18 +662,26 @@ require_once('bodystart.php');
 
   <table class="table table-striped">
     <tr>
-      <th id="6A1">Files</th>
+      <th id="6A1">Proposal Document</th>
+      <td id="6B1"></td>
       <td id="href-proposal">
         <a class="btn btn-default btn-sm" target="_blank">
-          <span class="glyphicon glyphicon-download" aria-hidden="true">Proposal</span>
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
         </a>
       </td>
+    </tr>
+    <tr>
+      <th id="6A2">Estimation Sheet</th>
+      <td id="6B2"></td>
       <td id="href-estimate">
-        <a class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon-download" aria-hidden="true">Estimate</span>
+        <a class="btn btn-default btn-sm" target="_blank">
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
         </a>
       </td>
-      <td id="6B1">
+
+    </tr>
+    <tr>
+      <td id="6A3">
         <button type="button" id="uploadBtn" class="btn btn-default btn-sm" data-dttype="upload" data-toggle="modal" data-target="#fileUpload" aria-label="Left Align">
           <span class="glyphicon glyphicon-upload" aria-hidden="true">Upload</span>
         </button>
@@ -778,11 +820,11 @@ require_once('bodystart.php');
         <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
           <div class="form-group">
             <label for="proposal" class="control-label">Upload Proposal Document</label>
-            <input type="file" class="form-control" id="proposal" name="proposal" required>
+            <input type="file" class="form-control" id="proposal" name="proposal">
           </div>
           <div class="form-group">
             <label for="estimate" class="control-label">Upload Proposal Estimation</label>
-            <input type="file" class="form-control" id="estimate" name="estimate" required>
+            <input type="file" class="form-control" id="estimate" name="estimate">
           </div>
           <div class="form-group">
             <input type="hidden" class="form-control" id="opportunity-id" name="opportunity-id">

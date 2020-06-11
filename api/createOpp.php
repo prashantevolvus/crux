@@ -1,4 +1,6 @@
 <?php
+session_name("Project");
+session_start();
 require_once('../dbconn.php');
 
 $errorMessage = 'There was an error while adding the opportunity. Please try again.';
@@ -20,7 +22,7 @@ $con=getConnection();
     Assigned_to	,sales_stage_id	,social_stage_id	,
     project_type_id	,base_product_id	,project_id	,
     change_request	,new_business	,
-    proposal_set_path	, active
+    proposal_set_path	, active , created_by
     )
     values (';
 
@@ -33,7 +35,7 @@ $insert_arr["assigned"] .",". $insert_arr["salesStage"].",". $insert_arr["social
 (isset($insert_arr["baseProd"]) ? $insert_arr["baseProd"] : "null") .",".
 (isset($insert_arr["proj"])     ? $insert_arr["proj"]     : "null") .",".
 ($insert_arr["typeOppor"] == 1? 0 : 1).",". ($insert_arr["newExisting"] == 1? 1 : 0).",'".
-$insert_arr["propPath"]."',1)";
+$insert_arr["propPath"]."',1,".$_SESSION["userempno"].")";
 $sql .= $chk;
 
 

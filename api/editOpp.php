@@ -1,6 +1,10 @@
 <?php
+session_name("Project");
+session_start();
 require_once('../dbconn.php');
-
+// $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
+// ini_set("log_errors", TRUE);
+// ini_set('error_log', $log_file);
 
 
 $errorMessage = 'There was an error while editing the opportunity. Please try again.';
@@ -28,10 +32,12 @@ $arr = array("2B1"=>"opp_name", "1B4"=>"opp_det",
 
           );
 
-$sql = "update opp_details set ";
-$sql .= $arr[$fld]." = '".$val."' where id = ".$oppid;
 
-// error_log($sql);
+
+
+$sql = "update opp_details set ";
+$sql .= $arr[$fld]." = '".$val."' , modified_on = CURRENT_TIMESTAMP , modified_by = ".$_SESSION["userempno"]." where id = ".$oppid;
+
 
 
 
@@ -79,7 +85,7 @@ if($arr[$fld] == "expected_close_date") {
    where opp_id = {$oppid}";
   $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
 
-  
+
 
 }
 

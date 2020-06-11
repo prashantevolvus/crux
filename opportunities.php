@@ -118,7 +118,7 @@ require_once('bodystart.php');
       stat = "" + $(sel).val() + " " + stat;
 
     });
-    stage = stat.search("0") != -1 ? "" : stat.trim().replace(/ /g, ',');
+    stage = stat.search("999") != -1 ? "" : stat.trim().replace(/ /g, ',');
     console.log("param 1 - " + stage);
     console.log("param 0 - " + active);
 
@@ -150,7 +150,7 @@ require_once('bodystart.php');
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <label class="control-label" for="status">Status</label>
       <select id="salesStage" name="salesStage" class="form-control" multiple="multiple">
-        <option value="0">All</option>
+        <option value="999">All</option>
       </select>
     </div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">

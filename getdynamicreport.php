@@ -127,8 +127,9 @@ while($row = mysqli_fetch_array($result))
 		if($col[$i][1]=="amount")
 		{
 			setlocale(LC_MONETARY, 'en_US');
-			//$amt=money_format('%!.0n', $row[$i]);
-			$amt=number_format($row[$i],0);
+			//$amt = $row[$i];
+			$amt=money_format('%!.0n', $row[$i]);
+			//$amt=number_format($row[$i],0);
 			echo "<td align='right'>".$amt."</td>";
 		}
 		if($col[$i][1]=="project_ref")
@@ -164,10 +165,10 @@ while($row = mysqli_fetch_array($result))
 			}
 			else
 			{
-				$fmt = new \NumberFormatter("en-US", \NumberFormatter::CURRENCY);
-				$amt = $fmt->formatCurrency($row[$i],'');
-				//setlocale(LC_MONETARY, 'en_US');
-				//$amt=money_format('%!.0n', $row[$i]);//
+				//$fmt = new \NumberFormatter("en-US", \NumberFormatter::CURRENCY);
+				//$amt = $fmt->formatCurrency($row[$i],'');
+				setlocale(LC_MONETARY, 'en_US');
+				$amt=money_format('%!.0n', $row[$i]);//
 			 	echo "<td align='right'>".$amt."</td>";
 			}
 		}

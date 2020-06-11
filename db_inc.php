@@ -8,10 +8,10 @@ if(!checkUserSession($_SESSION["user"]))
 }
 */
 /*Database settings*/
-$db_host="evolvus.com";
+$db_host="localhost";
 $db_port="3306";
-$db_user="orangehrm";
-$db_password="orangehrm*code@098";
+$db_user="root";
+$db_password="evolvus*123";
 $db_orangehrm="hr_mysql_live";
 $db_proj="project_management";
 
@@ -24,6 +24,9 @@ $ldap_port   = 389;
 
 /* GENERAL SETTINGS*/
 $debugger="yes";
+
+error_reporting(0);
+
 
 
 /* SMTP SETTINGS*/

@@ -19,7 +19,7 @@ inner join hr_mysql_live.hs_hr_employee e on a.assigned_to = e.emp_number
 inner join opp_sales_stage c on a.sales_stage_id = c.id
 where 1=1 "
 .(!empty($q)? " and a.active = 1":" ")
-.(!empty($q1)? " and sales_stage_id in (".$q1.")" : " ")
+.(is_numeric($q1)? " and sales_stage_id in (".$q1.")" : " ")
 ." order by c.id,current_quote desc";
 
 $result = mysqli_query($con,$sql) ;

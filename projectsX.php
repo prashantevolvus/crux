@@ -21,8 +21,6 @@ var supList = new Bloodhound({
 //Autocomplete for Project Search
 $(document).ready(function() {
 
-
-
   $("#proj-info").hide();
 
   $('#1B1').editable({
@@ -336,14 +334,6 @@ $(document).ready(function() {
 				//alert( "http://www.evolvus.com/project/viewprojdetails.php?proj_id="+datum.projid);
 				//window.location  = "viewprojdetails.php?proj_id="+datum.projid;
 	});
-
-  var url = new URL(document.URL);
-  var search_params = url.searchParams;
-
-  var projid = search_params.get('projid');
-  if(projid)
-    populateForm(projid);
-
 })
 
 
@@ -415,9 +405,6 @@ function populateForm(projid){
 
     $('#G2B2').editable('setValue',data[0]['success_factor']);
     $('#G2B2').editable('option', 'pk', projid);
-
-    var lnk = 'viewprojdetails.php?proj_id=' + projid
-    $('#G3B1').html('<a href="'+lnk+'">Click Here</a>');
 
     totalRevenue =
       parseFloat(data[0]['invoice_pending_lcy_amt']) +
@@ -870,10 +857,6 @@ function populateForm(projid){
           <tr>
             <th id="G2A1">Objectives</th>
             <td id="G2B1"></td>
-          </tr>
-          <tr>
-            <th id="G3A1"> More Details</th>
-            <td id="G3B1"></td>
           </tr>
         </table>
       </div>

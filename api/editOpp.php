@@ -2,9 +2,9 @@
 session_name("Project");
 session_start();
 require_once('../dbconn.php');
-// $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
-// ini_set("log_errors", TRUE);
-// ini_set('error_log', $log_file);
+ // $log_file = "/Users/prashantm/development/GitHub/crux/my-errors.log";
+ // ini_set("log_errors", TRUE);
+ // ini_set('error_log', $log_file);
 
 
 $errorMessage = 'There was an error while editing the opportunity. Please try again.';
@@ -21,7 +21,7 @@ $oppid = $_POST['pk'];
 // $oppid =12;
 //Array mapping of UI field to database field
 $arr = array("2B1"=>"opp_name", "1B4"=>"opp_det",
-             "4B1"=>"active", "3B1"=>"customer_id",
+             "4B1"=>"active", "44B1"=>"watch", "3B1"=>"customer_id",
              "5B1"=>"proposal_set_path", "1B2"=>"initial_quote",
              "2B2"=>"current_quote", "3B2"=>"no_regret_quote",
              "1B5"=>"sales_stage_id", "2B5"=>"social_stage_id",
@@ -40,21 +40,30 @@ $sql .= $arr[$fld]." = '".$val."' , modified_on = CURRENT_TIMESTAMP , modified_b
 
 
 
-
 $con=getConnection();
 
 $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
 
 //IF THE SALES STAGE IS CHANGED THEN WE MUST CHANGE THE ACTIVE STATE AS WELL
 if($arr[$fld] == "sales_stage_id") {
-  $sql = "select active_stage from opp_sales_stage where id = {$val}";
-  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
-  list($active) = mysqli_fetch_array($result);
 
-  $sql = "update opp_details set active = {$active} where id = {$oppid}";
+
+  $sql = "select active_stage , watch from opp_sales_stage a
+   inner join opp_details b on a.id = b.sales_stage_id and b.id = {$oppid}
+  where a.id = {$val}";
+
+
+  $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
+  list($active, $watch) = mysqli_fetch_array($result);
+
+  if(!$active)
+    $watch = $active;
+
+  $sql = "update opp_details set active = {$active} , watch = {$watch} where id = {$oppid}";
+
   $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
 
-  $responseArray = array('active' => $active);
+  $responseArray = array('active' => $active,'watch' => $watch);
 
   $encoded = json_encode($responseArray);
   header('Content-Type: application/json');

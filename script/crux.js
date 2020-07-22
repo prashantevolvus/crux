@@ -17,6 +17,12 @@ function emptyDropDown(control) {
 
 
 function amtFormat (num){
+
+
+   sign = parseFloat(num)<0?"-":"";
+
+   num = Math.abs(parseFloat(num));
+
     var str = num.toString().replace("$", ""), parts = false, output = [], i = 1, formatted = null;
     if(str.indexOf(".") > 0) {
         parts = str.split(".");
@@ -33,5 +39,6 @@ function amtFormat (num){
         }
     }
     formatted = output.reverse().join("");
-    return(formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
+
+    return (sign + formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
 }

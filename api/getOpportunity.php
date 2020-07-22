@@ -11,7 +11,7 @@ opp_name	,b.name	customer_name, a.customer_id , opp_det	,
     concat(emp_firstname,' ',emp_middle_name,' ',emp_lastname) emp_name	, assigned_to,
     sales_stage, sales_stage_id,social_stage , social_stage_id	,
     project_type, 	f.project_type_id , product_name	, a.base_product_id , project_name	, a.project_id ,
-    change_request	,new_business	,
+    change_request	,new_business	,watch,
     proposal_set_path	, a.active , invoice_amount,o1.file_name proposal_doc,o2.file_name  estimation_sheet
  from opp_details a
 inner join hr_mysql_live.ohrm_customer b on a.customer_id = b.customer_id

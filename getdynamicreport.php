@@ -137,6 +137,11 @@ while($row = mysqli_fetch_array($result))
 			//echo $row[$col[$i][3]];
 			echo "<td><a href='".$col[$i][2]."?proj_id=".$row[$col[$i][3]]."'>".$row[$i]."</a></td>";
 		}
+		if($col[$i][1]=="href")
+		{
+			//echo $row[$col[$i][3]];
+			echo "<td><a href='".$col[$i][2]."=".$row[$col[$i][3]]."'>".$row[$i]."</a></td>";
+		}
 		if($col[$i][1]=="date")
 		{
 			$dt = date("d-M-Y", strtotime($row[$i]));

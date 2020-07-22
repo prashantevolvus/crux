@@ -8,20 +8,20 @@ $ldap['pass']=$_POST['mypassword'];
 $ldap['host']   = $ldap_host;
 $ldap['suffix'] = $ldap_suffix;
 
-$ldap['port']   = $ldap_port;
-$redir = isset($_POST['red1']) ? $_POST['red1'] :'';
-$ldap['conn'] = ldap_connect( $ldap['host'], $ldap['port'] )or debug("Could not conenct to {$ldap['host']}");
-$ldap['bind'] = ldap_bind($ldap['conn'], $ldap['user'].$ldap['suffix'], $ldap['pass']);
+// $ldap['port']   = $ldap_port;
+// $redir = isset($_POST['red1']) ? $_POST['red1'] :'';
+// $ldap['conn'] = ldap_connect( $ldap['host'], $ldap['port'] )or debug("Could not conenct to {$ldap['host']}");
+// $ldap['bind'] = ldap_bind($ldap['conn'], $ldap['user'].$ldap['suffix'], $ldap['pass']);
 
-if( !$ldap['bind'] )
-{
-	echo "Wrong Username or Password";
-        header("location:login.php?fail=yes");
-}
-else
-{
+// if( !$ldap['bind'] )
+// {
+// 	echo "Wrong Username or Password";
+//         header("location:login.php?fail=yes");
+// }
+// else
+// {
 	$_SESSION["user"]=$ldap['user'];
-	$_SESSION["pass"]=$ldap['pass'];
+	//$_SESSION["pass"]=$ldap['pass'];
 require 'dbconn.php';
 
 $orcon=getOrangeConnection();
@@ -45,7 +45,7 @@ $row = mysqli_fetch_array($result);
 
         header("location:".$url);
 
-}
+//}
 
 
 

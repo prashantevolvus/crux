@@ -80,6 +80,15 @@ require_once('bodystart.php');
         source: '[{"value":"1","text":"ACTIVE"},{"value":"0","text":"INACTIVE"}]'
       });
 
+      $('#44B1').editable({
+        type: 'select',
+        sourceCache: false,
+        pk: gOppId,
+        value: data[0]['watch'],
+        title: "Watch Opportunity?",
+        source: '[{"value":"1","text":"WATCH"},{"value":"0","text":"UNWATCH"}]'
+      });
+
       //Proposal URL
       $('#5B1').editable({
         type: 'url',
@@ -156,12 +165,17 @@ require_once('bodystart.php');
             return 'This field is required';
           }
         },
+        params: function(params) {
+          // Add originalValue to existing params
+          params.originalValue = $(this).text();
+
+          return params;
+        },
         display: function(value) {
           $(this).text(amtFormat(value));
           gAmtForPcnt = value;
         },
         success: function(response, newValue) {
-          //GET THE ACTIVE STATE FROM RESPONSE AND SET IT TO ACTIVE CONTROL
           invTable.ajax.reload();
         }
       });
@@ -175,9 +189,16 @@ require_once('bodystart.php');
         value: data[0]['sales_stage_id'],
         title: "Enter Sales Stage",
         source: 'api/getSalesStage.php',
+        params: function(params) {
+          // Add originalValue to existing params
+          params.originalValue = $(this).text();
+
+          return params;
+        },
         success: function(response, newValue) {
           //GET THE ACTIVE STATE FROM RESPONSE AND SET IT TO ACTIVE CONTROL
           $('#4B1').editable('setValue', response.active);
+          $('#44B1').editable('setValue', response.watch);
 
         }
       });
@@ -243,7 +264,6 @@ require_once('bodystart.php');
           return params;
         },
         success: function(response, newValue) {
-          //GET THE ACTIVE STATE FROM RESPONSE AND SET IT TO ACTIVE CONTROL
           console.log(response);
           invTable.ajax.reload();
         }
@@ -581,8 +601,7 @@ require_once('bodystart.php');
         <tr>
           <th id="2A1">Opportunity Name</th>
           <td id="2B1">
-    </div>
-    </tr>
+        </tr>
     <tr>
       <th id="3A1">Customer</th>
       <td id="3B1"></td>
@@ -590,6 +609,10 @@ require_once('bodystart.php');
     <tr>
       <th id="4A1">Status</th>
       <td id="4B1"></td>
+    </tr>
+    <tr>
+      <th id="44A1">Watch</th>
+      <td id="44B1"></td>
     </tr>
     <tr>
       <th id="5A1">Proposal Link</th>
@@ -780,7 +803,7 @@ require_once('bodystart.php');
           </div>
           <div class="form-group">
             <label for="invoice-pcnt" class="control-label">Milestone Percentage</label>
-            <input type="number" class="form-control" min="1" max="100" id="invoice-pcnt" name="invoice-pcnt" required>
+            <input type="number" class="form-control" step="0.01" min="1" max="100" id="invoice-pcnt" name="invoice-pcnt" required>
           </div>
           <div class="form-group">
             <label for="invoice-amount" class="control-label">Invoice Amount</label>

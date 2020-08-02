@@ -40,5 +40,6 @@ function amtFormat (num){
     }
     formatted = output.reverse().join("");
 
-    return (sign + formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
+     //return (sign + formatted + ((parts) ? "." + (parts[1]+"00").substr(0, 2) : ".00"));
+     return (sign + formatted);
 }

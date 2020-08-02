@@ -1,7 +1,8 @@
 <?php
   require_once('../dbconn.php');
 
-
+  ini_set("log_errors", 1);
+  ini_set("error_log", "/tmp/myphp-error.log");
   $con=getConnection();
   $sql="
     select query_string from cgl_query where id = {$_GET['qryid']}";
@@ -12,6 +13,8 @@
   {
     $glQry = $row['query_string'];
   }
+
+  error_log( time().":Called API with qry".$_GET['qryid']);
 
   $result = mysqli_query($con,$glQry) or debug($glQry."   failed  <br/><br/>");
 
@@ -27,10 +30,9 @@
      $return_arr[]=$enc_arr;
 
   }
-  $final_arr['data']=$return_arr;
 
   header('Content-Type: application/json');
 
-  echo json_encode($final_arr);
+  echo json_encode($return_arr);
 
 ?>

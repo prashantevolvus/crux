@@ -10,7 +10,7 @@ inner join opp_region b on a.opp_region_id = b.id
 inner join cgl_region_grp d1 on b.cgl_grp_id = d1.id
 inner join expense_type c on  a.expense_type_id = c.expense_id
 
-where 1=1 ".(!empty($_GET["oppid"])  ? "and a.id = ".$_GET["oppid"] : "and a.id = 1");
+where 1=1 ".(!empty($_GET["expid"])  ? "and a.id = ".$_GET["expid"] : "and a.id = 1");
 
 
 //echo $sql;

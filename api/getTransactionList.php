@@ -8,6 +8,10 @@ ini_set("error_log", "/tmp/myphp-error.log");
 
 $q = isset($_GET["status"]) ? $_GET["status"] : '';
 $q1= isset($_GET["expensetype"]) ? $_GET["expensetype"] : '';
+$q2= isset($_GET["start"]) ? $_GET["start"] : '';
+$q3= isset($_GET["end"]) ? $_GET["end"] : '';
+$q4= isset($_GET["region"]) ? $_GET["region"] : '';
+
 
 error_log( time()."GET q ".$q);
 error_log( time()."GET q1 ".$q1);
@@ -23,6 +27,9 @@ inner join expense_type c on  a.expense_type_id = c.expense_id
 where 1=1 "
 .(!empty($q)? " and tran_status in (".$q.")" : " ")
 .(!empty($q1)? " and expense_type_id in (".$q1.")" : " ")
+.(!empty($q2)? " and gen_date >= '".$q2."'" : " ")
+.(!empty($q3)? " and gen_date <= '".$q3."'" : " ")
+.(!empty($q4)? " and d1.id in (".$q4.")" : " ")
 ." order by gen_date";
 
 error_log( time()."GET ".$sql);

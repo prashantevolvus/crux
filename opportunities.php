@@ -45,7 +45,7 @@ require_once('bodystart.php');
       refreshTable();
     });
   });
-
+//test
   $(document).ready(function() {
     table = $('#opportunity').DataTable({
       "pagingType": "full_numbers",
@@ -71,9 +71,11 @@ require_once('bodystart.php');
           "data": "opp_name"
         },
         {
+          "className": "text-right",
           "data": "current_quote"
         },
         {
+          "className": "text-right",
           "data": "no_regret_quote"
         },
         {

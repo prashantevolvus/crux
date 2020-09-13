@@ -5,7 +5,7 @@ require_once('head.php');
 require_once('bodystart.php');
 ?>
 
-<script>
+<script type="text/javascript">
 
 //Retrieve and set DATA
 var supList = new Bloodhound({
@@ -18,12 +18,15 @@ var supList = new Bloodhound({
   	}
 });
 
+
+
+
 //Autocomplete for Project Search
 $(document).ready(function() {
 
 
-
   $("#proj-info").hide();
+
 
   $('#1B1').editable({
     type: 'select',
@@ -340,13 +343,128 @@ $(document).ready(function() {
   var url = new URL(document.URL);
   var search_params = url.searchParams;
 
-  var projid = search_params.get('projid');
-  if(projid)
-    populateForm(projid);
+  projectid = search_params.get('projid');
+  if(projectid)
+    populateForm(projectid);
 
-})
+  $('button[id^="ACT"]').on("click", function(event) {
+    $.post(
+      "api/updateProjectStatus.php",
+      { status: $(this).attr("data-status"),
+        projid:$(this).attr("data-projectid")
+       },
+      function(data) {
+        console.log(data);
+        var alertBox = '<div id="status-alert" class="alert alert-' + data.type + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + data.message + '</div>';
+        $('#update-status').html(alertBox);
+        $("#status-alert").fadeTo(20000, 5000).slideUp(5000, function() {
+          $("#status-alert").slideUp(5000);
+        });
+      populateForm(data.projid);
+      showActionButton(data.status,data.projid)
+      }
+    );
+  });
 
 
+});
+
+function showActionButton(status,projid){
+  console.log(status + " " + projid);
+  $("#ACT-1").attr('data-projectid', projid);
+  $("#ACT-2").attr('data-projectid', projid);
+  $("#ACT-3").attr('data-projectid', projid);
+
+  $("#ACT-1").show();
+  $("#ACT-2").show();
+  $("#ACT-3").show();
+
+  if(status == "ACTIVE"){
+    $("#ACT-1").html('DEACTIVATE'),
+    $("#ACT-1").attr('data-status', 'DEACTIVATED');
+
+    $("#ACT-2").html('INITIATE CLOSURE'),
+    $("#ACT-2").attr('data-status', 'INITIATE CLOSURE');
+
+    $("#ACT-3").html('PENDING INVOICE'),
+    $("#ACT-3").attr('data-status', 'PENDING INVOICE');
+  }
+
+  if(status == "DEACTIVATED"){
+    $("#ACT-1").html('ACTIVATE'),
+    $("#ACT-1").attr('data-status', 'ACTIVE');
+
+    $("#ACT-2").html('INITIATE CLOSURE'),
+    $("#ACT-2").attr('data-status', 'INITIATE CLOSURE');
+
+    $("#ACT-3").html('PENDING INVOICE'),
+    $("#ACT-3").attr('data-status', 'PENDING INVOICE');
+  }
+
+  if(status == "PENDING INVOICE"){
+    $("#ACT-1").html('ACTIVATE'),
+    $("#ACT-1").attr('data-status', 'ACTIVE');
+
+    $("#ACT-2").html('INITIATE CLOSURE'),
+    $("#ACT-2").attr('data-status', 'INITIATE CLOSURE');
+
+    $("#ACT-3").html('PENDING INVOICE'),
+    $("#ACT-3").attr('data-status', 'PENDING INVOICE');
+  }
+
+  if(status == "INITIATED"){
+    $("#ACT-1").html('AUTHORISE'),
+    $("#ACT-1").attr('data-status', 'AUTHORISED');
+
+    $("#ACT-2").html('DELETE'),
+    $("#ACT-2").attr('data-status', 'DELETED');
+
+    $("#ACT-3").hide();
+  }
+
+  if(status == "AUTHORISED"){
+    $("#ACT-1").html('APPROVE'),
+    $("#ACT-1").attr('data-status', 'APPROVED');
+
+    $("#ACT-2").html('DELETE'),
+    $("#ACT-2").attr('data-status', 'DELETED');
+
+    $("#ACT-3").hide();
+  }
+
+  if(status == "APPROVED"){
+    $("#ACT-1").html('ACTIVATE'),
+    $("#ACT-1").attr('data-status', 'ACTIVE');
+
+    $("#ACT-2").hide();
+    $("#ACT-3").hide();
+  }
+
+  if(status == "INITIATE CLOSURE"){
+    $("#ACT-1").html('AUTHORISE CLOSURE'),
+    $("#ACT-1").attr('data-status', 'AUTHORISE CLOSURE');
+
+    $("#ACT-2").hide();
+    $("#ACT-3").hide();
+  }
+
+  if(status == "AUTHORISE CLOSURE"){
+    $("#ACT-1").html('CLOSE'),
+    $("#ACT-1").attr('data-status', 'CLOSED');
+
+    $("#ACT-2").hide();
+    $("#ACT-3").hide();
+  }
+
+  if(status == "CLOSED" || status == "DELETED"){
+
+    $("#ACT-1").hide();
+    $("#ACT-2").hide();
+    $("#ACT-3").hide();
+  }
+
+
+}
 
 function populateForm(projid){
 	// grab the correct input and output elements
@@ -373,6 +491,7 @@ function populateForm(projid){
 
     $('#5B1').editable('setValue',data[0]['status']);
     $('#5B1').editable('option', 'pk', projid);
+    showActionButton(data[0]['status'],projid);
 
     $('#1B2').editable('setValue',data[0]['profit_centre_id']);
     $('#1B2').editable('option', 'pk', projid);
@@ -613,7 +732,7 @@ function populateForm(projid){
 </script>
 	<script type="text/javascript" src="script/jquery.populate.pack.js"></script>
 
-<form class="form-horizontal">
+<form class="form-horizontal" id="project-form">
 <fieldset>
 
 <!-- Form Name -->
@@ -622,11 +741,16 @@ function populateForm(projid){
 <!-- Search input-->
   <div id="projSearch" class="form-group">
 
-  	<div class="col-md-5">
+      <div id = 'row'>
+        <div class="col-md-5">
+
   	  <div class="input-group">
     	<input id="prj" name="prj" type="input" placeholder="Enter Project Name" class="form-control input-md typeahead" required="" aria-describedby="glph" autocomplete="sprcatre">
     	<span class="input-group-addon" id="glph"><span class="glyphicon glyphicon-search"></span></span>
   	</div>
+    <div id="update-status"></div>
+  </div>
+
   	<div>
   </div>
 </div>
@@ -893,6 +1017,14 @@ function populateForm(projid){
   </div>
 
 </div> <!--End of tab content -->
+<div class="row">
+  <div class="col-sm-12 text-center">
+
+<button type="button" class="btn btn-primary" id="ACT-1" data-projectid="" data-status="">ACTIVATE</button>
+<button type="button" class="btn btn-primary" id="ACT-2" data-projectid="" data-status="">CLOSED</button>
+<button type="button" class="btn btn-primary" id="ACT-3" data-projectid="" data-status="">PENDING INVOICE</button>
+</div>
+</div>
 
 
 

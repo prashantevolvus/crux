@@ -353,8 +353,8 @@ require_once('bodystart.php');
         function(data) {
           var alertBox = '<div id="status-alert" class="alert alert-' + data.type + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + data.message + '</div>';
           $('#update-status').html(alertBox);
-          $("#status-alert").fadeTo(20000, 5000).slideUp(5000, function() {
-            $("#status-alert").slideUp(5000);
+          $("#status-alert").fadeTo(2000, 500).slideUp(500, function() {
+            $("#status-alert").slideUp(500);
           });
           populateForm(data.projid);
           showActionButton(data.status, data.projid)
@@ -745,7 +745,9 @@ require_once('bodystart.php');
     showCRDetail(projid);
     showInvoicePie(projid);
     showInvoiceLine(projid);
-    showLabourLine(projid)
+    showLabourLine(projid);
+    showLabourBar(projid);
+    showLabourPie(projid)
 
   }
 
@@ -1105,9 +1107,7 @@ require_once('bodystart.php');
           }//ENd of if
 
         });//End of foreach
-        console.log(data);
-        console.log(labels);
-        pieChart('inv1',data,labels);
+        pieChart('inv1',data,labels,"INVOICE BY STATUS");
       }//end of success
 
     });//end of getJSON
@@ -1142,9 +1142,7 @@ require_once('bodystart.php');
 
 
 
-        console.log(data);
-        console.log(labels);
-        lineChart('inv2', data, labels,"Labour Trend")
+        lineChart('inv2', data, labels,"INVOICE TREND BY DATE")
       }//end of success
 
     });//end of getJSON
@@ -1180,16 +1178,74 @@ require_once('bodystart.php');
         data.push({data:data1,label:"Monthly Cost"});
         data.push({data:data2,label:"Monthly Work"});
 
-
-
-        console.log(data);
-        console.log(labels);
-        lineChart('lab1', data, labels,"Labour Trend")
+        lineChart('lab1', data, labels,"LABOUR TREND BY COST AND WORK HOURS")
       }//end of success
 
     });//end of getJSON
 
   }//end of function showLabourLine
+
+  function showLabourBar(projid) {
+    var data =[];
+    var data1 =[];
+    var data2 =[];
+    var labels =[];
+
+
+    $.getJSON({
+      url: "api/getFinanceList.php",
+      data: {
+        projectid : projid,
+        type : "EmpLabour"
+      },
+      success: function (response) {//response is value returned from php
+        var i = 0;
+        response['data'].forEach( function(element) {
+          if(element['EMPLOYEE_NAME'] != "TOTAL" && !isNaN(parseInt(element['UNIFIEDCOST'])) ){
+            a = {x:element['EMPLOYEE_NAME'],y:parseInt(element['WORK_HOURS'])};
+            data1.push(a);
+            a = {x:element['EMPLOYEE_NAME'],y:parseInt(element['UNIFIEDCOST'])};
+            data2.push(a);
+          }
+
+          labels.push(element['EMPLOYEE_NAME']);
+        });//End of foreach
+
+        data.push({data:data1,label:"Employee Cost"});
+        data.push({data:data2,label:"Employee Work"});
+
+        barChart('lab2', data, labels,"LABOUR TREND BY EMPLOYEE")
+      }//end of success
+
+    });//end of getJSON
+
+  }//end of function showLabourBar
+
+  function showLabourPie(projid) {
+    var data =[];
+    var labels =[];
+
+    $.getJSON({
+      url: "api/getFinanceList.php",
+      data: {
+        projectid : projid,
+        type : "EmpLabour"
+      },
+      success: function (response) {//response is value returned from php
+        var i = 0;
+        response['data'].forEach( function(element) {
+          if(element['EMPLOYEE_NAME'] != "TOTAL"){
+              data.push(parseInt(element['UNIFIEDCOST']));
+            labels.push(element['EMPLOYEE_NAME']);
+          }//ENd of if
+
+        });//End of foreach
+        pieChart('lab3',data,labels,"UNIFIED COST BY EMPLOYEE");
+      }//end of success
+
+    });//end of getJSON
+
+  }//end of function showLabourPie
 
 </script>
 
@@ -1564,14 +1620,19 @@ require_once('bodystart.php');
 
     <div class="tab-pane fade" id="LAB">
       <p>
-        <div class="table-responsive col-md-6">
+        <div class="table-responsive col-md-4">
           <!-- <div id="container" style="width:100; height:100;"></div> -->
           <canvas id="lab1" width="50" height="50"></canvas>
 
         </div>
-        <div class="table-responsive col-md-6">
+        <div class="table-responsive col-md-4">
           <!-- <div id="container" style="width:100; height:100;"></div> -->
           <canvas id="lab2" width="50" height="50"></canvas>
+
+        </div>
+        <div class="table-responsive col-md-4">
+          <!-- <div id="container" style="width:100; height:100;"></div> -->
+          <canvas id="lab3" width="50" height="50"></canvas>
 
         </div>
         <div class="clearfix"></div>

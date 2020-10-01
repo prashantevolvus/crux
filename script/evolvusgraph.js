@@ -5,11 +5,34 @@ var backgroundColor = [
   'rgba(255, 206, 86, 0.2)',
   'rgba(75, 192, 192, 0.2)',
   'rgba(153, 102, 255, 0.2)',
-  'rgba(255, 159, 64, 0.2)'
-];
+  'rgba(255, 159, 64, 0.2)',
 
+  'rgba(255, 204, 153, 0.2)',
+  'rgba(255, 229, 204, 0.2)',
+  'rgba(204, 255, 250, 0.2)',
+  'rgba(20, 153, 138, 0.2)',
+  'rgba(224, 204, 255, 0.2)',
+  'rgba(0, 255, 156, 0.2)'
+
+
+];
+var borderColor =  [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 204, 153, 1)',
+          'rgba(255, 229, 204, 1)',
+          'rgba(204, 255, 250, 1)',
+          'rgba(20, 153, 138, 1)',
+          'rgba(224, 204, 255, 1)',
+          'rgba(0, 255, 156, 1)'
+
+        ];
 var chartMap = [];
-function pieChart(canvasid, data, labels) {
+function pieChart(canvasid, data, labels,header="") {
 
   if(chartMap[canvasid]){
     chartMap[canvasid].destroy();
@@ -26,7 +49,9 @@ function pieChart(canvasid, data, labels) {
   dd = {
     datasets: [{
       data: data,
-      backgroundColor: bkcolor
+      backgroundColor: bkcolor,
+      borderColor:borderColor,
+      borderWidth: 1
     }],
     labels: labels,
 
@@ -37,9 +62,13 @@ function pieChart(canvasid, data, labels) {
 
 
   var chart = new Chart(ctx, {
-    type: 'pie',
+    type: 'doughnut',
     data: dd,
     options: {
+      title: {
+        display: true,
+        text: header
+      },
       legend: {
         display: true,
         position: 'top'
@@ -82,7 +111,9 @@ function lineChart(canvasid, data, labels,header="") {
         {
           data: data[0].data,
           label: data[0].label,
-          borderColor: backgroundColor[0],
+          yAxisID: 'A',
+          backgroundColor: backgroundColor[0],
+          borderColor: borderColor[0],
           fill: false,
           datalabels: {
             labels: {
@@ -93,7 +124,9 @@ function lineChart(canvasid, data, labels,header="") {
         {
           data: data[1].data,
           label: data[1].label,
-          borderColor: backgroundColor[1],
+          yAxisID: 'B',
+          backgroundColor: backgroundColor[1],
+          borderColor: borderColor[1],
           fill: false,
           datalabels: {
             labels: {
@@ -109,12 +142,62 @@ function lineChart(canvasid, data, labels,header="") {
         text: header
       },
       scales: {
+        yAxes: [
+        {
+          id: 'A',
+          type: 'linear',
+          position: 'left',
+        },
+        {
+          id: 'B',
+          type: 'linear',
+          position: 'right',
+        }
+        ],
         xAxes: [{
             type: 'time',
             time: {
                 unit: 'month'
             }
         }]
+      }
+    }
+  });
+  chartMap[canvasid] =  chart ;
+
+}
+
+function barChart(canvasid, data, labels,header="") {
+
+  if(chartMap[canvasid]){
+    chartMap[canvasid].destroy();
+  }
+
+  document.getElementById(canvasid).innerHTML='';
+  var chart = new Chart(document.getElementById(canvasid), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: data[0].label,
+          backgroundColor: backgroundColor,
+          borderColor:borderColor,
+          borderWidth: 1,
+          data: data[0].data,
+          datalabels: {
+            labels: {
+                title: null
+            }
+          }
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: header
       }
     }
   });

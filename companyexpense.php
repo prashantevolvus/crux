@@ -7,9 +7,6 @@ require_once('bodystart.php');
 
 
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 
 <script type="text/javascript">
@@ -24,18 +21,24 @@ require_once('bodystart.php');
   $(document).ready(function() {
     //refreshTable();
     fillDropDown("api/getGLLookups.php?type=EXP", "#expenseType", true);
-    fillDropDown("api/getGLLookups.php?type=RGN", "#region", true);
+    fillDropDown("api/getGLLookups.php?type=RGNGRP", "#region", true);
 
-  });
+    fillDropDown("api/getGLLookups.php?type=RGN", "#region-cr", true);
+    fillDropDown("api/getGLLookups.php?type=EXP", "#expense-type-cr", true);
+    fillDropDown("api/getGLLookups.php?type=PNL", "#pnl-line-cr", true);
+    fillDropDown("api/getGLLookups.php?type=PC", "#profit-centre-cr", true);
 
-  $(document).ready(function() {
+
+
 
     $(function () {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+      });
     });
 
 
-
+    //Datepicker code
     $(function() {
 
         var start = moment().startOf('year').add(3,'month');
@@ -66,9 +69,8 @@ require_once('bodystart.php');
 
     });
 
-
-
-      var tableToExcel = (function() {
+    //Export Excel
+    var tableToExcel = (function() {
         var uri = 'data:application/vnd.ms-excel;base64,',
           template =
           '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
@@ -94,13 +96,159 @@ require_once('bodystart.php');
         }
       })()
 
-
     $('#det').click(function() {
       refreshTable();
     });
+
+    createOrShowTable();
+
+
+    $('#transcreatedlg').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var expid = button.data('dtexpid');
+      var dttype = button.data('dttype');
+      $.getJSON("api/getTransaction.php?expid=" + expid, function(data) {
+
+        $(".modal-body #expense-type-cr").val(data[0]['expense_type_id']);
+        $(".modal-body #pnl-line-cr").val(data[0]['pnl_line_id']);
+        $(".modal-body #profit-centre-cr").val(data[0]['pc_id']);
+
+        $(".modal-body #direct-expense-cr").prop("checked",data[0]['direct_expense']==="1");
+        $(".modal-body #capex-cr").prop("checked",data[0]['capex']==="1");
+
+
+        $(".modal-body #region-cr").val(data[0]['opp_region_id']);
+        $(".modal-body #expense-date-cr").val(data[0]['gen_date']);
+        $(".modal-body #expense-detail-cr").val(data[0]['expense_det']);
+        $(".modal-body #remarks-cr").val(data[0]['remarks']);
+
+        $(".modal-body #expense-ccy-cr").val(data[0]['expense_ccy']);
+        $(".modal-body #expense-amount-cr").val(data[0]['expense_amt_ccy']);
+        $(".modal-body #expense-amount-lcy-cr").val(data[0]['expense_amt_lcy']);
+        $(".modal-body #transtatus-cr").val(data[0]['tran_status']);
+        $(".modal-body #operation").val(dttype);
+        $(".modal-body #expense-id-cr").val(expid);
+
+      });
+      var modal = $(this);
+      if(dttype == "EditStatus"){
+        disbableForm(true);
+        $(".modal-body #transtatus-cr").removeAttr("disabled");
+        modal.find('.modal-title').text('Edit Transaction Status');
+        setTimeout(function (){
+                $(".modal-body #transtatus-cr").focus();
+            }, 1000);
+
+      }
+      if(dttype == "EditTran"){
+        disbableForm(false);
+        modal.find('.modal-title').text('Edit Transaction Details');
+        setTimeout(function (){
+                $('#region-cr').focus();
+            }, 500);
+
+
+      }
+      if(dttype == "CreateTran"){
+        disbableForm(false);
+        modal.find('.modal-title').text('Create New Transaction Details');
+        setTimeout(function (){
+                $('#region-cr').focus();
+            }, 500);
+
+      }
+
+
+
+
+
+    });
+
+    function disbableForm(disable){
+      if(disable===true){
+        $("#expense-type-cr").attr("disabled", "disabled");
+        $("#pnl-line-cr").attr("disabled", "disabled");
+        $("#profit-centre-cr").attr("disabled", "disabled");
+        $("#direct-expense-cr").attr("disabled", "disabled");
+        $("#capex-cr").attr("disabled", "disabled");
+        $("#region-cr").attr("disabled", "disabled");
+        $("#expense-date-cr").attr("disabled", "disabled");
+        $("#expense-detail-cr").attr("disabled", "disabled");
+        $("#remarks-cr").attr("disabled", "disabled");
+        $("#expense-ccy-cr").attr("disabled", "disabled");
+        $("#expense-amount-cr").attr("disabled", "disabled");
+        $("#expense-amount-lcy-cr").attr("disabled", "disabled");
+        $("#transtatus-cr").attr("disabled", "disabled");
+      }
+      else{
+        $("#expense-type-cr").removeAttr("disabled");
+        $("#pnl-line-cr").removeAttr("disabled");
+        $("#profit-centre-cr").removeAttr("disabled");
+        $("#direct-expense-cr").removeAttr("disabled");
+        $("#capex-cr").removeAttr("disabled");
+        $("#region-cr").removeAttr("disabled");
+        $("#expense-date-cr").removeAttr("disabled");
+        $("#expense-detail-cr").removeAttr("disabled");
+        $("#remarks-cr").removeAttr("disabled");
+        $("#expense-ccy-cr").removeAttr("disabled");
+        $("#expense-amount-cr").removeAttr("disabled");
+        $("#expense-amount-lcy-cr").removeAttr("disabled");
+        $("#transtatus-cr").removeAttr("disabled");
+      }
+
+    }
+
+    //Create Transaction details dialog on submit
+    $('#transcreatedlg').on('submit', '#transcrfrm', function(e) {
+      /* Get input values from form */
+      disbableForm(false);
+      values = jQuery("#transcrfrm").serializeArray();
+      console.log("values  "+values);
+      /* Because serializeArray() ignores unset checkboxes and radio buttons: */
+      values = values.concat(
+              jQuery('#transcrfrm input[type=checkbox]:not(:checked)').map(
+                      function() {
+                          return {"name": this.name, "value": "off"}
+                      }).get()
+      );
+      if (!e.isDefaultPrevented()) {
+        var url = "api/editExp.php";
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: values,
+          success: function(data) {
+            console.log(data);
+            if(data.trim() === "SUCCESS"){
+              ic = 'success';
+              txt = 'Transaction Details Updated Successfully';
+            }
+            else {
+              ic = 'error';
+              txt = 'Transaction Details Update Failed';
+            }
+            Swal.fire({
+              // position: 'top-end',
+              icon: ic,
+              title: txt,
+              showConfirmButton: false,
+              timer: 2000
+            });
+          }
+        });
+        $('#transcreatedlg').modal("hide");
+        $('#transcrfrm')[0].reset();
+        refreshTable();
+        return false;
+
+      }
+
+    });
+
   });
 
-  $(document).ready(function() {
+
+  function createOrShowTable() {
     table = $('#transaction').DataTable({
       "pagingType": "full_numbers",
       "lengthMenu": [
@@ -120,7 +268,6 @@ require_once('bodystart.php');
            d.start = startDT;
            d.end = endDT;
            d.region = region;
-
         }
       },
       "columns": [{
@@ -145,33 +292,44 @@ require_once('bodystart.php');
             return amtFormat(data);
           }
         },
+        // {
+        //   "className": "text-right",
+        //   "data": "expense_amt_lcy",
+        //   "render": function(data, type, row, meta) {
+        //     return amtFormat(data);
+        //   }
+        // },
         {
-          "className": "text-right",
-          "data": "expense_amt_lcy",
-          "render": function(data, type, row, meta) {
-            return amtFormat(data);
-          }
-        },
-        {
+
           "data": "tran_status"
         },
         {
+          "className": "side-by-side",
           "data": "id",
           "render": function(data, type, row, meta) {
             if (type === 'display') {
-              // data =
-              // '<span data-toggle="modal" data-target="modal">' +
-              // '<button type="button" data-toggle="tooltip" data-placement="top" title="Edit Transaction Status" class="btn btn-default" data-dttype="Edit" data-dtinvid="' + data +
-              //   '"  data-toggle="modal" data-target="#transtatusdlg" aria-label="Left Align">' +
-              //   '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>'+
-              //   '</span>';
-              //
+
               data =
-              '<div data-toggle="tooltip" data-placement="top" title="Edit Transaction Status">' +
-              '<button type="button" data-placement="top"  class="btn btn-default" data-dttype="EditStatus" data-dtexpid="' + data +
-                '"  data-toggle="modal" data-target="#transtatusdlg" aria-label="Left Align">' +
-                '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>'
-                '</div>';
+              '<span data-toggle="tooltip" data-placement="left" title="Edit Transaction Status">'+
+              '<button type="button"   class="btn btn-default" data-dttype="EditStatus" '+
+              ' data-dtexpid="' + data +
+                '"  data-toggle="modal" data-target="#transcreatedlg" aria-label="Left Align">' +
+                '<span class="glyphicon glyphicon-check" aria-hidden="true">' +
+                '</span>'+
+                '</button> </span>'+
+                '<span data-toggle="tooltip" data-placement="left" title="Edit Transaction Details">'+
+                '<button type="button" data-placement="top"  class="btn btn-default" data-dttype="EditTran" '+
+                'data-dtexpid="' + data +
+                  '"  data-toggle="modal" data-target="#transcreatedlg" aria-label="Left Align">' +
+                  '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>'+
+                  '</button> </span>'+
+                  '<span data-toggle="tooltip" data-placement="right" title="Copy Transaction Details">'+
+                  '<button type="button" data-placement="top"  class="btn btn-default" data-dttype="CreateTran" '+
+                  'data-dtexpid="' + data +
+                    '"  data-toggle="modal" data-target="#transcreatedlg" aria-label="Left Align">' +
+                    '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'+
+                    '</button> </span>';
+
             }
             return data;
           }
@@ -180,40 +338,7 @@ require_once('bodystart.php');
 
     });
 
-
-    $('#transtatusdlg').on('show.bs.modal', function(event) {
-      console.log('transtatusdlg-show.bs.modal');
-      var button = $(event.relatedTarget); // Button that triggered the modal
-      var expid = button.data('dtexpid');
-      var dttype = button.data('dttype');
-      $.getJSON("api/getTransaction.php?expid=" + expid, function(data) {
-        $(".modal-body #region").val(data[0]['region_grp']);
-        $(".modal-body #expense-date").val(data[0]['gen_date']);
-        $(".modal-body #expense-detail").val(data[0]['expense_det']);
-        $(".modal-body #expense-ccy").val(data[0]['expense_ccy']);
-        $(".modal-body #expense-amount").val(data[0]['expense_amt_ccy']);
-        $(".modal-body #transtatus").val(data[0]['tran_status']);
-        $(".modal-body #operation").val(dttype);
-        $(".modal-body #expense-id").val(expid);
-
-      });
-
-
-    });
-
-
-    $('#transtatusdlg').on('submit', '#transtatusfrm', function(e) {
-      console.log('transtatusdlg-submit');
-      if (!e.isDefaultPrevented()) {
-        var url = "api/editExp.php";
-
-      }
-
-    });
-
-
-
-  });
+  }
 
 
   function refreshTable() {
@@ -240,8 +365,7 @@ require_once('bodystart.php');
     });
     status = stat.search("999") != -1 ? "" : stat.trim().replace(/ /g, ',');
 
-    console.log("param 1 - " + status);
-    console.log("param 0 - " + ExpenseType);
+
 
     table.ajax.reload();
 
@@ -267,18 +391,13 @@ require_once('bodystart.php');
         <select id="status" name="status" class="form-control" multiple="multiple">
           <option value="999">ALL</option>
           <option value="ENTERED">ENTERED</option>
-          <option value="POST">POST</option>
+          <option value="POSTED">POSTED</option>
           <option value="PAID">PAID</option>
           <option value="DELETED">DELETED</option>
         </select>
       </label>
     </div>
-    <div class="col-xs-10 col-sm-4 col-md-8 col-lg-4">
-      <a href="addcompanyexpense.php" class="btn btn-primary btn-lg float-right" type="button">
-        <span class="glyphicon glyphicon-plus"></span>
-        Add Company Expenses
-      </a>
-    </div>
+
     <div class="clearfix"></div>
     <div class="form-group col-xs-10 col-sm-4 col-md-8 col-lg-4">
       <label class="control-label" for="status">Region</label>
@@ -328,7 +447,7 @@ require_once('bodystart.php');
           <th>Expense Details</th>
           <th>Expense Currency</th>
           <th>Expense Amount</th>
-          <th>Expense Amount in LCY</th>
+          <!-- <th>Expense Amount in LCY</th> -->
           <th>Transaction Status</th>
           <th>Operations</th>
         </tr>
@@ -339,78 +458,115 @@ require_once('bodystart.php');
 </form>
 
 
-<div class="modal fade" id="transtatusdlg" tabindex="-1" role="dialog" aria-labelledby="transtatusdlgLabel">
+
+<div class="modal fade" id="transcreatedlg" tabindex="-1" role="dialog" aria-labelledby="transcreatedlgLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="transtatusdlgLabel">Edit Transaction Status</h4>
+        <h4 class="modal-title" id="transcreatedlgLabel">Create Transaction</h4>
       </div>
       <div class="modal-body">
         <div class="row">
-        <form id="transtatusfrm" method="post" action="api/updateExp.php" role="form">
-        <table>
-          <tr>
-          <td>
-          <div class="form-group col-md-8">
-            <label for="region" class="control-label">Region</label>
-            <input type="text" class="form-control" id="region" name="region" readonly>
+        <form id="transcrfrm" method="post" action="api/editExp.php" role="form">
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="region-cr" class="control-label">Region</label>
+            <select  class="form-control" id="region-cr" name="region-cr"></select>
           </div>
-        </td>
-        <td>
-          <div class="form-group col-md-8">
-            <label for="expense-date" class="control-label">Expense Date</label>
-            <input type="text" class="form-control" id="expense-date" name="expense-date" readonly>
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="expense-type-cr" class="control-label">Expense Type</label>
+            <select  class="form-control" id="expense-type-cr" name="expense-type-cr" ></select>
           </div>
-        </td>
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="profit-centre-cr" class="control-label">Profit Centre</label>
+            <select  class="form-control" id="profit-centre-cr" name="profit-centre-cr"></select>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="table-responsive col-md-6 form-group">
+            <label for="pnl-line-cr" class="control-label">PNL Line</label>
+            <select  class="form-control" id="pnl-line-cr" name="pnl-line-cr"></select>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="table-responsive col-md-2 form-group">
+                <input type="checkbox"  class="form-check-input" id="direct-expense-cr" name="direct-expense-cr" >
+                <label for="direct-expense-cr" class="control-label">Direct Expense</label>
+              </div>
+
+              <div class="table-responsive col-md-2 form-group">
+                <input type="checkbox"  class="form-check-input" id="capex-cr" name="capex-cr" >
+                <label for="capex-cr" class="control-label">CAPEX</label>
+              </div>
+            </div>
+          </div>
 
 
-      <td>
-          <div class="form-group col-md-8">
-            <label for="expense-detail" class="control-label">Expense details</label>
-            <textarea  class="form-control" id="expense-detail" name="expense-detail" readonly ></textarea>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="form-group col-md-8">
-            <label for="expense-ccy" class="control-label">Expense Currency</label>
-            <input type="text" class="form-control" id="expense-ccy" name="expense-ccy" readonly>
-          </div>
-        </td>
-        <td>
-          <div class="form-group col-md-8">
-            <label for="expense-amount" class="control-label">Expense Amount</label>
-            <input type="number" class="form-control text-right" id="expense-amount" name="expense-amount" readonly>
-          </div>
-        </td>
 
-      </tr>
-      <tr>
-        <td>
-          <div class="form-group col-md-8">
-            <label for="transtatus" class="control-label">Transaction Status</label>
-            <select id="transtatus" name="transtatus" class="form-control" required>
+          <div class="clearfix"></div>
+
+
+
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="expense-date-cr" class="control-label">Expense Date</label>
+            <input type="date" class="form-control" id="expense-date-cr" name="expense-date-cr" required>
+          </div>
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="expense-detail-cr" class="control-label">Expense details</label>
+            <textarea  class="form-control" id="expense-detail-cr" name="expense-detail-cr"  required></textarea>
+          </div>
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="remarks-cr" class="control-label">Remarks</label>
+            <textarea  class="form-control" id="remarks-cr" name="remarks-cr"  required></textarea>
+          </div>
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="expense-ccy-cr" class="control-label">Expense Currency</label>
+            <select class="form-control" id="expense-ccy-cr" name="expense-ccy-cr" >
+              <option value="INR">Indian Rupees</option>
+              <option value="AED">United Arab Dhirams</option>
+              <option value="USD">US Dollars</option>
+            </select>
+          </div>
+          <div class="table-responsive col-md-4 form-group">
+            <label for="expense-amount-cr" class="control-label">Expense Amount</label>
+            <input type="number" step=".01"  class="form-control text-right" id="expense-amount-cr" name="expense-amount-cr" required>
+          </div>
+          <div class="table-responsive col-md-4 form-group">
+            <label for="expense-lcy-amount-cr" class="control-label">Expense Amount in LCY</label>
+            <input type="number" step=".01" class="form-control text-right" id="expense-amount-lcy-cr" name="expense-amount-lcy-cr" required>
+          </div>
+          <div class="clearfix"></div>
+
+          <div class="table-responsive col-md-4 form-group">
+            <label for="transtatus-cr" class="control-label">Transaction Status</label>
+            <select id="transtatus-cr" name="transtatus-cr" class="form-control" required>
               <option value="ENTERED">ENTERED</option>
-              <option value="POST">POST</option>
+              <option value="POSTED">POSTED</option>
               <option value="PAID">PAID</option>
               <option value="DELETED">DELETED</option>
             </select>
           </div>
-        </td>
-        </tr>
-      </table>
+          <div class="clearfix"></div>
+
 
           <div class="form-group">
-            <input type="hidden" class="form-control" id="expense-id" name="expense-id">
+            <input type="hidden" class="form-control" id="expense-id-cr" name="expense-id-cr">
           </div>
           <div class="form-group">
             <input type="hidden" class="form-control" id="operation" name="operation">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" form="invoicefrm">Submit</button>
+            <button type="submit" class="btn btn-primary" form="transcrfrm">Submit</button>
 
           </div>
         </form>

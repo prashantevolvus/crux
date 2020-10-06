@@ -49,12 +49,7 @@ body.loading .modal {
     });
 
 
-    //cache
-    const glQry2 = 'api/getGLData.php?qryid=2';
-    //const newCache = await caches.open('new-cache');
-  //  newCache.add('api/getGLData.php?qryid=2');
 
-    //end cache
 
     let qry = 2;
 
@@ -504,7 +499,7 @@ body.loading .modal {
     });
 
     function updateData(){
-       $body.addClass("loading"); 
+       $body.addClass("loading");
        $("table").each(function(){
          if($(this).attr('id') != "cfl-0"){
            //$(this).DataTable().ajax.reload();
@@ -572,7 +567,7 @@ body.loading .modal {
                   markup = "<tr><th>Total Revenue</th><td></td>";
 		  markup += markupRev + "</tr>";
                   $("#cfl-3 tbody").parent().append(markup);
-       		  $body.removeClass("loading"); 
+       		  $body.removeClass("loading");
 
             },1250);//SetTimeout ends here with 250 ms
 

@@ -4,7 +4,9 @@ require_once('../dbconn.php');
 
 $con=getConnection();
 $sql =
-"select region_grp,expense_type,gen_date,expense_det,expense_ccy,expense_amt_ccy,expense_amt_lcy,tran_status,a.id FROM
+"select region_grp,b.cgl_grp_id ,expense_type,expense_type_id,pnl_line_id,opp_region_id,pc_id,
+direct_expense,capex,remarks,
+gen_date,expense_det,expense_ccy,expense_amt_ccy,expense_amt_lcy,tran_status,a.id FROM
 cgl_transaction_expense a
 inner join opp_region b on a.opp_region_id = b.id
 inner join cgl_region_grp d1 on b.cgl_grp_id = d1.id

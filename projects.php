@@ -20,9 +20,7 @@ require_once('bodystart.php');
   //Autocomplete for Project Search
   $(document).ready(function() {
 
-
     $("#proj-info").hide();
-
 
 
 
@@ -34,9 +32,7 @@ require_once('bodystart.php');
       title: "Enter Project Type",
       source: 'api/getProjectTypeList.php'
     });
-
     $('#1B1').editable('option', 'disabled', true);
-
     $('#3B1').editable({
       type: 'select',
       sourceCache: false,
@@ -52,10 +48,7 @@ require_once('bodystart.php');
         // }, 200);
       }
     });
-
     $('#3B1').editable('option', 'disabled', true);
-
-
     //Opportunity Name
     $('#2B1').editable({
       sourceCache: false,
@@ -68,10 +61,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#2B1').editable('option', 'disabled', true);
-
-
     $('#5B1').editable({
       type: 'select',
       sourceCache: false,
@@ -85,10 +75,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#5B1').editable('option', 'disabled', true);
-
-
     $('#1B2').editable({
       type: 'select',
       sourceCache: false,
@@ -97,9 +84,7 @@ require_once('bodystart.php');
       title: "Enter Profit Centre",
       source: 'api/getProfitCentre.php'
     });
-
     $('#1B2').editable('option', 'disabled', true);
-
     $('#2B2').editable({
       type: 'select',
       sourceCache: false,
@@ -108,9 +93,7 @@ require_once('bodystart.php');
       title: "Enter Product",
       source: 'api/getProductList.php'
     });
-
     $('#2B2').editable('option', 'disabled', true);
-
     $('#3B2').editable({
       type: 'select',
       sourceCache: false,
@@ -119,9 +102,7 @@ require_once('bodystart.php');
       title: "Enter Project Manager",
       source: 'api/getEmpList.php'
     });
-
     $('#3B2').editable('option', 'disabled', true);
-
     $('#4B2').editable({
       type: 'select',
       sourceCache: false,
@@ -130,9 +111,7 @@ require_once('bodystart.php');
       title: "Enter Project Director",
       source: 'api/getEmpList.php'
     });
-
     $('#4B2').editable('option', 'disabled', true);
-
     $('#5B2').editable({
       type: 'select',
       sourceCache: false,
@@ -141,9 +120,7 @@ require_once('bodystart.php');
       title: "Enter Reporting Period",
       source: ['WEEKLY', 'FORTNIGHTLY', 'MONTHLY', 'QUARTERLY']
     });
-
     $('#5B2').editable('option', 'disabled', true);
-
     $('#1B3').editable({
       type: 'date',
       sourceCache: false,
@@ -160,9 +137,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#1B3').editable('option', 'disabled', true);
-
     $('#2B3').editable({
       type: 'date',
       sourceCache: false,
@@ -179,10 +154,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#2B3').editable('option', 'disabled', true);
-
-
     $('#3B3').editable({
       type: 'date',
       sourceCache: false,
@@ -199,9 +171,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#3B3').editable('option', 'disabled', true);
-
     $('#4B3').editable({
       type: 'date',
       sourceCache: false,
@@ -218,9 +188,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#4B3').editable('option', 'disabled', true);
-
     $('#4B1').editable({
       type: 'select',
       sourceCache: false,
@@ -229,9 +197,7 @@ require_once('bodystart.php');
       title: "Enter Region Type",
       source: 'api/getRegionList.php'
     });
-
     $('#4B1').editable('option', 'disabled', true);
-
     $('#5B3').editable({
       type: 'number',
       sourceCache: false,
@@ -245,9 +211,7 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#5B3').editable('option', 'disabled', true);
-
     $('#G1B1').editable({
       type: 'textarea',
       sourceCache: false,
@@ -264,7 +228,6 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#G1B2').editable({
       type: 'textarea',
       sourceCache: false,
@@ -281,7 +244,6 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#G2B1').editable({
       type: 'textarea',
       sourceCache: false,
@@ -298,7 +260,6 @@ require_once('bodystart.php');
         }
       }
     });
-
     $('#G2B2').editable({
       type: 'textarea',
       sourceCache: false,
@@ -333,8 +294,6 @@ require_once('bodystart.php');
       }
     }).bind('typeahead:selected', function(obj, datum, name) {
       populateForm(datum.projid);
-      //alert( "http://www.evolvus.com/project/viewprojdetails.php?proj_id="+datum.projid);
-      //window.location  = "viewprojdetails.php?proj_id="+datum.projid;
     });
 
     var url = new URL(document.URL);
@@ -351,10 +310,12 @@ require_once('bodystart.php');
           projid: $(this).attr("data-projectid")
         },
         function(data) {
-          var alertBox = '<div id="status-alert" class="alert alert-' + data.type + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + data.message + '</div>';
-          $('#update-status').html(alertBox);
-          $("#status-alert").fadeTo(2000, 500).slideUp(500, function() {
-            $("#status-alert").slideUp(500);
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'success',
+            title: 'Project Status Updated Successfully',
+            showConfirmButton: false,
+            timer: 2000
           });
           populateForm(data.projid);
           showActionButton(data.status, data.projid)
@@ -690,7 +651,8 @@ require_once('bodystart.php');
 
           $('#F2A6').removeClass('alert alert-warning');
           $('#F2B6').removeClass('alert alert-warning');
-        } else if (100 * (data[0]['received_lcy_amt'] - totalExpense) / data[0]['received_lcy_amt'] < 10.0) {
+        }
+        else if (100 * (data[0]['received_lcy_amt'] - totalExpense) / data[0]['received_lcy_amt'] < 10.0) {
           $('#F2A6').addClass('alert alert-warning');
           $('#F2B6').addClass('alert alert-warning');
 

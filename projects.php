@@ -286,7 +286,6 @@ require_once('bodystart.php');
 
     var url = new URL(document.URL);
     var search_params = url.searchParams;
-
     projectid = search_params.get('projid');
     if (projectid)
       populateForm(projectid);
@@ -311,7 +310,6 @@ require_once('bodystart.php');
       );
     });
 
-
     $('#EXTN').on('click', function(event) {
       event.preventDefault(); // To prevent following the link (optional)
       console.log("FIRED");
@@ -328,6 +326,7 @@ require_once('bodystart.php');
           },
           inputValue: parseInt($("#EXTN").attr('data-extn')),
           showCancelButton: true,
+          closeOnCancel: true,
           inputValidator: (value) => {
             if (!value) {
               return 'You need to write something!'
@@ -335,39 +334,31 @@ require_once('bodystart.php');
           }
         });
         console.log(extnA);
-        $.post(
-          "api/updateProjectExtension.php", {
-            extension: extnA,
-            projid: $(this).attr("data-projectid")
-          },
-          function(data) {
-            Swal.fire({
-              // position: 'top-end',
-              icon: 'success',
-              title: 'Project Extended Successfully',
-              showConfirmButton: false,
-              timer: 2000
-            });
-            populateForm(data.projid);
-            showActionButton(data.status, data.projid)
-          }
-        );
+        if(extnA){
+          $.post(
+            "api/updateProjectExtension.php", {
+              extension: extnA,
+              projid: $(this).attr("data-projectid")
+            },
+            function(data) {
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: 'Project Extended Successfully',
+                showConfirmButton: false,
+                timer: 2000
+              });
+              populateForm(data.projid);
+              showActionButton(data.status, data.projid)
+            }
+          );
+        }
+
 
       })();
     });
-    // $('#EXTN').on("click",function(event) {
-    //   console.log("FIRED");
-    //   Swal.fire({
-    //     // position: 'top-end',
-    //     icon: 'success',
-    //     title: 'EXTEND PROJECT',
-    //     showConfirmButton: true
-    //   });
 
-    // });
-
-
-  });
+  });//End of ready function
 
   function showActionButton(status, projid) {
     $("#ACT-1").attr('data-projectid', projid);
@@ -770,7 +761,8 @@ require_once('bodystart.php');
     showInvoiceLine(projid);
     showLabourLine(projid);
     showLabourBar(projid);
-    showLabourPie(projid)
+    showLabourPie(projid);
+    showFinSummary(projid);
 
   }
 
@@ -1298,7 +1290,49 @@ require_once('bodystart.php');
         data.push({data:data1,label:"Employee Cost"});
         data.push({data:data2,label:"Employee Work"});
 
-        barChart('lab2', data, labels,"LABOUR TREND BY EMPLOYEE")
+        barChart('lab2', data, labels,"bar","N","LABOUR TREND BY EMPLOYEE")
+      }//end of success
+
+    });//end of getJSON
+
+  }//end of function showLabourBar
+
+  function showFinSummary(projid) {
+    var data =[];
+    var data1 =[];
+    var data2 =[];
+    var labels =[];
+
+    console.log("showFinSummary");
+    $.getJSON({
+      url: "api/getFinanceList.php",
+      data: {
+        projectid : projid,
+        type : "FinSummary"
+      },
+      success: function (response) {//response is value returned from php
+        var i = 0;
+        response['data'].forEach( function(element) {
+          console.log(element);
+          data1.push({x:'PRICE',y:parseInt(element['price'])});
+          data1.push({x:'RECEIVED',y:parseInt(element['received'])});
+          data1.push({x:'BUDGET',y:parseInt(element['budget'])});
+          data1.push({x:'COST',y:parseInt(element['cost'])});
+
+          data1.push({x:'BUDGET_TO_GO',y:parseInt(element['budget_to_go'])});
+          data1.push({x:'CASHFLOW',y:parseInt(element['cashflow'])});
+
+          labels.push('PRICE');
+          labels.push('BUDGET');
+          labels.push('COST');
+          labels.push('RECEIVED');
+          labels.push('BUDGET_TO_GO');
+          labels.push('CASHFLOW');
+        });//End of foreach
+
+        data.push({data:data1,label:"AMOUNT IN INR"});
+
+        barChart('finsumgraph', data, labels,"bar","Y","FINANCE SUMMARY")
       }//end of success
 
     });//end of getJSON
@@ -1357,6 +1391,19 @@ require_once('bodystart.php');
           </div>
           <div id="update-status"></div>
         </div>
+          <div class="btn-group" style="float: right">
+            <button type="button" class="btn btn-primary btn-circle btn-lg dropdown-toggle " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a class="dropdown-item" href="initproj.php">NEW PROJECT</a></li>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" href="addinvoice.php">NEW INVOICE</a></li>
+              <li><a class="dropdown-item" href="createexpense.php">NEW EXPENSE</a></li>
+              <li><a class="dropdown-item" href="initebudget.php">NEW BUDGET</a></li>
+              <li><a class="dropdown-item" href="addchangerequest.php">NEW CHANGE REQUEST</a></li>
+            </ul>
+          </div>
 
         <div>
         </div>
@@ -1410,7 +1457,7 @@ require_once('bodystart.php');
       <p>
       <div class="row">
         <form id="gen-form" role="form">
-          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+          <div class="table-responsive col-md-4">
             <table class="table table-striped">
               <tr>
                 <th id="1A1">Project Type</th>
@@ -1434,7 +1481,7 @@ require_once('bodystart.php');
               </tr>
             </table>
           </div>
-          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+          <div class="table-responsive col-md-4">
             <table class="table table-striped">
               <tr>
                 <th id="1A2">Profit Centre</th>
@@ -1458,7 +1505,7 @@ require_once('bodystart.php');
               </tr>
             </table>
           </div>
-          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+          <div class="table-responsive col-md-4">
             <table class="table table-striped">
               <tr>
                 <th id="1A3">Planned Start Date</th>
@@ -1526,8 +1573,16 @@ require_once('bodystart.php');
     <div class="tab-pane fade" id="FINSUM">
       <p>
       <h4>SUMMARY</h4>
+
+      <!-- Graph -->
+      <div class="table-responsive col-md-4">
+        <canvas id="finsumgraph" width="25" height="15"></canvas>
+      </div>
+
+
+
       <!-- Contract -->
-      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+      <div class="table-responsive col-md-4">
         <table class="table table-striped">
           <tr>
             <th id="F1A1">Contract Amount</th>
@@ -1543,8 +1598,9 @@ require_once('bodystart.php');
           </tr>
         </table>
       </div>
+
       <!-- Invoice -->
-      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+      <div class="table-responsive col-md-4">
         <table class="table table-striped">
           <tr>
             <th id="F2A5">Pending to be Invoiced</th>
@@ -1564,8 +1620,11 @@ require_once('bodystart.php');
           </tr>
         </table>
       </div>
+
+      <div class="clearfix"></div>
+
       <!-- Calculated -->
-      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+      <div class="table-responsive col-md-4">
         <table class="table table-striped">
           <tr>
             <th id="F1A6">Budget To Go</th>
@@ -1589,11 +1648,8 @@ require_once('bodystart.php');
           </tr>
         </table>
       </div>
-
-
-      <div class="clearfix"></div>
       <!-- Cost -->
-      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+      <div class="table-responsive col-md-4">
         <table class="table table-striped">
           <tr>
             <th id="F1A4">Base Labour Cost</th>
@@ -1613,25 +1669,9 @@ require_once('bodystart.php');
           </tr>
         </table>
       </div>
-      <!-- Budget 1 old-->
-      <!-- <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-        <table class="table table-striped">
-          <tr>
-            <th id="F1A2">Normal Budget Initated</th>
-            <td id="F1B2" class="text-right"></td>
-          </tr>
-          <tr>
-            <th id="F2A2">Excess Budget Initated</th>
-            <td id="F2B2" class="text-right"></td>
-          </tr>
-          <tr>
-            <th id="F3A2">Total Budget Initated</th>
-            <td id="F3B2" class="text-right"></td>
-          </tr>
-        </table>
-      </div> -->
+
       <!-- Budget 1 -->
-      <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+      <div class="table-responsive col-md-4">
         <table class="table table-striped">
           <tr>
             <th id="F1A3">Normal Budget Approved</th>
@@ -1652,8 +1692,6 @@ require_once('bodystart.php');
 
         </table>
       </div>
-
-
 
       </p>
     </div>

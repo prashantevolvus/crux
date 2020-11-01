@@ -15,6 +15,19 @@ if ($retType == "MonthLabour") {
   WITH ROLLUP
   ";
 }
+
+if ($retType == "FinSummary") {
+    $sql="
+      select project_name,
+      contract_value+cr_amt price,
+      budget_approved+excess_budget_approved budget,
+      unified_labour_cost+expense_amt cost,
+      received_lcy_amt received,
+      case when contract_value+cr_amt = 0 then 0 else received_lcy_amt-(unified_labour_cost+expense_amt) end cashflow,
+      budget_approved+excess_budget_approved-(unified_labour_cost+expense_amt) budget_to_go
+      from project_details WHERE ID = {$projID}
+    ";
+}
 if ($retType == "EmpMonthLabour") {
     $sql="
   SELECT REPORT_MONTH, EMPLOYEE_NAME , SUM(WORK_HOURS) WORK_HOURS FROM dw_monthly_sheets A

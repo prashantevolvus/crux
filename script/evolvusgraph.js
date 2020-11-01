@@ -167,7 +167,7 @@ function lineChart(canvasid, data, labels,header="") {
 
 }
 
-function barChart(canvasid, data, labels,header="") {
+function barChart(canvasid, data, labels,barType,lakhs , header="") {
 
   if(chartMap[canvasid]){
     chartMap[canvasid].destroy();
@@ -175,7 +175,7 @@ function barChart(canvasid, data, labels,header="") {
 
   document.getElementById(canvasid).innerHTML='';
   var chart = new Chart(document.getElementById(canvasid), {
-    type: 'bar',
+    type: barType,
     data: {
       labels: labels,
       datasets: [
@@ -198,6 +198,31 @@ function barChart(canvasid, data, labels,header="") {
       title: {
         display: true,
         text: header
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true,
+                callback: function(value, index, values) {
+                    ret = value;
+                    if(lakhs === "Y")
+                      ret = amtFormat(parseFloat(value)/100000)+' lakhs';
+                      return ret;
+                }
+            }
+        }]
+      },
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, chart){
+            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+            if(lakhs === "Y")
+              datasetLabel =  datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.yLabel)/100000)+' lakhs';
+            else
+              datasetLabel =  datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.yLabel));
+            return  datasetLabel;           
+          }
+        }
       }
     }
   });

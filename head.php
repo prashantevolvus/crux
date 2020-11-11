@@ -154,6 +154,10 @@ $(".tt-hint").addClass("form-control");
   border-radius: 35px;
 }
 
+.swal2-popup {
+  font-size: 1.1rem !important;
+}
+
 
 </style>
 

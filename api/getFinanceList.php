@@ -16,6 +16,16 @@ if ($retType == "MonthLabour") {
   ";
 }
 
+
+if ($retType == "MonthLabour") {
+    $sql="
+    SELECT B.ID,REPORT_MONTH, SUM(UNIFIEDCOST) UNIFIEDCOST FROM DW_MONTHLY_SHEETS A
+    JOIN PROJECT_DETAILS B ON A.PROJECT_ID = OHRM_PROJECT_ID
+    GROUP BY B.ID,REPORT_MONTH
+    ORDER BY REPORT_MONTH
+  ";
+}
+
 if ($retType == "FinSummary") {
     $sql="
       select project_name,

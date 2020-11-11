@@ -291,23 +291,46 @@ require_once('bodystart.php');
       populateForm(projectid);
 
     $('button[id^="ACT"]').on("click", function(event) {
-      $.post(
-        "api/updateProjectStatus.php", {
-          status: $(this).attr("data-status"),
-          projid: $(this).attr("data-projectid")
+      // const swalWithBootstrapButtons = Swal.mixin({
+      //   customClass: {
+      //     confirmButton: 'btn btn-default',
+      //     cancelButton: 'btn btn-danger'
+      //   },
+      //   buttonsStyling: false
+      // });
+      swal.fire({
+        title: "Project Status will be Updated to "+$(this).attr("data-status"),
+        text: 'Are you sure?',
+        icon: 'question',
+        showCancelButton: true,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
         },
-        function(data) {
-          Swal.fire({
-            // position: 'top-end',
-            icon: 'success',
-            title: 'Project Status Updated Successfully',
-            showConfirmButton: false,
-            timer: 2000
-          });
-          populateForm(data.projid);
-          showActionButton(data.status, data.projid)
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
         }
-      );
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.post(
+            "api/updateProjectStatus.php", {
+              status: $(this).attr("data-status"),
+              projid: $(this).attr("data-projectid")
+            },
+            function(data) {
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: 'Project Status Updated Successfully',
+                showConfirmButton: false,
+                timer: 2000
+              });
+              populateForm(data.projid);
+              showActionButton(data.status, data.projid)
+            }
+          );
+        }
+      });
+
     });
 
     $('#EXTN').on('click', function(event) {

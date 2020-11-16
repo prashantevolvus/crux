@@ -17,7 +17,7 @@ if ($retType == "MonthLabour") {
 }
 
 
-if ($retType == "MonthLabour") {
+if ($retType == "MonthLabourXX") {
     $sql="
     SELECT B.ID,REPORT_MONTH, SUM(UNIFIEDCOST) UNIFIEDCOST FROM DW_MONTHLY_SHEETS A
     JOIN PROJECT_DETAILS B ON A.PROJECT_ID = OHRM_PROJECT_ID

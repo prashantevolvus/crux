@@ -220,7 +220,7 @@ function barChart(canvasid, data, labels,barType,lakhs , header="") {
               datasetLabel =  datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.yLabel)/100000)+' lakhs';
             else
               datasetLabel =  datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.yLabel));
-            return  datasetLabel;           
+            return  datasetLabel;
           }
         }
       }

@@ -15,7 +15,7 @@ case
 	when '{$file}' = 'estimation' then estimation_sheet
 	when '{$file}' = 'proposal' then proposal_doc
 end = a.id
-where is_deleted = 0 and b.id = {$oppid}
+where latest = 1 and b.id = {$oppid}
 ";
 
 

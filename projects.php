@@ -23,6 +23,39 @@ require_once('bodystart.php');
     $("#proj-info").hide();
 
 
+    fillDropDown("api/getFileTypes.php", "#fileType");
+
+     $("#typeProj-1").click(function() {
+        $("#crdiv").hide();
+        $("#fileentity").val("PROJECT");
+        $("#projFileID").val($("#projid").val());
+     });
+     $("#typeProj-2").click(function() {
+       fillDropDown("api/getChangeRequestList.php?projid="+$("#projid").val(), "#changerequest");
+       $.getJSON("api/getChangeRequestList.php?projid="+$("#projid").val(), function (data) {
+         if( data.length > 0){
+           $("#typeProj-2").attr('disabled',false);
+           $("#crdiv").show();
+           $("#fileentity").val("CR");
+           $("#projFileID").val($("#changerequest").val());
+         }
+         else {
+           $("#crdiv").hide();
+           $("#typeProj-2").attr('disabled',true);
+           $("#typeProj-1").prop('checked',true);
+           $("#fileentity").val("PROJECT");
+           $("#projFileID").val($("#projid").val());
+
+
+         }
+       });
+
+     });
+
+     $('#changerequest').on('change', function() {
+        $("#projFileID").val(this.value);
+      });
+
 
     $('#1B1').editable({
       type: 'select',
@@ -290,6 +323,11 @@ require_once('bodystart.php');
     if (projectid)
       populateForm(projectid);
 
+      $('#refreshProj').on('click', function(event) {
+        console.log("refresh "+$("#projid").val());
+        populateForm($("#projid").val());
+      });
+
     $('button[id^="ACT"]').on("click", function(event) {
       // const swalWithBootstrapButtons = Swal.mixin({
       //   customClass: {
@@ -379,6 +417,53 @@ require_once('bodystart.php');
 
 
       })();
+    });
+
+    $('#fileUpload').on('submit', '#uploadFilefrm', function(e) {
+      console.log("TEST");
+      if (! $("#filecontent").val() || !$("#fileDesc").val()) {
+        alert("Text and File Mandatory");
+        return false;
+      }
+      if (!e.isDefaultPrevented()) {
+        console.log("PROJECT "+$("#projFileID").val());
+        var url = "api/updateProjFile.php";
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            // $("#filedesc").val('TRY THIS');
+            // $("#filecontent").val('');
+            $('#uploadFilefrm')[0].reset();
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'success',
+              title: 'File Uploaded Successfully',
+              showConfirmButton: false,
+              timer: 2000
+            });
+
+          },
+          error: function(data) {
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'fail',
+              title: 'File Upload Failed',
+              showConfirmButton: false,
+              timer: 2000
+            });
+
+          }
+        });
+
+      }
+      return false;
+
     });
 
   });//End of ready function
@@ -481,11 +566,20 @@ require_once('bodystart.php');
   function populateForm(projid) {
     // grab the correct input and output elements
     $("#proj-info").show();
+
+    $("#crdiv").hide();
+    $("#typeProj-2").attr('disabled',false);
+    $("#typeProj-1").prop('checked',true);
+
     var url = "api/getProject.php?projid=" + projid;
     var dataJSON = "";
+    $("#projid").val(projid);
+    $("#projFileID").val(projid);
+    $("#fileentity").val("PROJECT");
+
+
 
     $.getJSON(url, function(data) {
-
 
       $('#1B1').editable('setValue', data[0]['project_type_id']);
       $('#1B1').editable('option', 'pk', projid);
@@ -1414,6 +1508,11 @@ require_once('bodystart.php');
           </div>
           <div id="update-status"></div>
         </div>
+        <div class="btn-group" >
+          <button type="button" class="btn btn-primary btn-circle btn-md " id="refreshProj" >
+            <i class="glyphicon glyphicon-refresh"></i>
+          </button>
+        </div>
           <div class="btn-group" style="float: right">
             <button type="button" class="btn btn-primary btn-circle btn-lg dropdown-toggle " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="glyphicon glyphicon-plus"></i>
@@ -1437,6 +1536,7 @@ require_once('bodystart.php');
 </form>
 
 <div id="proj-info">
+  <input type="hidden" id="projid" >
   <div>
     <ul class='nav nav-pills  split-button-nav'>
       <li class='active'>
@@ -1469,6 +1569,9 @@ require_once('bodystart.php');
       </li>
       <li>
         <a data-toggle='tab' href='#CHGREQ'>CHANGE REQUEST</a>
+      </li>
+      <li>
+        <a data-toggle='tab' href='#FILES'>PROJECT FILES</a>
       </li>
 
     </ul>
@@ -1919,6 +2022,58 @@ require_once('bodystart.php');
 
       </p>
     </div>
+
+    <div class="tab-pane fade" id="FILES">
+      <div class="container" id="fileUpload">
+        <div class="row">
+
+        <div class="table-responsive col-md-3 crorproj">
+
+          <label for="typeProj-1">
+            <input type="radio" name="typeProj" id="typeProj-1" value="1" checked="checked">
+             Project
+          </label>
+          <label class="radio-inline" for="typeProj-1">
+            <input type="radio" name="typeProj" id="typeProj-2" value="2">
+            Change Request
+          </label>
+        </div>
+      <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
+
+      </div>
+        <div class="row">
+          <div class="table-responsive col-md-3" id="crdiv">
+            <label for="changerequest">Change Request</label>
+            <select id="changerequest" name="changerequest" class="form-control">
+            </select>
+          </div>
+          <div class="clearfix"></div>
+
+        <div class="table-responsive col-md-3">
+          <label for="fileType">File Type</label>
+          <select id="fileType" name="fileType" class="form-control">
+          </select>
+        </div>
+        <div class="table-responsive col-md-3">
+          <label for="fileDesc">File Description</label>
+          <input  id="fileDesc" name="fileDesc" class="form-control">
+        </div>
+        <div class="table-responsive col-md-3">
+          <label for="filecontent">Upload File</label>
+          <input type="file" class="form-control" id="filecontent" name="filecontent">
+        </div>
+        <input  type="hidden" id="projFileID" name="projFileID">
+        <input type="hidden" id="fileentity" name="fileentity">
+        <div class="table-responsive col-md-3">
+         <button type="submit" class="btn btn-primary" form="uploadFilefrm">Upload</button>
+        </div>
+      </div>
+
+      </form>
+
+    </div>
+
+    </div> <!-- ENd of FILE -->
 
 
   </div>

@@ -4,6 +4,8 @@ require_once('../dbconn.php');
 $projID = $_GET["projectid"];
 $retType = $_GET["type"];
 
+$latest = !empty($_GET["latest"])?$_GET["latest"]:"";
+
 $con=getConnection();
 if ($retType == "MonthLabour") {
     $sql="
@@ -126,6 +128,44 @@ if ($retType == "Change") {
       INNER JOIN project_details B ON A.PROJECT_ID = B.ID
       WHERE B.ID = {$projID}
   ";
+}
+
+
+if ($retType == "Document") {
+    $sql="
+      select   ifnull(cr_name,'PROJECT') CR_NAME,
+      FILE_TYPE,VERSION,FILE_NAME,FILE_DESC,concat(emp_firstname,' ',emp_lastname) UPLOADED_BY,UPLOADED_ON,
+      a.id FILE_ID
+      from  file_data a
+      inner join file_type b on a.file_type_id = b.id
+      inner join hr_mysql_live.hs_hr_employee c on a.uploaded_by = c.emp_number
+      left join project_cr d on a.entity_id = d.cr_id and entity_name = 'CR'
+      where ((entity_id = {$projID} and a.entity_name = 'PROJECT') or
+      (project_id = {$projID} and a.entity_name = 'CR')   )
+    ";
+
+    if(!empty($latest))
+      $sql .= " and latest = 1 ";
+
+    $sql .= " order by uploaded_on desc";
+
+}
+
+if ($retType == "OppDocument") {
+    $sql="
+      select
+      FILE_TYPE,VERSION,FILE_NAME,FILE_DESC,concat(emp_firstname,' ',emp_lastname) UPLOADED_BY,UPLOADED_ON,
+      a.id FILE_ID
+      from  file_data a
+      inner join file_type b on a.file_type_id = b.id
+      inner join hr_mysql_live.hs_hr_employee c on a.uploaded_by = c.emp_number
+      where (entity_id = {$projID} and a.entity_name = 'OPP')     ";
+
+    if(!empty($latest))
+      $sql .= " and latest = 1 ";
+
+    $sql .= " order by uploaded_on desc";
+
 }
 
 

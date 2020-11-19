@@ -12,21 +12,19 @@ require_once('bodystart.php');
     var search_params = url.searchParams;
 
     var gOppId = search_params.get('oppid');
+
+    $("#projFileID").val(gOppId);
+    fillDropDown("api/getFileTypes.php", "#fileType");
+    $('#latestDoc').on('change', function() {
+      showDocument(gOppId);
+    });
+
+
     var cust;
     var invTable;
 
     var gAmtForPcnt = 1;
 
-    $('#href-proposal a').click(function(e) {
-      e.preventDefault(); //stop the browser from following
-      //console.log("api/getOppFiles.php?file=proposal&oppid=" + gOppId);
-      window.location.href = "api/getOppFile.php?file=proposal&oppid=" + gOppId;
-    });
-
-    $('#href-estimate a').click(function(e) {
-      e.preventDefault(); //stop the browser from following
-      window.location.href = "api/getOppFile.php?file=estimation&oppid=" + gOppId;
-    });
 
     $('#invoice-pcnt').blur(function() {
       $('#invoice-amount').val(gAmtForPcnt * $('#invoice-pcnt').val() / 100);
@@ -511,29 +509,88 @@ require_once('bodystart.php');
       }
     });
 
-    $('#fileUpload').on('show.bs.modal', function(event) {
-      console.log('fileUpload-show.bs.modal');
+    // $('#fileUpload').on('show.bs.modal', function(event) {
+    //   console.log('fileUpload-show.bs.modal');
+    //
+    //
+    //   $(".modal-body #opportunity-id").val(gOppId);
+    //
+    //
+    // });
 
-
-      $(".modal-body #opportunity-id").val(gOppId);
-
-
-    });
+    // $('#fileUpload').on('submit', '#uploadFilefrm', function(e) {
+    //   var fileProp = $(".modal-body #proposal").val();
+    //   var fileEst = $(".modal-body #estimate").val();
+    //   if (!fileProp && !fileEst) {
+    //     alert("Upload atleast one file");
+    //     return false;
+    //   }
+    //   var fileProp = $(".modal-body #proposal").val();
+    //   var fileEst = $(".modal-body #estimate").val();
+    //   if (!e.isDefaultPrevented()) {
+    //
+    //     var url = "api/updateOppFile.php";
+    //     var formData = new FormData(this);
+    //     console.log(formData);
+    //     $.ajax({
+    //       type: "POST",
+    //       url: url,
+    //       data: formData,
+    //       processData: false,
+    //       contentType: false,
+    //       success: function(data) {
+    //         var alertBox = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + 'Files Uploaded' + '</div>';
+    //
+    //         $('#opportunity-form').find('.upld-messages').html(alertBox);
+    //         $(".alert-dismissable").fadeTo(2000, 500).slideUp(500, function() {
+    //           $(".alert-dismissable").alert('close');
+    //         });
+    //         console.log("FILA " + fileProp);
+    //
+    //         if (fileProp) {
+    //           $("#href-proposal").show();
+    //           $("#6B1").contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
+    //
+    //           $("#6B1").text(fileProp.replace(/^.*[\\\/]/, ''));
+    //         }
+    //         if (fileEst) {
+    //           $("#href-estimate").show();
+    //           $("#6B2").contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
+    //
+    //           $("#6B2").text(fileEst.replace(/^.*[\\\/]/, ''));
+    //         }
+    //
+    //
+    //       },
+    //       error: function(data) {
+    //         console.log("FAIL " + data);
+    //
+    //       }
+    //     });
+    //     $('#uploadFilefrm')[0].reset();
+    //     $('#fileUpload').modal('hide');
+    //
+    //     return false;
+    //
+    //   }
+    //   return false;
+    //
+    // });
 
     $('#fileUpload').on('submit', '#uploadFilefrm', function(e) {
-      var fileProp = $(".modal-body #proposal").val();
-      var fileEst = $(".modal-body #estimate").val();
-      if (!fileProp && !fileEst) {
-        alert("Upload atleast one file");
+      if (! $("#filecontent").val() || !$("#fileDesc").val()) {
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'error',
+          title: "Description and Document is Mandatory",
+          showConfirmButton: false,
+          timer: 2000
+        });
         return false;
       }
-      var fileProp = $(".modal-body #proposal").val();
-      var fileEst = $(".modal-body #estimate").val();
       if (!e.isDefaultPrevented()) {
-
-        var url = "api/updateOppFile.php";
+        var url = "api/updateProjFile.php";
         var formData = new FormData(this);
-        console.log(formData);
         $.ajax({
           type: "POST",
           url: url,
@@ -541,239 +598,303 @@ require_once('bodystart.php');
           processData: false,
           contentType: false,
           success: function(data) {
-            var alertBox = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + 'Files Uploaded' + '</div>';
-
-            $('#opportunity-form').find('.upld-messages').html(alertBox);
-            $(".alert-dismissable").fadeTo(2000, 500).slideUp(500, function() {
-              $(".alert-dismissable").alert('close');
+            // $("#filedesc").val('TRY THIS');
+            // $("#filecontent").val('');
+            $('#uploadFilefrm')[0].reset();
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'success',
+              title: 'Document Uploaded Successfully',
+              showConfirmButton: false,
+              timer: 2000
             });
-            console.log("FILA " + fileProp);
-
-            if (fileProp) {
-              $("#href-proposal").show();
-              $("#6B1").contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
-
-              $("#6B1").text(fileProp.replace(/^.*[\\\/]/, ''));
-            }
-            if (fileEst) {
-              $("#href-estimate").show();
-              $("#6B2").contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
-
-              $("#6B2").text(fileEst.replace(/^.*[\\\/]/, ''));
-            }
-
+            showDocument($("#projFileID").val());
 
           },
           error: function(data) {
-            console.log("FAIL " + data);
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'error',
+              title: 'Document Upload Failed',
+              showConfirmButton: false,
+              timer: 2000
+            });
 
           }
         });
-        $('#uploadFilefrm')[0].reset();
-        $('#fileUpload').modal('hide');
-
-        return false;
 
       }
       return false;
 
     });
+    showDocument($("#projFileID").val());
+
+  }); //End of ready
 
 
-  });
+  function showDocument(projid) {
+    if ($.fn.dataTable.isDataTable('#docList')) {
+      $('#docList').DataTable().destroy();
+    }
+    table = $('#docList').DataTable({
+      "paging": false,
+      "ordering": false,
+      "info": false,
+      "searching": true,
+      "ajax": {
+        url: "api/getFinanceList.php",
+        data: function(d) {
+          d.projectid = projid;
+          d.type = "OppDocument";
+          if($("#latestDoc").prop('checked') === true){
+            d.latest=1;
+          }
+        }
+      },
+      "columns": [
+        {"data": "FILE_TYPE"},{"data": "VERSION"},
+        {"data": "FILE_NAME"}, {"data": "FILE_DESC"}, {"data": "UPLOADED_BY"},
+        {"data": "UPLOADED_ON"},
+        {
+
+          "data": "FILE_ID",
+          "render": function(data, type, row, meta) {
+            dtID = data;
+            if (type === 'display') {
+              data =
+              '<span data-toggle="tooltip" data-placement="left" title="Download Document">'+
+              '<a   class="btn btn-default"  '+
+              ' href="api/getFile.php?fileid=' + dtID +
+                '"  aria-label="Left Align">' +
+                '<span class="glyphicon glyphicon-download" aria-hidden="true">' +
+                '</span>'+
+                '</a> </span>';
+
+            }
+            return data;
+          }
+        }
+
+      ]
+
+    });
+
+  }
 </script>
 
 
 <legend>View Sales Opportunities</legend>
-<p><i>[Double Click to Edit]</i></p>
 
-
-
-<div class="row">
-  <form id="opportunity-form" role="form">
-    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-
-      <table class="table table-striped">
-        <tr>
-          <th id="1A1">Opportunity Type</th>
-          <td id="1B1"></td>
-        </tr>
-        <tr>
-          <th id="2A1">Opportunity Name</th>
-          <td id="2B1">
-        </tr>
-    <tr>
-      <th id="3A1">Customer</th>
-      <td id="3B1"></td>
-    </tr>
-    <tr>
-      <th id="4A1">Status</th>
-      <td id="4B1"></td>
-    </tr>
-    <tr>
-      <th id="44A1">Watch</th>
-      <td id="44B1"></td>
-    </tr>
-    <tr>
-      <th id="5A1">Proposal Link</th>
-      <td id="5B1"></td>
-    </tr>
-
-    </table>
+<div>
+  <ul class='nav nav-pills  split-button-nav'>
+    <li class='active'>
+      <a data-toggle='tab' href='#GEN'>GENERAL</a>
+    </li>
+    <li>
+      <a data-toggle='tab' href='#DOC'>DOCUMENTS</a>
+    </li>
 </div>
 
-<div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+<div class='tab-content'>
+  <div class="tab-pane fade in active" id="GEN">
+    <p>
+      <p><i>[Double Click to Edit]</i></p>
+      <div class="row">
+        <form id="opportunity-form" role="form">
+          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+            <table class="table table-striped">
+              <tr>
+                <th id="1A1">Opportunity Type</th>
+                <td id="1B1"></td>
+              </tr>
+              <tr>
+                <th id="2A1">Opportunity Name</th>
+                <td id="2B1">
+              </tr>
+              <tr>
+                <th id="3A1">Customer</th>
+                <td id="3B1"></td>
+              </tr>
+              <tr>
+                <th id="4A1">Status</th>
+                <td id="4B1"></td>
+              </tr>
+              <tr>
+                <th id="44A1">Watch</th>
+                <td id="44B1"></td>
+              </tr>
+              <tr>
+                <th id="5A1">Proposal Link</th>
+                <td id="5B1"></td>
+              </tr>
+            </table>
+          </div>
 
-  <table class="table table-striped">
-    <tr>
-      <th id="1A5">Sales Stage</th>
-      <td id="1B5"></td>
-    </tr>
-    <tr>
-      <th id="2A5">Social Stage</th>
-      <td id="2B5"></td>
-    </tr>
-    <tr>
-      <th id="3A5">Assigned To</th>
-      <td id="3B5"></td>
-    </tr>
-    <tr>
-      <th id="4A5">Start Date</th>
-      <td id="4B5"></td>
-    </tr>
-    <tr>
-      <th id="5A5">Expected Date of Closure</th>
-      <td id="5B5"></td>
-    </tr>
-  </table>
-</div>
-<div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+            <table class="table table-striped">
+              <tr>
+                <th id="1A5">Sales Stage</th>
+                <td id="1B5"></td>
+              </tr>
+              <tr>
+                <th id="2A5">Social Stage</th>
+                <td id="2B5"></td>
+              </tr>
+              <tr>
+                <th id="3A5">Assigned To</th>
+                <td id="3B5"></td>
+              </tr>
+              <tr>
+                <th id="4A5">Start Date</th>
+                <td id="4B5"></td>
+              </tr>
+              <tr>
+                <th id="5A5">Expected Date of Closure</th>
+                <td id="5B5"></td>
+              </tr>
+            </table>
+          </div>
 
-  <div id="project" class="togglehid hidden">
-    <table class="table table-striped">
+          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
 
+            <div id="project" class="togglehid hidden">
+              <table class="table table-striped">
+                <tr>
+                  <th id="1A3A">Project Type</th>
+                  <td id="1B3A"></td>
+                </tr>
+                <tr>
+                  <th id="2A3A">Base Product</th>
+                  <td id="2B3A"></td>
+                </tr>
+                <tr>
+                  <th id="3A3A">Business</th>
+                  <td id="3B3A"></td>
+                </tr>
+              </table>
+            </div>
+            <div id="changerequest" class="togglehid hidden">
+              <table class="table table-striped">
+                <tr>
+                  <th id="1A3B">Project</th>
+                  <td id="1B3B"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="upld-messages"></div>
+          </div>
 
-      <tr>
-        <th id="1A3A">Project Type</th>
-        <td id="1B3A"></td>
-      </tr>
-      <tr>
-        <th id="2A3A">Base Product</th>
-        <td id="2B3A"></td>
-      </tr>
-      <tr>
-        <th id="3A3A">Business</th>
-        <td id="3B3A"></td>
-      </tr>
-    </table>
-  </div>
-  <!-- </div> -->
-  <div id="changerequest" class="togglehid hidden">
+          <div class="clearfix"></div>
 
-    <!-- <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4"> -->
+          <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
 
-    <table class="table table-striped">
+        <table class="table table-striped">
+          <tr>
+            <th id="1A2">Initial Proposed Amount</th>
+            <td id="1B2" class="text-right"></td>
+          </tr>
+          <tr>
+            <th id="2A2">Current Proposed Amount</th>
+            <td id="2B2" class="text-right"></td>
+          </tr>
+          <tr>
+            <th id="3A2">No Regret Amount</th>
+            <td id="3B2" class="text-right"></td>
+          </tr>
+        </table>
+      </div>
 
-      <tr>
-        <th id="1A3B">Project</th>
-        <td id="1B3B"></td>
-      </tr>
-    </table>
+          <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+        <table class="table table-striped">
+          <tr>
+            <th id="1A4">Opportunity Details</th>
+            <td id="1B4" data-type="textarea"></td>
+          </tr>
+        </table>
+      </div>
 
-  </div>
-  <div class="upld-messages"></div>
+          <div class="clearfix"></div>
 
-  <table class="table table-striped">
-    <tr>
-      <th id="6A1">Proposal Document</th>
-      <td id="6B1"></td>
-      <td id="href-proposal">
-        <a class="btn btn-default btn-sm" target="_blank">
-          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <th id="6A2">Estimation Sheet</th>
-      <td id="6B2"></td>
-      <td id="href-estimate">
-        <a class="btn btn-default btn-sm" target="_blank">
-          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-        </a>
-      </td>
+          <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+            <div class="inv-messages"></div>
+            <table id="invoices" class="table table-striped" width="100%">
+              <thead>
+                <tr>
+                  <th>Milestone</th>
+                  <th>Invoice Date</th>
+                  <th>Payment Date</th>
+                  <th>Milestone Percent</th>
+                  <th>Invoice Amount</th>
+                  <th>
+                    Action&nbsp
+                    <button type="button" class="btn btn-default pull-right" data-dttype="Add" data-dtinvid="0" data-toggle="modal" data-target="#invoicelist" aria-label="Left Align">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" float="right" class="btn btn-default pull-right" aria-label="Left Align" id="refresh">
+                      <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </form>
+      </div> <!-- END OF ROW DIV-->
+    </p>
+  </div> <!-- END OF GEN TAB CONTENT-->
 
-    </tr>
-    <tr>
-      <td id="6A3">
-        <button type="button" id="uploadBtn" class="btn btn-default btn-sm" data-dttype="upload" data-toggle="modal" data-target="#fileUpload" aria-label="Left Align">
-          <span class="glyphicon glyphicon-upload" aria-hidden="true">Upload</span>
-        </button>
-      </td>
+  <div class="tab-pane fade" id="DOC">
+    <p>
+      <div class="container" id="fileUpload">
+        <div class="row">
+          <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
+            <div class="table-responsive col-md-3">
+              <label for="fileType">File Type</label>
+              <select id="fileType" name="fileType" class="form-control">
+              </select>
+            </div>
+            <div class="table-responsive col-md-3">
+              <label for="fileDesc">File Description</label>
+              <input  id="fileDesc" name="fileDesc" class="form-control">
+            </div>
+            <div class="table-responsive col-md-3">
+              <label for="filecontent">Upload File</label>
+              <input type="file" class="form-control" id="filecontent" name="filecontent">
+            </div>
+            <input  type="hidden" id="projFileID" name="projFileID">
+            <input type="hidden" id="fileentity" name="fileentity" value="OPP">
+            <div class="table-responsive col-md-3">
+             <button type="submit" class="btn btn-primary" form="uploadFilefrm">Upload</button>
+            </div>
+          </form>
+          <div class="clearfix"></div>
+          <div class="table-responsive col-md-3 top30">
+              <label for="latestDoc">
+                <input type="checkbox" name="latestDoc" id="latestDoc" value="1" checked="checked">
+                Latest Document
+              </label>
+            </div>
+          <div id="tableholder" class="table-responsive col-md-12 row ">
+              <table id="docList" class="table table-striped" width="100%">
+                <thead>
+                  <tr>
+                    <th>DOCUMENT TYPE</th>
+                    <th>VERSION</th>
+                    <th>FILE NAME</th>
+                    <th>DESCRIPTION</th>
+                    <th>AUTHOR</th>
+                    <th>UPLOADED ON</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>  <!-- end of table holder -->
+        </div> <!-- end of table Row -->
+      </div>
+    </p>
+  </div> <!-- ENd of DOC -->
 
-    </tr>
-  </table>
-</div>
-
-
-<div class="clearfix"></div>
-
-<div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-
-  <table class="table table-striped">
-    <tr>
-      <th id="1A2">Initial Proposed Amount</th>
-      <td id="1B2" class="text-right"></td>
-    </tr>
-    <tr>
-      <th id="2A2">Current Proposed Amount</th>
-      <td id="2B2" class="text-right"></td>
-    </tr>
-    <tr>
-      <th id="3A2">No Regret Amount</th>
-      <td id="3B2" class="text-right"></td>
-    </tr>
-  </table>
-</div>
-
-<div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-  <table class="table table-striped">
-    <tr>
-      <th id="1A4">Opportunity Details</th>
-      <td id="1B4" data-type="textarea"></td>
-    </tr>
-  </table>
-</div>
-
-
-
-
-<div class="clearfix"></div>
-<div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-  <div class="inv-messages">
-  </div>
-  <table id="invoices" class="table table-striped" width="100%">
-    <thead>
-      <tr>
-        <th>Milestone</th>
-        <th>Invoice Date</th>
-        <th>Payment Date</th>
-        <th>Milestone Percent</th>
-        <th>Invoice Amount</th>
-        <th>
-          Action&nbsp
-          <button type="button" class="btn btn-default pull-right" data-dttype="Add" data-dtinvid="0" data-toggle="modal" data-target="#invoicelist" aria-label="Left Align">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-          </button>
-          <button type="button" float="right" class="btn btn-default pull-right" aria-label="Left Align" id="refresh">
-            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-          </button>
-        </th>
-      </tr>
-    </thead>
-  </table>
-</div>
-</form>
-</div>
+</div> <!-- END OF TAB CONTENT-->
 
 <!-- Invoice Modal  -->
 <div class="modal fade" id="invoicelist" tabindex="-1" role="dialog" aria-labelledby="invoicelistLabel">
@@ -830,9 +951,8 @@ require_once('bodystart.php');
   </div>
 </div>
 
-
 <!-- File Upload Modal  -->
-<div class="modal fade" id="fileUpload" tabindex="-1" role="dialog" aria-labelledby="fileUploadLabel">
+<!-- <div class="modal fade" id="fileUpload" tabindex="-1" role="dialog" aria-labelledby="fileUploadLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -862,7 +982,7 @@ require_once('bodystart.php');
 
     </div>
   </div>
-</div>
+</div> -->
 
 <?php
 

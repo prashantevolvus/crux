@@ -324,7 +324,6 @@ require_once('bodystart.php');
       populateForm(projectid);
 
       $('#refreshProj').on('click', function(event) {
-        console.log("refresh "+$("#projid").val());
         populateForm($("#projid").val());
       });
 
@@ -373,7 +372,6 @@ require_once('bodystart.php');
 
     $('#EXTN').on('click', function(event) {
       event.preventDefault(); // To prevent following the link (optional)
-      console.log("FIRED");
       (async () => {
         const { value: extnA } = await Swal.fire({
           title: 'How many days of Extension is needed?',
@@ -394,7 +392,6 @@ require_once('bodystart.php');
             }
           }
         });
-        console.log(extnA);
         if(extnA){
           $.post(
             "api/updateProjectExtension.php", {
@@ -420,16 +417,19 @@ require_once('bodystart.php');
     });
 
     $('#fileUpload').on('submit', '#uploadFilefrm', function(e) {
-      console.log("TEST");
       if (! $("#filecontent").val() || !$("#fileDesc").val()) {
-        alert("Text and File Mandatory");
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'error',
+          title: "Description and Document is Mandatory",
+          showConfirmButton: false,
+          timer: 2000
+        });
         return false;
       }
       if (!e.isDefaultPrevented()) {
-        console.log("PROJECT "+$("#projFileID").val());
         var url = "api/updateProjFile.php";
         var formData = new FormData(this);
-        console.log(formData);
         $.ajax({
           type: "POST",
           url: url,
@@ -443,17 +443,18 @@ require_once('bodystart.php');
             Swal.fire({
               // position: 'top-end',
               icon: 'success',
-              title: 'File Uploaded Successfully',
+              title: 'Document Uploaded Successfully',
               showConfirmButton: false,
               timer: 2000
             });
+            showDocument($("#projid").val());
 
           },
           error: function(data) {
             Swal.fire({
               // position: 'top-end',
-              icon: 'fail',
-              title: 'File Upload Failed',
+              icon: 'error',
+              title: 'Document Upload Failed',
               showConfirmButton: false,
               timer: 2000
             });
@@ -874,12 +875,17 @@ require_once('bodystart.php');
     showBudgetDetail(projid);
 
     showCRDetail(projid);
+    showDocument(projid);
     showInvoicePie(projid);
     showInvoiceLine(projid);
     showLabourLine(projid);
     showLabourBar(projid);
     showLabourPie(projid);
     showFinSummary(projid);
+
+    $('#latestDoc').on('change', function() {
+      showDocument(projid);
+    });
 
   }
 
@@ -1152,7 +1158,7 @@ require_once('bodystart.php');
           }
         },
         {
-          "className": "side-by-side",
+          //"className": "side-by-side",
           "data": "INVOICE_ID",
           "render": function(data, type, row, meta) {
             dtID = data;
@@ -1266,6 +1272,56 @@ require_once('bodystart.php');
           "render": function(data, type, row, meta) {
             if (type === 'display') {
               data = amtFormat(data);
+            }
+            return data;
+          }
+        }
+
+      ]
+
+    });
+
+  }
+
+
+  function showDocument(projid) {
+    if ($.fn.dataTable.isDataTable('#docList')) {
+      $('#docList').DataTable().destroy();
+    }
+    table = $('#docList').DataTable({
+      "paging": false,
+      "ordering": false,
+      "info": false,
+      "searching": true,
+      "ajax": {
+        url: "api/getFinanceList.php",
+        data: function(d) {
+          d.projectid = projid;
+          d.type = "Document";
+          if($("#latestDoc").prop('checked') === true){
+            d.latest=1;
+          }
+        }
+      },
+      "columns": [
+        {"data": "CR_NAME"},{"data": "FILE_TYPE"},{"data": "VERSION"},
+        {"data": "FILE_NAME"}, {"data": "FILE_DESC"}, {"data": "UPLOADED_BY"},
+        {"data": "UPLOADED_ON"},
+        {
+
+          "data": "FILE_ID",
+          "render": function(data, type, row, meta) {
+            dtID = data;
+            if (type === 'display') {
+              data =
+              '<span data-toggle="tooltip" data-placement="left" title="Download Document">'+
+              '<a   class="btn btn-default"  '+
+              ' href="api/getFile.php?fileid=' + dtID +
+                '"  aria-label="Left Align">' +
+                '<span class="glyphicon glyphicon-download" aria-hidden="true">' +
+                '</span>'+
+                '</a> </span>';
+
             }
             return data;
           }
@@ -1420,7 +1476,6 @@ require_once('bodystart.php');
     var data2 =[];
     var labels =[];
 
-    console.log("showFinSummary");
     $.getJSON({
       url: "api/getFinanceList.php",
       data: {
@@ -1430,7 +1485,6 @@ require_once('bodystart.php');
       success: function (response) {//response is value returned from php
         var i = 0;
         response['data'].forEach( function(element) {
-          console.log(element);
           data1.push({x:'PRICE',y:parseInt(element['price'])});
           data1.push({x:'RECEIVED',y:parseInt(element['received'])});
           data1.push({x:'BUDGET',y:parseInt(element['budget'])});
@@ -1571,12 +1625,12 @@ require_once('bodystart.php');
         <a data-toggle='tab' href='#CHGREQ'>CHANGE REQUEST</a>
       </li>
       <li>
-        <a data-toggle='tab' href='#FILES'>PROJECT FILES</a>
+        <a data-toggle='tab' href='#FILES'>DOCUMENTS</a>
       </li>
 
     </ul>
   </div>
-  <br />
+  <br/>
 
   <div class='tab-content'>
     <div class="tab-pane fade in active" id="GEN">
@@ -1848,7 +1902,7 @@ require_once('bodystart.php');
         </div>
         <div class="clearfix"></div>
 
-      <div class="table-responsive col-md-9">
+      <div class="table-responsive col-md-12">
         <table id="INVDET" class="table table-striped" width="100%">
           <thead>
             <tr>
@@ -1864,9 +1918,6 @@ require_once('bodystart.php');
           </thead>
         </table>
       </div>
-
-
-
 
       </p>
     </div>
@@ -2024,55 +2075,74 @@ require_once('bodystart.php');
     </div>
 
     <div class="tab-pane fade" id="FILES">
-      <div class="container" id="fileUpload">
-        <div class="row">
+      <p>
+        <div class="container" id="fileUpload">
+          <div class="row">
+            <div class="table-responsive col-md-3 crorproj">
+              <label for="typeProj-1">
+                <input type="radio" name="typeProj" id="typeProj-1" value="1" checked="checked">
+                 Project
+              </label>
+              <label class="radio-inline" for="typeProj-1">
+                <input type="radio" name="typeProj" id="typeProj-2" value="2">
+                Change Request
+              </label>
+            </div>
+            <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
+              <div class="row top10">
+                <div class="table-responsive col-md-3 bottom10" id="crdiv">
+                  <label for="changerequest">Change Request</label>
+                    <select id="changerequest" name="changerequest" class="form-control"></select>
+                </div>
+              </div>
 
-        <div class="table-responsive col-md-3 crorproj">
+              <div class="clearfix"></div>
 
-          <label for="typeProj-1">
-            <input type="radio" name="typeProj" id="typeProj-1" value="1" checked="checked">
-             Project
-          </label>
-          <label class="radio-inline" for="typeProj-1">
-            <input type="radio" name="typeProj" id="typeProj-2" value="2">
-            Change Request
-          </label>
-        </div>
-      <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
-
-      </div>
-        <div class="row">
-          <div class="table-responsive col-md-3" id="crdiv">
-            <label for="changerequest">Change Request</label>
-            <select id="changerequest" name="changerequest" class="form-control">
-            </select>
+              <div class="table-responsive col-md-3">
+                <label for="fileType">File Type</label>
+                <select id="fileType" name="fileType" class="form-control">
+                </select>
+              </div>
+              <div class="table-responsive col-md-3">
+                <label for="fileDesc">File Description</label>
+                <input  id="fileDesc" name="fileDesc" class="form-control">
+              </div>
+              <div class="table-responsive col-md-3">
+                <label for="filecontent">Upload File</label>
+                <input type="file" class="form-control" id="filecontent" name="filecontent">
+              </div>
+              <input  type="hidden" id="projFileID" name="projFileID">
+              <input type="hidden" id="fileentity" name="fileentity">
+              <div class="table-responsive col-md-3">
+               <button type="submit" class="btn btn-primary" form="uploadFilefrm">Upload</button>
+              </div>
+            </form>
+            <div class="container top30">
+              <div class="table-responsive col-md-3 top30">
+                <label for="latestDoc">
+                  <input type="checkbox" name="latestDoc" id="latestDoc" value="1" checked="checked">
+                  Latest Document
+                </label>
+              </div>
+              <div id="tableholder" class="table-responsive col-md-12 row ">
+                <table id="docList" class="table table-striped" width="100%">
+                  <thead>
+                    <tr>
+                      <th>CR NAME</th>
+                      <th>DOCUMENT TYPE</th>
+                      <th>VERSION</th>
+                      <th>FILE NAME</th>
+                      <th>DESCRIPTION</th>
+                      <th>AUTHOR</th>
+                      <th>UPLOADED ON</th>
+                      <th>ACTION</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>  <!-- end of table holder -->
+            </div> <!-- end of table Container -->
           </div>
-          <div class="clearfix"></div>
-
-        <div class="table-responsive col-md-3">
-          <label for="fileType">File Type</label>
-          <select id="fileType" name="fileType" class="form-control">
-          </select>
-        </div>
-        <div class="table-responsive col-md-3">
-          <label for="fileDesc">File Description</label>
-          <input  id="fileDesc" name="fileDesc" class="form-control">
-        </div>
-        <div class="table-responsive col-md-3">
-          <label for="filecontent">Upload File</label>
-          <input type="file" class="form-control" id="filecontent" name="filecontent">
-        </div>
-        <input  type="hidden" id="projFileID" name="projFileID">
-        <input type="hidden" id="fileentity" name="fileentity">
-        <div class="table-responsive col-md-3">
-         <button type="submit" class="btn btn-primary" form="uploadFilefrm">Upload</button>
-        </div>
-      </div>
-
-      </form>
-
-    </div>
-
+      </p>
     </div> <!-- ENd of FILE -->
 
 

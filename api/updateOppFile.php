@@ -99,7 +99,7 @@
                       )
                       values (
                         '{$filename}',$filesize,'{$filetype}',
-                        '{$fileData}','OPP',$oppid,$empno,1,{$version}
+                        '{$fileData}','OPP',$oppid,$empno,2,{$version}
                       )";
             mysqli_query($con, $sql) or die("<b>Error:</b> Problem on estimate Insert<br/>" . mysqli_error($con));
             $insPK = mysqli_insert_id($con);

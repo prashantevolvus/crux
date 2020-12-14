@@ -1,8 +1,13 @@
 <?php
 require_once('../dbconn.php');
 
-$projID = $_GET["projectid"];
-$retType = $_GET["type"];
+$projID = empty($_GET["projectid"])?"":$_GET["projectid"];
+$retType = empty($_GET["type"])?"":$_GET["type"];
+
+$custID = empty($_GET["customerid"])?"":$_GET["customerid"];
+
+
+
 
 $latest = !empty($_GET["latest"])?$_GET["latest"]:"";
 
@@ -109,6 +114,30 @@ if ($retType == "InvoiceDetail") {
   WHERE B.ID = {$projID}
   ORDER BY INVOICE_DATE
   ";
+}
+
+if ($retType == "invoiceCustList") {
+    $sql="
+    SELECT b.project_name PROJECT_NAME, EXPECTED_INVOICE_DATE INVOICE_DATE,
+    description INVOICE_DESCRIPTION,
+    project_ccy_amount INVOICE_AMT,INVOICE_ID
+  FROM project_invoice A
+  INNER JOIN project_details B ON A.PROJECT_ID = B.ID
+  INNER JOIN milestone C ON C.ID = A.MILE_STONE
+  WHERE b.id = {$projID} and a.status = 'PENDING' and LCY_AMOUNT <> 0
+  ORDER BY INVOICE_DATE
+  ";
+
+  //   MILESTONE_DESC,INVOICE_NO,
+  // CASE WHEN INVOICED_DATE IS NULL OR INVOICED_DATE = '0000-00-00' THEN EXPECTED_INVOICE_DATE ELSE INVOICED_DATE END INVOICE_DATE ,
+  // CASE WHEN LCY_CR_DATE IS NULL OR LCY_CR_DATE = '0000-00-00' THEN EXPECTED_PAID_DATE ELSE LCY_CR_DATE END PAY_DATE ,
+  // CASE
+  //   WHEN A.STATUS = 'PENDING' THEN
+  //       DATEDIFF(CURDATE() , CASE WHEN INVOICED_DATE IS NULL OR INVOICED_DATE = '0000-00-00' THEN EXPECTED_INVOICE_DATE ELSE INVOICED_DATE END)
+  //   WHEN A.STATUS = 'INVOICED' THEN
+  //       DATEDIFF(CURDATE() ,   CASE WHEN LCY_CR_DATE IS NULL OR LCY_CR_DATE = '0000-00-00' THEN EXPECTED_PAID_DATE ELSE LCY_CR_DATE END)
+  //   ELSE 0
+  // END AGEING,
 }
 
 if ($retType == "Budget") {

@@ -30,6 +30,8 @@ require_once('common.php');
 <!-- DATATABLE -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.21/kt-2.5.2/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.21/kt-2.5.2/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+
 
 
 <!-- X-EDITABLE -->
@@ -38,6 +40,7 @@ require_once('common.php');
 
 <!-- LOCAL -->
 <script type="text/javascript" src="script/typeahead.bundle.min.js"></script>
+
 <script type="text/javascript" src="script/crux.js"></script>
 
 
@@ -171,6 +174,46 @@ $(".tt-hint").addClass("form-control");
 .bottom15 { margin-bottom:15px; }
 .bottom17 { margin-bottom:17px; }
 .bottom30 { margin-bottom:30px; }
+
+.right10 { margin-right:10px; }
+
+.left15 { margin-right:10px; }
+
+
+@media (min-width: 768px) {
+    .h-md-100 { height: 100vh; }
+}
+.btn-round { border-radius: 15px; }
+.bg-indigo { background: indigo; }
+.text-cyan { color: #35bdff; }
+
+
+.divborder {
+    outline: 1px solid orange;
+}
+
+.divborder1 {
+    outline: 1px solid blue;
+}
+
+.divborder2 {
+    outline: 1px solid green;
+}
+
+.divborder3 {
+    outline: 1px solid black;
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
 
 </style>
 

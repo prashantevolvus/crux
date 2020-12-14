@@ -2088,13 +2088,13 @@ require_once('bodystart.php');
                 Change Request
               </label>
             </div>
+            <div class="clearfix"></div>
+
             <form id="uploadFilefrm" enctype="multipart/form-data" method="post" action="api/uploadFiles.php" role="form">
-              <div class="row top10">
                 <div class="table-responsive col-md-3 bottom10" id="crdiv">
                   <label for="changerequest">Change Request</label>
                     <select id="changerequest" name="changerequest" class="form-control"></select>
                 </div>
-              </div>
 
               <div class="clearfix"></div>
 

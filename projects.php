@@ -22,6 +22,10 @@ require_once('bodystart.php');
 
     $("#proj-info").hide();
 
+    $.fn.editable.defaults.mode = 'popup';
+    $.fn.editable.defaults.toggle = 'dblclick';
+    $.fn.editable.defaults.url = 'api/editProj.php';
+
 
     fillDropDown("api/getFileTypes.php", "#fileType");
 
@@ -249,13 +253,24 @@ require_once('bodystart.php');
         }
       }
     });
+    $('#G4B1').editable({
+      type: 'text',
+      sourceCache: false,
+      pk: 0,
+      value: '',
+      title: "Enter SAS/SSN Details",
+      placement: 'right',
+      datepicker: {
+        weekStart: 1
+      }
+    });
     $('#G1B2').editable({
       type: 'textarea',
       sourceCache: false,
       pk: 0,
       value: '',
       title: "Enter Project Scope",
-      placement: 'right',
+      placement: 'top',
       datepicker: {
         weekStart: 1
       },
@@ -287,7 +302,7 @@ require_once('bodystart.php');
       pk: 0,
       value: '',
       title: "Enter Success Factor",
-      placement: 'right',
+      placement: 'top',
       datepicker: {
         weekStart: 1
       },
@@ -467,6 +482,7 @@ require_once('bodystart.php');
 
     });
 
+
   });//End of ready function
 
   function showActionButton(status, projid) {
@@ -638,6 +654,9 @@ require_once('bodystart.php');
 
       $('#G1B1').editable('setValue', data[0]['project_details']);
       $('#G1B1').editable('option', 'pk', projid);
+
+      $('#G4B1').editable('setValue', data[0]['ssn_no']);
+      $('#G4B1').editable('option', 'pk', projid);
 
       $('#G2B1').editable('setValue', data[0]['objectives']);
       $('#G2B1').editable('option', 'pk', projid);
@@ -1937,6 +1956,10 @@ require_once('bodystart.php');
           <tr>
             <th id="G3A1"> More Details</th>
             <td id="G3B1"></td>
+          </tr>
+          <tr>
+            <th id="G4A1">SAS/SSN</th>
+            <td id="G4B1"></td>
           </tr>
         </table>
       </div>

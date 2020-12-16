@@ -12,7 +12,7 @@ SELECT a.id ,a.project_type_id, customer_id,a.project_name,
        budget_initiated,budget_approved,excess_budget_initiated,excess_budget_approved,
        invoice_pending_lcy_amt,invoiced_lcy_amt,received_lcy_amt,
        base_labour_cost, unified_labour_cost,expense_amt,
-       project_details,objectives,scope,success_factor,
+       project_details,objectives,scope,success_factor,a.ssn_no,
        case when status not in('DELETED', 'CLOSED')
           then datediff(planned_end_date,CURRENT_DATE)+ifnull(extension,0) else 0 end noofdays,
           datediff(a.planned_end_date,a.planned_start_date) planned_duration,

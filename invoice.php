@@ -131,7 +131,6 @@ class InvoiceUAE extends Invoice {
     $pdf->Cell(120 ,5,' ',0,0,'R');
     $pdf->Cell(70 ,5,'DATE: '.$this->invoicedate,0,1,'R');
 
-    $pdf->Cell(120 ,5,' ',0,1,'');
 
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(71 ,5,'FROM',0,1);
@@ -160,7 +159,6 @@ class InvoiceUAE extends Invoice {
     }
 
 
-    $pdf->Cell(65 ,5,'',0,1,'C');
 
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(71 ,5,'TO',0,1);
@@ -203,12 +201,12 @@ class InvoiceUAE extends Invoice {
 
     // $pdf->Cell(189 ,10,'',0,1);
 
-    $pdf->Cell(50 ,10,'',0,1);
+    $pdf->Cell(50 ,4,'',0,1);
 
     $pdf->SetFont('Arial','B',10);
     $table = array(array('NO', 'DESCRIPTION', 'UNIT PRICE','LINE UNIT'));
     $widths = array(15,100,35,35);
-    $pdf->plot_table($widths, 5, $table);
+    $pdf->plot_table($widths, 5, $table,1,array('C','C','C','C'));
     $pdf->SetFont('Arial','',10);
 
     $ar = array();
@@ -221,7 +219,7 @@ class InvoiceUAE extends Invoice {
       $ctr += 1;
     }
     $widths = array(15,100,35,35);
-    $pdf->plot_table($widths, 5, $ar );
+    $pdf->plot_table($widths, 5, $ar,1,array('C','L','R','R') );
 
 
 
@@ -238,24 +236,24 @@ class InvoiceUAE extends Invoice {
     $pdf->Cell(35 ,6,' ',1,0,'C');
     $pdf->Cell(35 ,6,$tot+$tot*0.05,1,1,'R');
 
-    $pdf->Cell(100 ,6,' ',0,1,'C');
+    $pdf->Cell(100 ,3,' ',0,1,'C');
     $pdf->Cell(100 ,6,' ',0,0,'C');
     $pdf->Cell(100 ,6,'For '.$this->vendor,0,1,'C');
 
-    $pdf->Cell(100 ,15,' ',0,1,'C');
+    $pdf->Cell(100 ,10,' ',0,1,'C');
     $pdf->Cell(100 ,10,' ',0,0,'C');
 
     $pdf->Cell(100 ,10,'AUTHORISED SIGNATORY ',0,1,'C');
 
-    $pdf->Line(10,193,195,193);
-    $pdf->Cell(50 ,5,' ',0,1,'C');
+    //$pdf->Line(10,193,195,193);
+    // $pdf->Cell(50 ,1,' ',0,1,'C');
 
     $pdf->SetFont('Arial','B',10);
     $finaltot=$tot+$tot*0.05;
     $pdf->Cell(200 ,10,'Please transfer '.$this->currency.' '.$finaltot.' to the '.$this->currency.' account mentioned below ',0,1);
     $pdf->SetFont('Arial','',10);
 
-    $pdf->Cell(50 ,5,' ',0,1,'L');
+    $pdf->Cell(50 ,1,' ',0,1,'L');
     $pdf->Cell(50 ,5,'In Favour Of',1,0,'L');
     $pdf->Cell(85 ,5,$this->vendor,1,1,'L');
 

@@ -264,6 +264,16 @@ require_once('bodystart.php');
         weekStart: 1
       }
     });
+
+    $('#G5B1').editable({
+      type: 'select',
+      sourceCache: false,
+      pk: 0,
+      value: '',
+      title: "Enter Currency",
+      source: "api/getCCYList.php"
+    });
+
     $('#G1B2').editable({
       type: 'textarea',
       sourceCache: false,
@@ -343,13 +353,6 @@ require_once('bodystart.php');
       });
 
     $('button[id^="ACT"]').on("click", function(event) {
-      // const swalWithBootstrapButtons = Swal.mixin({
-      //   customClass: {
-      //     confirmButton: 'btn btn-default',
-      //     cancelButton: 'btn btn-danger'
-      //   },
-      //   buttonsStyling: false
-      // });
       swal.fire({
         title: "Project Status will be Updated to "+$(this).attr("data-status"),
         text: 'Are you sure?',
@@ -657,6 +660,9 @@ require_once('bodystart.php');
 
       $('#G4B1').editable('setValue', data[0]['ssn_no']);
       $('#G4B1').editable('option', 'pk', projid);
+
+      $('#G5B1').editable('setValue', data[0]['ccy_code']);
+      $('#G5B1').editable('option', 'pk', projid);
 
       $('#G2B1').editable('setValue', data[0]['objectives']);
       $('#G2B1').editable('option', 'pk', projid);
@@ -1960,6 +1966,10 @@ require_once('bodystart.php');
           <tr>
             <th id="G4A1">SAS/SSN</th>
             <td id="G4B1"></td>
+          </tr>
+          <tr>
+            <th id="G5A1">Currency</th>
+            <td id="G5B1"></td>
           </tr>
         </table>
       </div>

@@ -22,8 +22,8 @@ $projid = $_POST['pk'];
 //Array mapping of UI field to database field
 $arr = array("G1B1"=>"project_details", "G2B1"=>"objectives",
              "G1B2"=>"scope", "G2B2"=>"success_factor",
-             "G4B1"=>"ssn_no"
-             
+             "G4B1"=>"ssn_no","G5B1"=>"ccy_code"
+
           );
 
 

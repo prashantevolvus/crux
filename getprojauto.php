@@ -1,7 +1,7 @@
 <?php
 require_once('dbconn.php');
 
-$searchTerm = strtoupper($_GET['query']);
+$searchTerm = strtoupper(isset($_GET['query'])?$_GET['query']:"");
 
 
 $con=getConnection();
@@ -9,7 +9,7 @@ $sql="
 SELECT a1.id , a1.project_name,
        o.name,
        Status,
-	   concat(o.name,' ',a1.project_name ) searchValue     
+	   concat(o.name,' ',a1.project_name ) searchValue
   FROM project_details a1
        INNER JOIN hr_mysql_live.ohrm_customer o
           ON a1.ohrm_customer_id = o.customer_id
@@ -33,7 +33,7 @@ while($row = mysqli_fetch_array($result))
                 'cust' => $row['name'],
                 'status' => $row['Status']
         );
-	
+
 }
 //return json data
     echo json_encode($return_arr);

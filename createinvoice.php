@@ -6,22 +6,22 @@ require_once('bodystart.php');
 ?>
 
 <script type="text/javascript">
-var projSelected=false;
-var gProjID;
-var supList = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: 'getprojauto.php',
-  remote: {
-    url: 'getprojauto.php?query=%QUERY',
-    wildcard: '%QUERY'
-  }
-});
+  var projSelected=false;
+  var gProjID;
+  var supList = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: 'getprojauto.php',
+    remote: {
+      url: 'getprojauto.php?query=%QUERY',
+      wildcard: '%QUERY'
+    }
+  });
 
   $(document).ready(function() {
-
-    fillDropDown("api/getInvoiceFormatList.php", "#format");
-
+    $("#hidestart").hide();//show only when project is selected
+    fillDropDown("api/getInvoiceFormatList.php", "#format"); //get all the invoice formats and fill dropdown
+    //project auto complete
     $('#projSearch .typeahead').typeahead(null, {
       display: 'projname',
       highlight: true,
@@ -58,21 +58,74 @@ var supList = new Bloodhound({
       updatePDF();
     });
 
-    var oTable = $('#invoiceList').dataTable();
-    oTable.on( 'select', function ( e, dt, type, indexes ) {
+    //var oTable = $('#invoiceList').dataTable();
+    $('#invoiceList').dataTable().on( 'select', function ( e, dt, type, indexes ) {
       if ( type === 'row' ) {
         updatePDF();
       }
     });
 
 
+    $('#geninvoice').on('click', function(event) {
+      var json = buildInvoiceJSON();
+      var fls  = json.invoiceproj == "" ||
+        json.invFormat == "" ||
+          json.invDate == "" ||
+            json.invJob == "" ||
+              json.invList.length == 0;
+      if(fls) {
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'error',
+          title: "Fill in All the details",
+          showConfirmButton: false,
+          timer: 2000
+        });
+        return false;
+      }
+      var inv = "";
+      $('#invnoformat').val().split("$").forEach( function(item,index){
+          if(item.slice(0,2) == "TX"){
+            inv += item.slice(2).split("#")[1];
+          }
+          if(item.slice(0,2) == "FY"){
+            inv += "20-21";
+          }
+          if(item.slice(0,2) == "RN"){
+            inv += "870"
+          }
+      });
+
+      $.ajax({
+          type: "POST",
+          url: "generateInvoicePDF.php",
+          async: false,
+          //convert JSON to string and then encode it with base64
+          data: {
+            q: btoa(JSON.stringify(buildInvoiceJSON())),
+            inv_no:inv
+          },
+          dataType:"application/pdf",
+          complete: function(data){
+            var link = document.createElement('a');
+            link.href = data.responseText;
+            link.download = "invoice.pdf";
+            link.click();
+          }
+      });
+
+      //[Log] $TXT#BLR $FY$TXT#/$RNUM#A1 (createinvoice.php, line 485)
+
+    });
+
+
+
 
   });//End of ready
 
-  function updatePDF(){
-    if(!projSelected){
-      return false;
-    }
+
+  function buildInvoiceJSON(){
+
     var arrInv = [];
     if ($.fn.dataTable.isDataTable('#invoiceList')) {
       var oTable = $('#invoiceList').dataTable().api();
@@ -86,8 +139,8 @@ var supList = new Bloodhound({
       });
 
     }
-    var reqJSON  = {
-      projID: 23,
+    return {
+      projID: gProjID,
       invList: arrInv,
       invFormat : $('#format').val(),
       invNO:$('#invoiceno').val(),
@@ -105,9 +158,14 @@ var supList = new Bloodhound({
       venAdd3:$('#vendoradd3').val(),
       venTRN:$('#vendortrn').val(),
       venGST:$('#vendorgst').val(),
+      venPAN:$('#vendorpan').val(),
 
-
-
+      bankName:$('#bankname').val(),
+      branchName:$('#branchname').val(),
+      ifsc:$('#ifsc').val(),
+      iban:$('#iban').val(),
+      swift:$('#swift').val(),
+      acctNO:$('#acctno').val(),
 
       custName:$('#customername').val(),
       custAdd1:$('#customeradd1').val(),
@@ -117,15 +175,27 @@ var supList = new Bloodhound({
       custShipAdd2:$('#customershipadd2').val(),
       custShipAdd3:$('#customershipadd3').val(),
       custTRN:$('#customertrn').val(),
-      custGST:$('#customergst').val()
+      custGST:$('#customergst').val(),
+
+      tax1:$('#tax1').val(),
+      tax2:$('#tax2').val(),
+      tax3:$('#tax3').val(),
+      amtFormat:$('#amtformat').val()
 
     }
+  }
+
+  function updatePDF(){
+    if(!projSelected){
+      return false;
+    }
+
     $.ajax({
         type: "GET",
         url: "invoice.php",
         async: false,
         //convert JSON to string and then encode it with base64
-        data: {q: btoa(JSON.stringify(reqJSON))},
+        data: {q: btoa(JSON.stringify(buildInvoiceJSON()))},
         dataType:"application/pdf",
         complete: function(data){
           $('#pdf-preview').attr('src',data.responseText);
@@ -142,12 +212,12 @@ var supList = new Bloodhound({
       async:false,
       url: "api/getInvoiceData.php?projID=" + projid+"&formatID="+$("#format").val(),
       success: function(data) {
-        $('#invoiceproj').val(data[0]['project_details']);
-        $('#invoicessn').val(data[0]['ssn_no']);
-        $('#customername').val(data[0]['name_on_invoice']);
-        $('#customeradd1').val(data[0]['to_add1']);
-        $('#customeradd2').val(data[0]['to_add2']);
-        $('#customeradd3').val(data[0]['to_add3']);
+        $('#invoiceproj').val(data[0]['project_details']!=""?data[0]['project_details']:"");
+        $('#invoicessn').val(data[0]['ssn_no']?data[0]['ssn_no']:"");
+        $('#customername').val(data[0]['name_on_invoice']?data[0]['name_on_invoice']:"NOT DEFINED");
+        $('#customeradd1').val(data[0]['to_add1']?data[0]['to_add1']:"NOT DEFINED");
+        $('#customeradd2').val(data[0]['to_add2']?data[0]['to_add2']:"NOT DEFINED");
+        $('#customeradd3').val(data[0]['to_add3']?data[0]['to_add3']:"");
         $('#customertrn').val(data[0]['trn_no']);
         $('#customergst').val(data[0]['gst_no']);
         $('#vendorname').val(data[0]['vendor_name']);
@@ -156,15 +226,38 @@ var supList = new Bloodhound({
         $('#vendoradd3').val(data[0]['vendor_add3']);
         $('#vendortrn').val(data[0]['vendor_trn']);
         $('#vendorgst').val(data[0]['vendor_gst']);
+        $('#vendorpan').val(data[0]['pan_no']);
+
         $('#customershipadd1').val(data[0]['ship_add1']);
         $('#customershipadd2').val(data[0]['ship_add2']);
         $('#customershipadd3').val(data[0]['ship_add3']);
+        $('#invoicecur').val(data[0]['ccy_code']);
+
+        $('#tax1').val(data[0]['tax1']);
+        $('#tax2').val(data[0]['tax2']);
+        $('#tax3').val(data[0]['tax3']);
+
+        $('#bankname').val(data[0]['inv_bank']);
+        $('#branchname').val(data[0]['inv_branch']);
+        $('#ifsc').val(data[0]['inv_ifsc']);
+        $('#iban').val(data[0]['inv_iban']);
+        $('#swift').val(data[0]['inv_swift']);
+        $('#acctno').val(data[0]['inv_acct_no']);
+        $('#amtformat').val(data[0]['amt_format']);
+        $('#invnoformat').val(data[0]['inv_no_format']);
+
+
+
+
+
+
       }
   });
     // $.getJSON(, );
   }
 
   function populateForm(projid) {
+    $("#hidestart").show();
     if ($.fn.dataTable.isDataTable('#invoiceList')) {
       $('#invoiceList').DataTable().destroy();
     }
@@ -239,13 +332,21 @@ var supList = new Bloodhound({
 <div class="container ">
 
   <div class="row row-no-gutters" >
+
   <div class="col-xs-8">
     <div class="row row-no-gutters" >
-      <div class="input-group col-lg-6" id="projSearch">
-        <label for="prj">Choose Project</label>
-        <input id="prj" name="prj" type="input" placeholder="Enter Project Name" class="form-control input-md typeahead" required=""  autocomplete="sprcatre">
+      <div class="input-group table-responsive col-xs-6 right20" id="projSearch">
+          <label for="prj">Choose Project</label>
+          <input id="prj" name="prj" type="input" placeholder="Enter Project Name" class="form-control input-md typeahead" required=""  autocomplete="sprcatre">
+      </div>
+      <div class="table-responsive col-xs-3 left15" >
+        <button type="button" class="btn btn-primary " id="geninvoice" >Generate Invoice
+          <i class="glyphicon glyphicon-refresh"></i>
+        </button>
       </div>
     </div>
+
+    <div id="hidestart">
     <div class="row row-no-gutters top15" >
       <div class="table-responsive col-lg-3 right10">
         <label for="format">Invoice Format</label>
@@ -254,17 +355,17 @@ var supList = new Bloodhound({
       </div>
       <div class="table-responsive col-lg-3  right10">
         <label for="invoicedate">Invoice Date</label>
-        <input type="date" class="form-control" id="invoicedate" name="invoicedate"></input>
+        <input type="date" class="form-control" id="invoicedate" name="invoicedate" required></input>
       </div>
-      <div class="table-responsive col-lg-3">
+      <div class="table-responsive col-lg-3 right10">
         <label for="invoicejob">Job</label>
-        <input type="text" class="form-control" id="invoicejob" name="invoicejob"></input>
+        <input type="text" class="form-control" id="invoicejob" name="invoicejob" required></input>
       </div>
     </div>
     <div class="row row-no-gutters">
       <div class="table-responsive col-lg-6 top15 right10" >
         <label for="invoiceproj">PROJECT DETAILS</label>
-        <textarea class="form-control" id="invoiceproj" name="invoiceproj"></textarea>
+        <textarea class="form-control" id="invoiceproj" name="invoiceproj" required></textarea>
       </div>
       <div class="table-responsive col-lg-3 top15" >
         <label for="invoicessn">SAC/HSN CODE</label>
@@ -296,6 +397,7 @@ var supList = new Bloodhound({
 <input type="hidden" id="vendoradd3" value="DEFAULT ADD3"/>
 <input type="hidden" id="vendortrn" value="DEFAULT TRN1"/>
 <input type="hidden" id="vendorgst" value="DEFAULT VEND GST"/>
+<input type="hidden" id="vendorpan" value="DEFAULT VEND PAN"/>
 
 
 
@@ -313,11 +415,26 @@ var supList = new Bloodhound({
 <input type="hidden" id="customershipadd2" value="DEFAULT ADD1"/>
 <input type="hidden" id="customershipadd3" value="DEFAULT ADD1"/>
 
+<input type="hidden" id="tax1" value="0"/>
+<input type="hidden" id="tax2" value="0"/>
+<input type="hidden" id="tax3" value="0"/>
+
+
+<input type="hidden" id="bankname" value="DEFAULT BANK NAME"/>
+<input type="hidden" id="branchname" value="DEFAULT BRANCH"/>
+<input type="hidden" id="ifsc" value="DEFAULT IFSC"/>
+<input type="hidden" id="iban" value="DEFAULT IBAN"/>
+<input type="hidden" id="swift" value="DEFAULT SWIFT"/>
+<input type="hidden" id="acctno" value="DEFAULT ACCTNO"/>
+
+<input type="hidden" id="amtformat" value="en_US"/>
+<input type="hidden" id="invnoformat" />
 
 
 
 
-  </div>
+</div>
+</div>
   <div class="col-xs-4" >
     <iframe id="pdf-preview" src="" height="500" width="100%"></iframe>
   </div>

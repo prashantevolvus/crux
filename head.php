@@ -172,6 +172,9 @@ $(".tt-hint").addClass("form-control");
 
 .right10 { margin-right:10px; }
 
+.right20 { margin-right:20px; }
+
+
 .left15 { margin-right:10px; }
 
 

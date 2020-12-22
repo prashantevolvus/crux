@@ -83,18 +83,6 @@ require_once('bodystart.php');
         });
         return false;
       }
-      var inv = "";
-      $('#invnoformat').val().split("$").forEach( function(item,index){
-          if(item.slice(0,2) == "TX"){
-            inv += item.slice(2).split("#")[1];
-          }
-          if(item.slice(0,2) == "FY"){
-            inv += "20-21";
-          }
-          if(item.slice(0,2) == "RN"){
-            inv += "870"
-          }
-      });
 
       $.ajax({
           type: "POST",
@@ -103,7 +91,7 @@ require_once('bodystart.php');
           //convert JSON to string and then encode it with base64
           data: {
             q: btoa(JSON.stringify(buildInvoiceJSON())),
-            inv_no:inv
+            inv_fmt:$('#invnoformat').val()
           },
           dataType:"application/pdf",
           complete: function(data){
@@ -111,10 +99,10 @@ require_once('bodystart.php');
             link.href = data.responseText;
             link.download = "invoice.pdf";
             link.click();
+            populateForm(gProjID);
           }
       });
 
-      //[Log] $TXT#BLR $FY$TXT#/$RNUM#A1 (createinvoice.php, line 485)
 
     });
 
@@ -132,6 +120,7 @@ require_once('bodystart.php');
 
       oTable.rows({selected: true}).data().toArray().forEach(function (item, index) {
         inv = {
+            id:item.INVOICE_ID,
             desc:item.INVOICE_DESCRIPTION,
             amt:item.INVOICE_AMT
           };
@@ -246,14 +235,8 @@ require_once('bodystart.php');
         $('#amtformat').val(data[0]['amt_format']);
         $('#invnoformat').val(data[0]['inv_no_format']);
 
-
-
-
-
-
-      }
-  });
-    // $.getJSON(, );
+        }
+      });
   }
 
   function populateForm(projid) {

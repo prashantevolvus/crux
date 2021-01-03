@@ -1600,6 +1600,8 @@ require_once('bodystart.php');
               <li><a class="dropdown-item" href="initproj.php">NEW PROJECT</a></li>
               <li class="divider"></li>
               <li><a class="dropdown-item" href="addinvoice.php">NEW INVOICE</a></li>
+              <li><a class="dropdown-item" href="createinvoice.php">GENERATE INVOICE</a></li>
+              <li role="separator" class="divider"></li>
               <li><a class="dropdown-item" href="createexpense.php">NEW EXPENSE</a></li>
               <li><a class="dropdown-item" href="initebudget.php">NEW BUDGET</a></li>
               <li><a class="dropdown-item" href="addchangerequest.php">NEW CHANGE REQUEST</a></li>

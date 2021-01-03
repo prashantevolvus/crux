@@ -3,3 +3,4 @@ db
 here
 prod
 my-errors.log
+.DS_Store

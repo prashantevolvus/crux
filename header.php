@@ -47,7 +47,7 @@
                 <li><a href='viewexpense.php'><span>View Expense</span></a></li>
                 <li><a href='addinvoice.php'><span>Add Invoice</span></a></li>
                 <li class='last'><a href='viewinvoice.php'><span>View Invoice</span></a></li>
-
+                <li class='last'><a href='createinvoice.php'><span>Generate Invoice</span></a></li>
                 <li role="separator" class="divider"></li>
                 <li class='last'><a href='addOverHeads.php'><span>Add Overheads</span></a></li>
                 <li class='last'><a href='editViewOverHeads.php'><span>View/Edit Overheads</span></a></li>

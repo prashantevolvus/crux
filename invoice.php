@@ -320,7 +320,7 @@ class EvolvusPDF extends FPDF {
     }
 
     if($this->format == 2) {
-      $pdf->Cell(115 ,6,'GST '.$this->tax1.'%('.$this->currency.')',1,0,'R');
+      $pdf->Cell(115 ,6,'IGST '.$this->tax1.'%('.$this->currency.')',1,0,'R');
       $pdf->Cell(35 ,6,' ',1,0,'C');
       $pdf->Cell(35 ,6,$this->AmountFormat($this->amt_format,$tot*$this->tax1/100),1,1,'R');
       $tax +=$tot*$this->tax1/100;
@@ -355,7 +355,7 @@ class EvolvusPDF extends FPDF {
 
     $pdf->SetFont('Arial','B',10);
 
-    $pdf->Cell(200 ,10,'Please transfer '.$this->currency.' '.$finaltot.' to the '.$this->currency.' account mentioned below ',0,1);
+    $pdf->Cell(200 ,10,'Please transfer '.$this->currency.' '.$this->AmountFormat($this->amt_format,$finaltot).' to the '.$this->currency.' account mentioned below ',0,1);
     $pdf->SetFont('Arial','',10);
 
     $pdf->Cell(50 ,1,' ',0,1,'L');
@@ -392,7 +392,7 @@ class EvolvusPDF extends FPDF {
     $pdfBase64 = base64_encode($pdfString);
     echo 'data:application/pdf;base64,' . $pdfBase64;
 
-    
+
 
 
   }

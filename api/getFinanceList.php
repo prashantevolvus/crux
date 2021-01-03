@@ -121,9 +121,9 @@ if ($retType == "invoiceCustList") {
     SELECT b.project_name PROJECT_NAME, EXPECTED_INVOICE_DATE INVOICE_DATE,
     description INVOICE_DESCRIPTION,
     project_ccy_amount INVOICE_AMT,INVOICE_ID
-  FROM project_invoice A
-  INNER JOIN project_details B ON A.PROJECT_ID = B.ID
-  INNER JOIN milestone C ON C.ID = A.MILE_STONE
+  FROM project_invoice a
+  INNER JOIN project_details b ON a.PROJECT_ID = b.ID
+  INNER JOIN milestone c ON c.ID = a.MILE_STONE
   WHERE b.id = {$projID} and a.status = 'PENDING' and LCY_AMOUNT <> 0
   ORDER BY INVOICE_DATE
   ";

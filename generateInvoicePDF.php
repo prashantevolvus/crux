@@ -9,10 +9,7 @@ require_once('dbconn.php');
 
    $x1 = "";
    $arr = array();
-   foreach($input->invList as $invl){
-     $sql = "update project_invoice set status = 'INVOICED' where invoice_id = {$invl->id}";
-     $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
-   }
+
    foreach(explode("$" , $fmt) as $x){
      $y = substr($x,0,2);
      if($y == "TX"){
@@ -42,6 +39,15 @@ require_once('dbconn.php');
        $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
      }
 
+   }
+
+   foreach($input->invList as $invl){
+     $sql = "update project_invoice set status = 'INVOICED' ,
+     invoice_no = '{$x1}',
+     invoiced_date = '{$input->invDate}',
+     invoiced_on = CURRENT_TIMESTAMP()
+     where invoice_id = '{$invl->id}'";
+     $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
    }
 
 

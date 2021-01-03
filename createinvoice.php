@@ -182,7 +182,6 @@ require_once('bodystart.php');
     $.ajax({
         type: "GET",
         url: "invoice.php",
-        async: false,
         //convert JSON to string and then encode it with base64
         data: {q: btoa(JSON.stringify(buildInvoiceJSON()))},
         dataType:"application/pdf",

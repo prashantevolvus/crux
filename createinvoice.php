@@ -268,94 +268,96 @@ require_once('bodystart.php');
 </script>
 <div class="container ">
   <div class="row row-no-gutters" >
-  <div class="col-xs-8">
-    <div class="row row-no-gutters" >
-      <div class="input-group table-responsive col-xs-6 right20" id="projSearch">
-          <label for="prj">Choose Project</label>
-          <input id="prj" name="prj" type="input" placeholder="Enter Project Name" class="form-control input-md typeahead" required=""  autocomplete="sprcatre">
+    <div class="col-xs-8">
+      <div class="row row-no-gutters" >
+        <div class="input-group table-responsive col-xs-6 right20" id="projSearch">
+            <label for="prj">Choose Project</label>
+            <input id="prj" name="prj" type="input" placeholder="Enter Project Name" class="form-control input-md typeahead" required=""  autocomplete="sprcatre">
+        </div>
+        <div class="table-responsive col-xs-3 left15" >
+          <button type="button" class="btn btn-primary " id="geninvoice" >Generate Invoice
+            <i class="glyphicon glyphicon-refresh"></i>
+          </button>
+        </div>
       </div>
-      <div class="table-responsive col-xs-3 left15" >
-        <button type="button" class="btn btn-primary " id="geninvoice" >Generate Invoice
-          <i class="glyphicon glyphicon-refresh"></i>
-        </button>
+      <div id="hidestart">
+        <div class="row row-no-gutters top15" >
+          <div class="table-responsive col-lg-3 right10">
+            <label for="format">Invoice Format</label>
+            <select id="format" name="format" class="form-control">
+            </select>
+          </div>
+          <div class="table-responsive col-lg-3  right10">
+            <label for="invoicedate">Invoice Date</label>
+            <input type="date" class="form-control" id="invoicedate" name="invoicedate" required></input>
+          </div>
+          <div class="table-responsive col-lg-3 right10">
+            <label for="invoicejob">Job</label>
+            <input type="text" class="form-control" id="invoicejob" name="invoicejob" required></input>
+          </div>
+        </div>
+        <div class="row row-no-gutters">
+          <div class="table-responsive col-lg-6 top15 right10" >
+            <label for="invoiceproj">PROJECT DETAILS</label>
+            <textarea class="form-control" id="invoiceproj" name="invoiceproj" required></textarea>
+          </div>
+          <div class="table-responsive col-lg-3 top15" >
+            <label for="invoicessn">SAC/HSN CODE</label>
+            <input type="text" class="form-control" id="invoicessn" name="invoicessn"></input>
+          </div>
+        </div>
+        <div class="row row-no-gutters">
+          <div class="table-responsive col-lg-9 top15" >
+            <table id="invoiceList" class="table table-striped" >
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Invoice Date</th>
+                  <th>Invoice Description</th>
+                  <th>Invoice Amount</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <input type="hidden" id="invoicecur" value="DEF"/>
+        <input type="hidden" id="invoiceno" value="NOT GENERATED"/>
+        <input type="hidden" id="vendorname" value="DEFAULT vendorname"/>
+        <input type="hidden" id="vendoradd1" value="DEFAULT ADD1"/>
+        <input type="hidden" id="vendoradd2" value="DEFAULT ADD2"/>
+        <input type="hidden" id="vendoradd3" value="DEFAULT ADD3"/>
+        <input type="hidden" id="vendortrn" value="DEFAULT TRN1"/>
+        <input type="hidden" id="vendorgst" value="DEFAULT VEND GST"/>
+        <input type="hidden" id="vendorpan" value="DEFAULT VEND PAN"/>
+        <input type="hidden" id="customername" value="DEFAULT CUST NAME"/>
+        <input type="hidden" id="customeradd1" value="DEFAULT ADD1"/>
+        <input type="hidden" id="customeradd2" value="DEFAULT Add2"/>
+        <input type="hidden" id="customeradd3" value="DEFAULT ADD3"/>
+        <input type="hidden" id="customertrn" value="DEFAULT TRN CUST"/>
+        <input type="hidden" id="customergst" value="DEFAULT GST"/>
+        <input type="hidden" id="customershipadd1" value="DEFAULT ADD1"/>
+        <input type="hidden" id="customershipadd2" value="DEFAULT ADD1"/>
+        <input type="hidden" id="customershipadd3" value="DEFAULT ADD1"/>
+        <input type="hidden" id="tax1" value="0"/>
+        <input type="hidden" id="tax2" value="0"/>
+        <input type="hidden" id="tax3" value="0"/>
+        <input type="hidden" id="bankname" value="DEFAULT BANK NAME"/>
+        <input type="hidden" id="branchname" value="DEFAULT BRANCH"/>
+        <input type="hidden" id="ifsc" value="DEFAULT IFSC"/>
+        <input type="hidden" id="iban" value="DEFAULT IBAN"/>
+        <input type="hidden" id="swift" value="DEFAULT SWIFT"/>
+        <input type="hidden" id="acctno" value="DEFAULT ACCTNO"/>
+        <input type="hidden" id="amtformat" value="en_US"/>
+        <input type="hidden" id="invnoformat" />
       </div>
     </div>
-    <div id="hidestart">
-    <div class="row row-no-gutters top15" >
-      <div class="table-responsive col-lg-3 right10">
-        <label for="format">Invoice Format</label>
-        <select id="format" name="format" class="form-control">
-        </select>
-      </div>
-      <div class="table-responsive col-lg-3  right10">
-        <label for="invoicedate">Invoice Date</label>
-        <input type="date" class="form-control" id="invoicedate" name="invoicedate" required></input>
-      </div>
-      <div class="table-responsive col-lg-3 right10">
-        <label for="invoicejob">Job</label>
-        <input type="text" class="form-control" id="invoicejob" name="invoicejob" required></input>
-      </div>
+    <div class="col-xs-4" >
+      <iframe id="pdf-preview" src="" height="500" width="100%"></iframe>
     </div>
-    <div class="row row-no-gutters">
-      <div class="table-responsive col-lg-6 top15 right10" >
-        <label for="invoiceproj">PROJECT DETAILS</label>
-        <textarea class="form-control" id="invoiceproj" name="invoiceproj" required></textarea>
-      </div>
-      <div class="table-responsive col-lg-3 top15" >
-        <label for="invoicessn">SAC/HSN CODE</label>
-        <input type="text" class="form-control" id="invoicessn" name="invoicessn"></input>
-      </div>
-    </div>
-    <div class="row row-no-gutters">
-      <div class="table-responsive col-lg-9 top15" >
-        <table id="invoiceList" class="table table-striped" >
-          <thead>
-            <tr>
-              <th>Select</th>
-              <th>Invoice Date</th>
-              <th>Invoice Description</th>
-              <th>Invoice Amount</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-    <input type="hidden" id="invoicecur" value="DEF"/>
-    <input type="hidden" id="invoiceno" value="NOT GENERATED"/>
-    <input type="hidden" id="vendorname" value="DEFAULT vendorname"/>
-    <input type="hidden" id="vendoradd1" value="DEFAULT ADD1"/>
-    <input type="hidden" id="vendoradd2" value="DEFAULT ADD2"/>
-    <input type="hidden" id="vendoradd3" value="DEFAULT ADD3"/>
-    <input type="hidden" id="vendortrn" value="DEFAULT TRN1"/>
-    <input type="hidden" id="vendorgst" value="DEFAULT VEND GST"/>
-    <input type="hidden" id="vendorpan" value="DEFAULT VEND PAN"/>
-    <input type="hidden" id="customername" value="DEFAULT CUST NAME"/>
-    <input type="hidden" id="customeradd1" value="DEFAULT ADD1"/>
-    <input type="hidden" id="customeradd2" value="DEFAULT Add2"/>
-    <input type="hidden" id="customeradd3" value="DEFAULT ADD3"/>
-    <input type="hidden" id="customertrn" value="DEFAULT TRN CUST"/>
-    <input type="hidden" id="customergst" value="DEFAULT GST"/>
-    <input type="hidden" id="customershipadd1" value="DEFAULT ADD1"/>
-    <input type="hidden" id="customershipadd2" value="DEFAULT ADD1"/>
-    <input type="hidden" id="customershipadd3" value="DEFAULT ADD1"/>
-    <input type="hidden" id="tax1" value="0"/>
-    <input type="hidden" id="tax2" value="0"/>
-    <input type="hidden" id="tax3" value="0"/>
-    <input type="hidden" id="bankname" value="DEFAULT BANK NAME"/>
-    <input type="hidden" id="branchname" value="DEFAULT BRANCH"/>
-    <input type="hidden" id="ifsc" value="DEFAULT IFSC"/>
-    <input type="hidden" id="iban" value="DEFAULT IBAN"/>
-    <input type="hidden" id="swift" value="DEFAULT SWIFT"/>
-    <input type="hidden" id="acctno" value="DEFAULT ACCTNO"/>
-    <input type="hidden" id="amtformat" value="en_US"/>
-    <input type="hidden" id="invnoformat" />
-</div>
-</div>
-  <div class="col-xs-4" >
-    <iframe id="pdf-preview" src="" height="500" width="100%"></iframe>
   </div>
 </div>
-</div>
+
+
 <?php
 
 require_once('bodyend.php');

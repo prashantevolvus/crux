@@ -33,7 +33,7 @@ require_once('dbconn.php');
        $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");
        $row = mysqli_fetch_array($result);
 
-       $x1 .= substr("000".strval($row[seq_no]),-3);
+       $x1 .= substr("000".strval($row["seq_no"]),-3);
 
        $sql = "update inc_seq set seq_no = seq_no + 1 where seq_code = '{$a}'";
        $result = mysqli_query($con,$sql) or debug($sql."   failed  <br/><br/>");

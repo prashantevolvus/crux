@@ -1,4 +1,6 @@
 
+
+
 var backgroundColor = [
   'rgba(255, 99, 132, 0.2)',
   'rgba(54, 162, 235, 0.2)',
@@ -39,12 +41,9 @@ function pieChart(canvasid, data, labels,header="") {
   }
 
 
-  var bkcolor = [];
-
-  i = 0;
-  data.forEach(function(element) {
-    bkcolor.push(backgroundColor[i++]);
-  });
+  
+  var bkcolor = data.map((item, index) => backgroundColor[index]);
+    
 
   dd = {
     datasets: [{
@@ -227,5 +226,243 @@ function barChart(canvasid, data, labels,barType,lakhs , header="") {
     }
   });
   chartMap[canvasid] =  chart ;
+
+}
+
+
+/*
+******************************
+GENERIC CHARTS
+******************************
+*/
+function genBarChart(ctx, data, labels, barType, lakhs, header = "",drillAllowed="N") {
+
+  
+  var datasetArr = data.map((item,index)=>({
+        label: item.label,
+        backgroundColor: backgroundColor[index],
+        borderColor: borderColor[index],
+        borderWidth: 1,
+        data: item.data
+        datalabels: {
+          labels: {
+            title: null
+          }
+        }
+      })
+    );
+ 
+
+  var chart = new Chart(ctx, {
+    type: barType,
+    data: {
+      labels: labels,
+      datasets: datasetArr
+    },
+    options: {
+      legend: { position: 'top' },
+      title: {
+        display: true,
+        text: header
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            callback: function (value, index, values) {
+              ret = value;
+              if (lakhs === "Y")
+                ret = amtFormat(parseFloat(value) / 100000) + ' lakhs';
+              return ret;
+            }
+          }
+        }]
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, chart) {
+            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+            if (lakhs === "Y")
+              datasetLabel = datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.yLabel) / 100000) + ' lakhs';
+            else
+              datasetLabel = datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.yLabel));
+            return datasetLabel;
+          }
+        }
+      },
+      onClick: function (e, items) {
+        var firstPoint = this.getElementAtEvent(e)[0];
+        if (drillAllowed === "Y" && firstPoint ){
+          var label = firstPoint._model.label;
+          var val = firstPoint._model.datasetLabel;
+          alert(label + " - " + val);
+        }
+      }
+    }
+  });
+  return chart;
+
+}
+
+
+function genHBarChart(ctx, data, labels, barType, lakhs, header = "") {
+
+  
+
+  var datasetArr = data.map((item, index) => ({
+    label: item.label,
+    backgroundColor: backgroundColor[index],
+    borderColor: borderColor,
+    borderWidth: 1,
+    data: item.data,
+    datalabels: {
+      labels: {
+        title: null
+      }
+    }
+  })
+  );
+
+
+  var chart = new Chart(ctx, {
+    type: barType,
+    data: {
+      labels: labels,
+      datasets: datasetArr
+    },
+    options: {
+      legend: { position: 'top' },
+      title: {
+        display: true,
+        text: header
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            beginAtZero: true,
+            callback: function (value, index, values) {
+              ret = value;
+              if (lakhs === "Y")
+                ret = amtFormat(parseFloat(value) / 100000) + ' lakhs';
+              return ret;
+            }
+          }
+        }]
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, chart) {
+            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+            if (lakhs === "Y")
+              datasetLabel = datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.xLabel) / 100000) + ' lakhs';
+            else
+              datasetLabel = datasetLabel + ': ' + amtFormat(parseFloat(tooltipItem.xLabel));
+            return datasetLabel;
+          }
+        }
+      },
+      onClick: function (e, items) {
+        var firstPoint = this.getElementAtEvent(e)[0];
+        if (firstPoint) {
+          var label = firstPoint._model.label;
+          var val = firstPoint._model.datasetLabel;
+          console.log(label + " - " + val);
+        }
+
+      }
+    }
+  });
+  
+  return chart;
+
+}
+
+
+function genPieChart(ctx, data, labels, pieType,lakhs = "Y" , header = "") {
+
+ 
+  
+  dd = {
+    datasets: [{
+      data: data[0].data,
+      backgroundColor: data[0].data.map((item, index) => (backgroundColor[index])),
+      borderColor: borderColor,
+      borderWidth: 1
+    }],
+    labels: labels,
+
+  };
+  
+  
+
+  var chart = new Chart(ctx, {
+    type: pieType,
+    data: dd
+    ,
+    options: {
+      title: {
+        display: true,
+        text: header
+      },
+      legend: {
+        display: true,
+        position: 'top'
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, chart) {
+            
+            var datasetLabel = chart.labels[tooltipItem.index] || '';
+            if (lakhs === "Y")
+              datasetLabel = datasetLabel + ': ' + amtFormat(parseFloat(chart.datasets[0].data[tooltipItem.index]) / 100000) + ' lakhs';
+            else
+              datasetLabel = datasetLabel + ': ' + amtFormat(parseFloat(chart.datasets[0].data[tooltipItem.index]));
+            return datasetLabel;
+          }
+        }
+      },
+      plugins: {
+        datalabels: {
+          formatter: (value, ctx) => {
+            let dataArr = ctx.chart.data.datasets[0].data;
+            return (value * 100 / dataArr.reduce((sum, data) => sum + data)).toFixed(0) + "%";
+          },
+          color: '#000',
+        }
+      },
+      onClick: function (e, items) {
+        var firstPoint = this.getElementAtEvent(e)[0];
+        if (firstPoint) {
+          var label = firstPoint._model.label;
+          var val = firstPoint._model.datasetLabel;
+          console.log(label + " - " + val);
+        }
+
+      }
+    }
+  });
+
+  return chart;
+
+}
+
+function generateChart(canvasid, data, labels, chartType, lakhs = "Y", header = "",drillAllowed="N") {
+  if (chartMap[canvasid]) {
+    chartMap[canvasid].destroy();
+  }
+  document.getElementById(canvasid).innerHTML = '';
+  var ctx = document.getElementById(canvasid).getContext('2d');
+
+  if (chartType === "pie" || chartType === "doughnut" || chartType === "polarArea") {
+    chart = genPieChart(ctx, data, labels, chartType, lakhs , header );
+  }
+  else if (chartType === "line" || chartType === "bar") {
+    chart = genBarChart(ctx, data, labels, chartType, lakhs, header, drillAllowed);
+  }
+  else if (chartType === "horizontalBar" ) {
+    chart = genHBarChart(ctx, data, labels, chartType, lakhs, header);
+  }
+
+  chartMap[canvasid] = chart;
 
 }

@@ -81,7 +81,7 @@
         </li>
     </ul> -->
 
-    <ul class="nav navbar-nav navbar-left">
+    <!-- <ul class="nav navbar-nav navbar-left">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Analytics<span class="caret"></span></a>
         <ul class="dropdown-menu">
@@ -91,7 +91,7 @@
           <li><a href='monthlystats.php'><span>Monthly Statistics</span></a></li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
 
     <ul class="nav navbar-nav navbar-left">
       <li class="dropdown">
@@ -103,7 +103,7 @@
           <li><a href='viewexpense.php'><span>View Expense</span></a></li>
 
           <li role="separator" class="divider"></li>
-          <li><a href='addinvoice.php'>   <span>Add Invoice     </span></a></li>
+          <li><a href='addinvoice.php'> <span>Add Invoice </span></a></li>
           <li><a href='createinvoice.php'><span>Generate Invoice</span></a></li>
           <li class='last'><a href='viewinvoice.php'><span>View Invoice</span></a></li>
 
@@ -157,48 +157,93 @@
 
 
           <?php
-           				$menuGroup = "±";
-           				$con1=getConnection();
-						$sql1= "select id,menu_group,menu_name from dynamic_reports where incl_report_menu = 1 order by menu_group , id";
-						$result = mysqli_query($con1,$sql1) or debug($sql1."   failed  <br/><br/>".mysql_error());
-						while($row = mysqli_fetch_array($result))
-  						{
-  							if($menuGroup != $row['menu_group'] and $row['menu_group'] != "")
-  							{
-  								if($menuGroup != "±")
-  								{
-  									echo "</li>";
-  									echo "</ul>";
-  								}
-  								else
-  									echo "<li role='separator' class='divider'></li>";
+          $menuGroup = "±";
+          $con1 = getConnection();
+          $sql1 = "select id,menu_group,menu_name from dynamic_reports where incl_report_menu = 1 order by menu_group , id";
+          $result = mysqli_query($con1, $sql1) or debug($sql1 . "   failed  <br/><br/>" . mysql_error());
+          while ($row = mysqli_fetch_array($result)) {
+            if ($menuGroup != $row['menu_group'] and $row['menu_group'] != "") {
+              if ($menuGroup != "±") {
+                echo "</li>";
+                echo "</ul>";
+              } else
+                echo "<li role='separator' class='divider'></li>";
 
-				         		echo "<li class='dropdown-submenu'>";
-             					echo "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>".$row['menu_group']."<b class='caret'></b></a>";
-             					echo "<ul class='dropdown-menu'>";
-             					echo "<li><a href='dynamicreport.php?rep_id=".$row['id']."'><span>".$row['menu_name']."</span></a></li>";
+              echo "<li class='dropdown-submenu'>";
+              echo "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>" . $row['menu_group'] . "<b class='caret'></b></a>";
+              echo "<ul class='dropdown-menu'>";
+              echo "<li><a href='dynamicreport.php?rep_id=" . $row['id'] . "'><span>" . $row['menu_name'] . "</span></a></li>";
 
 
-             					$menuGroup = $row['menu_group'];
-				         	}
-				         	else
-				         		echo "<li><a href='dynamicreport.php?rep_id=".$row['id']."'><span>".$row['menu_name']."</span></a></li>";
+              $menuGroup = $row['menu_group'];
+            } else
+              echo "<li><a href='dynamicreport.php?rep_id=" . $row['id'] . "'><span>" . $row['menu_name'] . "</span></a></li>";
+          }
+          if ($menuGroup != "±") {
+            echo "</li>";
+            echo "</ul>";
+          }
 
-  						}
-  						if($menuGroup != "±")
-  						{
-  									echo "</li>";
-  									echo "</ul>";
-  						}
-
-           		?>
+          ?>
 
 
       </li>
 
 
     </ul>
+
+
+
+
+
     </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-left">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Analytics<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <?php
+          $menuGroup = "±";
+          $con1 = getConnection();
+          $sql1 = "select id,menu_name,menu_group from dynamic_dashmenus order by menu_group,id";
+          $result = mysqli_query($con1, $sql1) or debug($sql1 . "   failed  <br/><br/>" . mysql_error());
+          while ($row = mysqli_fetch_array($result)) {
+            if ($menuGroup != $row['menu_group'] and $row['menu_group'] != "") {
+              if ($menuGroup != "±") {
+                echo "</li>";
+                echo "</ul>";
+              } else
+                echo "<li role='separator' class='divider'></li>";
+
+              echo "<li class='dropdown-submenu'>";
+              echo "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>" . $row['menu_group'] . "<b class='caret'></b></a>";
+              echo "<ul class='dropdown-menu'>";
+              echo "<li><a href='GenericDashboard.php?menuID=" . $row['id'] . "'><span>" . $row['menu_name'] . "</span></a></li>";
+
+
+              $menuGroup = $row['menu_group'];
+            } else
+              echo "<li><a href='GenericDashboard.php?menuID=" . $row['id'] . "'><span>" . $row['menu_name'] . "</span></a></li>";
+          }
+          if ($menuGroup != "±") {
+            echo "</li>";
+            echo "</ul>";
+          }
+
+          ?>
+
+          <!-- <li><a href='opportunities.php'><span>View Opportunities</span></a></li>
+          <li><a href='addopportunities.php'><span>Add Opportunity</span></a></li>
+          <li class="dropdown-submenu">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Customer <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="customers.php">View Customers</a></li>
+              <li><a href="addcustomer.php">Add Customer</a></li>
+            </ul>
+          </li> -->
+        </ul>
+      </li>
     </ul>
 
 

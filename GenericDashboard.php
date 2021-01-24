@@ -6,8 +6,8 @@ require_once('bodystart.php');
 $q = isset($_GET['menuID']) ? $_GET['menuID'] : 1;
 $con = getConnection();
 $sql = "
-    select menu_name,dash_name,dash_type,dash_sql,dash_size ,dash_lakhs ,dash_width,dash_height,
-    dash_labels, drill_allowed
+    select c.id , menu_name,dash_name,dash_type,dash_sql,dash_size ,dash_lakhs ,dash_width,dash_height,
+    dash_labels, drill_sql
     from 
 dynamic_dashmenus a
 inner join dynamic_menumap b on a.id = b.menu_id
@@ -72,7 +72,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                     label: splt.split(':')[0]
                 })
             );
-            generateChart(divid, dataArr, labelArr, item["dash_type"], item["dash_lakhs"], item["dash_name"], item["drill_allowed"]);
+
+            drillDownFunction = function(label, val) {
+                console.log(label + "  " + val + "   " + item["id"]);
+                redirectUrl = "dynamicdrilldown.php?qry_id=" + item["drill_sql"] + "&f1_id=" + label + "&f2_id=" + val;
+                window.location.href = redirectUrl;
+            }
+
+            generateChart(divid, dataArr, labelArr, item["dash_type"], drillDownFunction, item["dash_lakhs"], item["dash_name"], item["drill_sql"] ? "Y" : "N");
 
 
         });

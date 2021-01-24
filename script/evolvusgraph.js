@@ -235,7 +235,7 @@ function barChart(canvasid, data, labels,barType,lakhs , header="") {
 GENERIC CHARTS
 ******************************
 */
-function genBarChart(ctx, data, labels, barType, lakhs, header = "",drillAllowed="N") {
+function genBarChart(ctx, data, labels, barType, drillDownFunction , lakhs,  header = "",drillAllowed="N") {
 
   
   var datasetArr = data.map((item,index)=>({
@@ -243,7 +243,7 @@ function genBarChart(ctx, data, labels, barType, lakhs, header = "",drillAllowed
         backgroundColor: backgroundColor[index],
         borderColor: borderColor[index],
         borderWidth: 1,
-        data: item.data
+        data: item.data,
         datalabels: {
           labels: {
             title: null
@@ -295,7 +295,7 @@ function genBarChart(ctx, data, labels, barType, lakhs, header = "",drillAllowed
         if (drillAllowed === "Y" && firstPoint ){
           var label = firstPoint._model.label;
           var val = firstPoint._model.datasetLabel;
-          alert(label + " - " + val);
+          drillDownFunction(label,val);
         }
       }
     }
@@ -305,7 +305,7 @@ function genBarChart(ctx, data, labels, barType, lakhs, header = "",drillAllowed
 }
 
 
-function genHBarChart(ctx, data, labels, barType, lakhs, header = "") {
+function genHBarChart(ctx, data, labels, barType, drillDownFunction, lakhs, header = "", drillAllowed = "N") {
 
   
 
@@ -363,12 +363,11 @@ function genHBarChart(ctx, data, labels, barType, lakhs, header = "") {
       },
       onClick: function (e, items) {
         var firstPoint = this.getElementAtEvent(e)[0];
-        if (firstPoint) {
+        if (drillAllowed === "Y" && firstPoint) {
           var label = firstPoint._model.label;
           var val = firstPoint._model.datasetLabel;
-          console.log(label + " - " + val);
+          drillDownFunction(label, val);
         }
-
       }
     }
   });
@@ -378,7 +377,7 @@ function genHBarChart(ctx, data, labels, barType, lakhs, header = "") {
 }
 
 
-function genPieChart(ctx, data, labels, pieType,lakhs = "Y" , header = "") {
+function genPieChart(ctx, data, labels, pieType, drillDownFunction, lakhs = "Y", header = "", drillAllowed = "N") {
 
  
   
@@ -432,12 +431,11 @@ function genPieChart(ctx, data, labels, pieType,lakhs = "Y" , header = "") {
       },
       onClick: function (e, items) {
         var firstPoint = this.getElementAtEvent(e)[0];
-        if (firstPoint) {
+        if (drillAllowed === "Y" && firstPoint) {
           var label = firstPoint._model.label;
           var val = firstPoint._model.datasetLabel;
-          console.log(label + " - " + val);
+          drillDownFunction(label, val);
         }
-
       }
     }
   });
@@ -446,7 +444,7 @@ function genPieChart(ctx, data, labels, pieType,lakhs = "Y" , header = "") {
 
 }
 
-function generateChart(canvasid, data, labels, chartType, lakhs = "Y", header = "",drillAllowed="N") {
+function generateChart(canvasid, data, labels, chartType, drillDownFunction, lakhs = "Y", header = "", drillAllowed="N") {
   if (chartMap[canvasid]) {
     chartMap[canvasid].destroy();
   }
@@ -454,14 +452,15 @@ function generateChart(canvasid, data, labels, chartType, lakhs = "Y", header = 
   var ctx = document.getElementById(canvasid).getContext('2d');
 
   if (chartType === "pie" || chartType === "doughnut" || chartType === "polarArea") {
-    chart = genPieChart(ctx, data, labels, chartType, lakhs , header );
+    chart = genPieChart(ctx, data, labels, chartType, drillDownFunction, lakhs, header, drillAllowed );
   }
   else if (chartType === "line" || chartType === "bar") {
-    chart = genBarChart(ctx, data, labels, chartType, lakhs, header, drillAllowed);
+    chart = genBarChart(ctx, data, labels, chartType, drillDownFunction, lakhs, header, drillAllowed);
   }
   else if (chartType === "horizontalBar" ) {
-    chart = genHBarChart(ctx, data, labels, chartType, lakhs, header);
+    chart = genHBarChart(ctx, data, labels, chartType, drillDownFunction, lakhs, header, drillAllowed);
   }
+
 
   chartMap[canvasid] = chart;
 

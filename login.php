@@ -2,104 +2,85 @@
 session_name("Project");
 session_start();
 require_once('dbconn.php');
-if(isset($_SESSION['user']) && checkUserSession($_SESSION['user']))
-{
-	header("Location:index.php");
-    //header("Location:dashboard.php");
-}
 
+$permission = "VIEW";
+//require_once('head.php');
+
+//equire_once('bodystart.php');
 
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<link rel="shortcut icon" href="favicon.ico">
+
+<html>
 <head>
-	<title>Crux - Project tool</title>
-
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
- 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.css"/>
+	<!-- JQUERY -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- BOOTSRTAP -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+	<script src="https://alcdn.msauth.net/browser/2.7.0/js/msal-browser.js" integrity="sha384-5Fqyq1ncNYhL2mXCdWAFXkf2wWtKeA0mXYp++ryAX1lowD0ctAHFdity37L/ULXh" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="./script/authConfig.js"></script>
+	<script type="text/javascript" src="./script/authRedirect.js"></script>
 
 
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.js"></script>
 
 
-<style>
-.panel-heading {
-    padding: 5px 15px;
-}
+	<script type="text/javascript">
 
-.panel-footer {
-	padding: 1px 15px;
-	color: #A0A0A0;
-}
+	// const myMSALObj = new msal.PublicClientApplication(msalConfig);
+	// let username = "";
 
-.profile-img {
-	width: 96px;
-	height: 96px;
-	margin: 0 auto 10px;
-	display: block;
-	-moz-border-radius: 50%;
-	-webkit-border-radius: 50%;
-	border-radius: 50%;
-}
-</style>
+	function processLogin(response){
+	  console.log(response.account.username);
 
+		if(response.account.username){
+			$("#before").hide();
+			$("#after").show();
+			$("#usrName").html(response.account.username);
+
+			$("#after").html('Successfully Loggedin '+response.account.username);
+			window.location.replace("checktoken.php?user="+response.account.username);
+		}
+		else{
+			$("#before").show();
+			$("#after").hide();
+		}
+
+	}
+
+	$(document).ready(function() {
+
+		console.log("before signin");
+		signIn() ;
+		console.log("after signin");
+		setTokenHandler(processLogin);
+
+
+	});
+
+
+	</script>
 </head>
 <body>
-<div class="container">
-
-
-
-<div class="container" style="margin-top:40px">
-		<div class="row">
-			<div class="col-sm-6 col-md-4 col-md-offset-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<strong> Sign in to continue</strong>
-					</div>
-					<div class="panel-body">
-						<form role="form" action="checklogin.php" method="POST">
-							<fieldset>
-								<div class="row">
-									<div class="center-block">
-										<img class="profile-img"
-											src="crux70.png?sz=120" alt="">
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12 col-md-10  col-md-offset-1 ">
-										<div class="form-group">
-											<div class="input-group">
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-user"></i>
-												</span>
-												<input class="form-control" placeholder="Username" name="myusername" type="text" autofocus>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="input-group">
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-lock"></i>
-												</span>
-												<input class="form-control" placeholder="Password" name="mypassword" type="password" value="">
-											</div>
-										</div>
-										<div class="form-group">
-											<input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in">
-										</div>
-									</div>
-								</div>
-							</fieldset>
-						</form>
-					</div>
+<h1>Welcome to Crux</h1>
+<div id="usrName"></div>
+<div id="before">
+Please wait while you will be redirected
 </div>
-</body>
-</html>
+
+<div id="after" hidden>
+Successfully logged in
+</div>
+
+
+
+<?php
+
+require_once('bodyend.php');
+
+?>

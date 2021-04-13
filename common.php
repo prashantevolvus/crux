@@ -12,8 +12,9 @@ if(!checkUserSession($_SESSION["user"]))
 
 if(checkProjectPermission($permission) == false)
 {
-
-        header("Location:error.php");
+		echo "WHAT";
+		die;
+        //header("Location:error.php");
 }
 
 ?>

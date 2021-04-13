@@ -57,6 +57,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
             divid = "dashlet" + (i++);
             frag = '<div class = "panel panel-default right0 divborder3 col-xs-' + item["dash_size"] + ' ">';
+            frag += '<a download="img.png" id = "D' + divid + '"><span class="glyphicon glyphicon-save" aria-hidden="true"></span></a>';
             frag += '<canvas id = "' + divid + '" width="' + item["dash_width"] + '%" height="' + item["dash_height"] + '%"> </canvas> </div>';
 
 
@@ -74,7 +75,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             );
 
             drillDownFunction = function(label, val) {
-                console.log(label + "  " + val + "   " + item["id"]);
                 redirectUrl = "dynamicdrilldown.php?qry_id=" + item["drill_sql"] + "&f1_id=" + label + "&f2_id=" + val;
                 window.location.href = redirectUrl;
             }
@@ -94,6 +94,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 <div class="container" id="dash">
 
 </div>
+<div id="ppp" style="width: 100%;height:700%;"></div>
+
 <?php
 
 require_once('bodyend.php');

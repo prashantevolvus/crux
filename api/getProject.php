@@ -3,7 +3,7 @@ require_once('../dbconn.php');
 
 
 $con=getConnection();
-$sql="
+$sql= "
 SELECT a.id ,a.project_type_id, customer_id,a.project_name,
        o.name,base_product,planned_start_date,planned_end_date,
        actual_start_date, actual_end_date,region_id,report_type,extension,
@@ -16,7 +16,8 @@ SELECT a.id ,a.project_type_id, customer_id,a.project_name,
        case when status not in('DELETED', 'CLOSED')
           then datediff(planned_end_date,CURRENT_DATE)+ifnull(extension,0) else 0 end noofdays,
           datediff(a.planned_end_date,a.planned_start_date) planned_duration,
-          datediff(curdate(),a.actual_start_date) duration_so_far
+          datediff(curdate(),a.actual_start_date) duration_so_far,
+          date_add(a.planned_end_date,interval ifnull(extension,0) DAY) projected_end_date
      FROM project_details a
        INNER JOIN hr_mysql_live.ohrm_customer o
           ON a.ohrm_customer_id = o.customer_id

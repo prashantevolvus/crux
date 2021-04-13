@@ -45,10 +45,15 @@ require_once('common.php');
   <script type="text/javascript" src="script/crux.js"></script>
 
 
-
+<!-- chart.js related -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
+
+<!-- echart -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -123,7 +128,8 @@ require_once('common.php');
     .side-by-side {
       display: -webkit-flex;
       display: flex;
-      flex-wrap: nowrap; // force buttons not line-break
+      flex-wrap: nowrap;
+      /* // force buttons not line-break */
     }
 
 

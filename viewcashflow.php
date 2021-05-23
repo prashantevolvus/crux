@@ -6,7 +6,7 @@ require_once('bodystart.php');
 ?>
 
 <style>
-.modal {
+   .modal {
     display:    none;
     position:   fixed;
     z-index:    1000;
@@ -19,35 +19,27 @@ require_once('bodystart.php');
                 50% 50%
                 no-repeat;
 }
-
-/* When the body has the loading class, we turn
+   /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
-body.loading .modal {
+   body.loading .modal {
     overflow: hidden;
 }
-
-/* Anytime the body has the loading class, our
+   /* Anytime the body has the loading class, our
    modal element will be visible */
-body.loading .modal {
+   body.loading .modal {
     display: block;
 }
 </style>
 <script type="text/javascript">
 
 
-
-
-
   $(document).ready(function() {
 
-
     $body = $("body");
-
     $(document).on({
       ajaxStart: function() { $body.addClass("loading");    },
       ajaxStop: function() { $body.removeClass("loading"); }
     });
-
 
 
 
@@ -498,96 +490,21 @@ body.loading .modal {
       ]
     });
 
-    function updateData(){
-       $body.addClass("loading");
-       $("table").each(function(){
-         if($(this).attr('id') != "cfl-0"){
-           //$(this).DataTable().ajax.reload();
-           $(this).DataTable().draw();
-         }
-       });
-
-       setTimeout(function(){
-                //This will delete all elements
-                expenseArr.splice(0, expenseArr.length);
-
-                var clone = jQuery("#cfl-1").clone(true);
-                clone[0].setAttribute('id', 'cfl-1A');
-                clone.appendTo('#cloneexp');
-                $("tr:visible:last",$("#cfl-1A")).map(function(){
-                  return [$("td",this).map(function() {
-                    return this.innerHTML;
-                  }).get()];
-                }).get().forEach((item, i) => {
-                  var retArr1 = item.slice(1).map((val) => {
-                    return parseFloat(val.replace(/,/g,''));
-                  });
-                  if(chkBox.get('pastCHK') == false)
-                    retArr1[1] +=  retArr1[0];
-                  expenseArr =  retArr1.slice(1);
-                });
-                  $('#cloneexp').empty();
-                  $("#cfl-0 > tbody").empty();
-
-                  markup = "<tr><th>Total Revenue</th>";
-                  markupRev = "";
-                  revenueArr.forEach((item, i) => {
-                    markupRev += "<td class='text-right'>"+amtFormat(item)+"</td>";
-                  });
-                  markup += markupRev + "</tr>";
-
-                  markup += "<tr><th>Total Expense</th>";
-                  expenseArr.forEach((item, i) => {
-                    markup += "<td class='text-right'>"+amtFormat(item)+"</td>";
-                  });
-                  markup += "</tr>";
-
-                  markup += "<tr><th>Total Cashflow</th>";
-                  expenseArr.forEach((item, i) => {
-                    markup += "<td class='text-right'>"+amtFormat(parseFloat(revenueArr[i]-item))+"</td>";
-                  });
-                  markup += "</tr>";
-
-                  markup += "<tr><th>Cumulative Cashflow</th>";
-                  prevCashflow = 0;
-                  expenseArr.forEach((item, i) => {
-                    prevCashflow = parseFloat(prevCashflow + revenueArr[i]-item)
-                    if(prevCashflow >= 0){
-                      markup += "<td class='text-right'>"+amtFormat(prevCashflow)+"</td>";
-                    }
-                    else {
-                      markup += "<td class='text-right danger'>"+amtFormat(prevCashflow)+"</td>";
-
-                    }
-                  });
-                  markup += "</tr>";
-                  $("#cfl-0 tbody").parent().append(markup);
 
 
-                  markup = "<tr><th>Total Revenue</th><td></td>";
-		  markup += markupRev + "</tr>";
-                  $("#cfl-3 tbody").parent().append(markup);
-       		  $body.removeClass("loading");
-
-            },1250);//SetTimeout ends here with 250 ms
-
-
-     }
-
-
-     updateData();
+     updateData(expenseArr,revenueArr,chkBox);
      //setTimeout(updateData(),3200);
 
     //set map  to hide or show a row based on check box abd then redraw all tables
     $('#cashflow-form :checkbox').change(function() {
       chkBox.set($(this).attr('id') , $(this).is(':checked'));
-      updateData();
+      updateData(expenseArr,revenueArr,chkBox);
 
 
     });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      updateData();
+      updateData(expenseArr,revenueArr,chkBox);
     });
 
     //When draw is done add a row for sum
@@ -617,6 +534,83 @@ body.loading .modal {
 
   });
 
+
+
+
+function updateData(expenseArr,revenueArr,chkBox){
+  $body.addClass("loading");
+  $("table").each(function(){
+    if($(this).attr('id') != "cfl-0"){
+      $(this).DataTable().draw();
+    }
+  });
+
+  setTimeout(function(){
+    //This will delete all elements
+    expenseArr.splice(0, expenseArr.length);
+    var clone = jQuery("#cfl-1").clone(true);
+    clone[0].setAttribute('id', 'cfl-1A');
+    clone.appendTo('#cloneexp');
+
+    $("tr:visible:last",$("#cfl-1A")).map(function(){
+      return [$("td",this).map(function() {
+        return this.innerHTML;
+      }).get()];
+    }).get().forEach((item, i) => {
+      var retArr1 = item.slice(1).map((val) => {
+        return parseFloat(val.replace(/,/g,''));
+      });
+      if(chkBox.get('pastCHK') == false)
+        retArr1[1] +=  retArr1[0];
+      expenseArr =  retArr1.slice(1);
+    });
+
+    $('#cloneexp').empty();
+    $("#cfl-0 > tbody").empty();
+    markup = "<tr><th>Total Revenue</th>";
+    markupRev = "";
+
+    revenueArr.forEach((item, i) => {
+      markupRev += "<td class='text-right'>"+amtFormat(item)+"</td>";
+    });
+    markup += markupRev + "</tr>";
+
+    markup += "<tr><th>Total Expense</th>";
+    expenseArr.forEach((item, i) => {
+      markup += "<td class='text-right'>"+amtFormat(item)+"</td>";
+    });
+    markup += "</tr>";
+
+    markup += "<tr><th>Total Cashflow</th>";
+    expenseArr.forEach((item, i) => {
+      markup += "<td class='text-right'>"+amtFormat(parseFloat(revenueArr[i]-item))+"</td>";
+    });
+    markup += "</tr>";
+
+    markup += "<tr><th>Cumulative Cashflow</th>";
+    prevCashflow = 0;
+
+    expenseArr.forEach((item, i) => {
+      prevCashflow = parseFloat(prevCashflow + revenueArr[i]-item)
+      if(prevCashflow >= 0) {
+        markup += "<td class='text-right'>"+amtFormat(prevCashflow)+"</td>";
+      }
+      else {
+        markup += "<td class='text-right danger'>"+amtFormat(prevCashflow)+"</td>";
+      }
+    });
+
+    markup += "</tr>";
+    $("#cfl-0 tbody").parent().append(markup);
+
+
+    markup = "<tr><th>Total Revenue</th><td></td>";
+    markup += markupRev + "</tr>";
+    $("#cfl-3 tbody").parent().append(markup);
+    $body.removeClass("loading");
+  },1250);//SetTimeout ends here with 250 ms
+}
+
 </script>
 
 
@@ -634,7 +628,6 @@ body.loading .modal {
       <label class="checkbox-inline">
         <input type="checkbox" checked data-toggle="toggle" data-size="mini" data-onstyle="default" id="meCHK"> Middle East
       </label>
-
     </div>
     <div >
       <label class="checkbox-inline">
@@ -646,168 +639,157 @@ body.loading .modal {
       <label class="checkbox-inline">
         <input type="checkbox" unchecked data-toggle="toggle" data-size="mini" data-onstyle="default" id="pCHK">  Prospect
       </label>
-
       <label class="checkbox-inline">
         <input type="checkbox" unchecked data-toggle="toggle" data-size="mini" data-onstyle="default" id="sCHK">  Suspect
       </label>
-
       <label class="checkbox-inline">
         <input type="checkbox" unchecked data-toggle="toggle" data-size="mini" data-onstyle="default" id="lCHK">  Lead
       </label>
-
     </div>
     <div class="clearfix"></div>
     <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
       <label class="checkbox-inline">
         <input type="checkbox" unchecked data-toggle="toggle" data-size="mini" data-onstyle="default" id="pastCHK"> Do Not Consider Past Payment
       </label>
-
     </div>
     <div class="clearfix"></div>
-
-    <div>
-    <ul class='nav nav-pills  split-button-nav'>
-
-      <li class='active'>
-        <a data-toggle='tab' href='#REV'>REVENUE</a>
-      </li>
-      <li>
-        <a data-toggle='tab' href='#EXP'>EXPENSE</a>
-      </li>
-      <li >
-        <a data-toggle='tab' href='#CASH'>CASHFLOW</a>
-      </li>
-      <li>
-
-      </li>
-    </ul>
-    </div>
-
-    <div class='tab-content'>
-
-
-<div class="tab-pane fade" id="EXP">
-  <p>
-<div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-  <table id="cfl-1" class="table table-striped" width="100%">
-    <thead>
-      <tr>
-        <th>REGION</th>
-        <!-- <th>EXPENSE DETAILS</th> -->
-        <th>PAST UNPAID</th>
-        <th id="M1">M1</th>
-        <th>M2</th>
-        <th>M3</th>
-        <th>M4</th>
-        <th>M5</th>
-        <th>M6</th>
-        <th>M7</th>
-        <th>M8</th>
-        <th>M9</th>
-        <th>M10</th>
-        <th>M11</th>
-        <th>M12</th>
-      </tr>
-    </thead>
-  </table>
+  </form>
 </div>
-
-<div class="clearfix"></div>
-<div id="dcfl-2" class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-  <table id="cfl-2" class="table table-striped" width="100%">
-    <thead>
-      <tr>
-        <th>REGION</th>
-        <th>EXPENSE DETAILS</th>
-        <th>PAST UNPAID</th>
-        <th id="M1">M1</th>
-        <th>M2</th>
-        <th>M3</th>
-        <th>M4</th>
-        <th>M5</th>
-        <th>M6</th>
-        <th>M7</th>
-        <th>M8</th>
-        <th>M9</th>
-        <th>M10</th>
-        <th>M11</th>
-        <th>M12</th>
-      </tr>
-    </thead>
-  </table>
-</div>
-
-</p>
-</div>
-
-<div class="tab-pane fade in active" id="REV">
-  <p>
-
-<div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-<table id="cfl-3" class="table table-striped" width="100%">
-<thead>
-  <tr>
-    <th>REGION</th>
-    <th>STATUS</th>
-    <th>M1</th>
-    <th>M2</th>
-    <th>M3</th>
-    <th>M4</th>
-    <th>M5</th>
-    <th>M6</th>
-    <th>M7</th>
-    <th>M8</th>
-    <th>M9</th>
-    <th>M10</th>
-    <th>M11</th>
-    <th>M12</th>
-  </tr>
-</thead>
-<tfoot>
-
-</tfoot>
-</table>
-</div>
-
-</p>
-</div>
-
-<div class="tab-pane fade " id="CASH">
-  <p>
-<div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-<table id="cfl-0" class="table table-striped" width="100%">
-  <thead>
-    <tr>
-      <th>LINES</th>
-      <th>M1</th>
-      <th>M2</th>
-      <th>M3</th>
-      <th>M4</th>
-      <th>M5</th>
-      <th>M6</th>
-      <th>M7</th>
-      <th>M8</th>
-      <th>M9</th>
-      <th>M10</th>
-      <th>M11</th>
-      <th>M12</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tbody>
-</table>
-</div>
-<div class="clearfix"></div>
-</p>
-<div id="cloneexp"></div>
-</div>
-
+<!-- Tab palce holder -->
+<div>
+  <ul class='nav nav-pills  split-button-nav'>
+    <li class='active'>
+      <a data-toggle='tab' href='#REV'>REVENUE</a>
+    </li>
+    <li>
+      <a data-toggle='tab' href='#EXP'>EXPENSE</a>
+    </li>
+    <li >
+      <a data-toggle='tab' href='#CASH'>CASHFLOW</a>
+    </li>
+  </ul>
 </div>
 
 
+<!-- tab content -->
+<div class='tab-content'>
 
-</form>
+  <!-- Revenue  -->
+  <div class="tab-pane fade in active" id="REV">
+    <p>
+      <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+        <table id="cfl-3" class="table table-striped" width="100%">
+          <thead>
+            <tr>
+              <th>REGION</th>
+              <th>STATUS</th>
+              <th>M1</th>
+              <th>M2</th>
+              <th>M3</th>
+              <th>M4</th>
+              <th>M5</th>
+              <th>M6</th>
+              <th>M7</th>
+              <th>M8</th>
+              <th>M9</th>
+              <th>M10</th>
+              <th>M11</th>
+              <th>M12</th>
+            </tr>
+          </thead>
+          <tfoot>
+          </tfoot>
+        </table>
+      </div>
+    </p>
+  </div>
+
+  <!-- cashflow  -->
+  <div class="tab-pane fade " id="CASH">
+    <p>
+      <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+        <table id="cfl-0" class="table table-striped" width="100%">
+          <thead>
+            <tr>
+              <th>LINES</th>
+              <th>M1</th>
+              <th>M2</th>
+              <th>M3</th>
+              <th>M4</th>
+              <th>M5</th>
+              <th>M6</th>
+              <th>M7</th>
+              <th>M8</th>
+              <th>M9</th>
+              <th>M10</th>
+              <th>M11</th>
+              <th>M12</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tbody>
+        </table>
+      </div>
+      <div class="clearfix"></div>
+    </p>
+    <div id="cloneexp"></div>
+  </div>
+
+
+  <!-- Expense  -->
+  <div class="tab-pane fade" id="EXP">
+    <p>
+      <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+        <table id="cfl-1" class="table table-striped" width="100%">
+          <thead>
+            <tr>
+              <th>REGION</th>
+                <!-- <th>EXPENSE DETAILS</th> -->
+                <th>PAST UNPAID</th>
+                <th id="M1">M1</th>
+                <th>M2</th>
+                <th>M3</th>
+                <th>M4</th>
+                <th>M5</th>
+                <th>M6</th>
+                <th>M7</th>
+                <th>M8</th>
+                <th>M9</th>
+                <th>M10</th>
+                <th>M11</th>
+                <th>M12</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="clearfix"></div>
+      <div id="dcfl-2" class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
+        <table id="cfl-2" class="table table-striped" width="100%">
+          <thead>
+            <tr>
+              <th>REGION</th>
+              <th>EXPENSE DETAILS</th>
+              <th>PAST UNPAID</th>
+              <th id="M1">M1</th>
+              <th>M2</th>
+              <th>M3</th>
+              <th>M4</th>
+              <th>M5</th>
+              <th>M6</th>
+              <th>M7</th>
+              <th>M8</th>
+              <th>M9</th>
+              <th>M10</th>
+              <th>M11</th>
+              <th>M12</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </p>
+  </div>
 </div>
+
 
 <div class="modal"><!-- Place at bottom of page --></div>
 

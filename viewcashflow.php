@@ -5,47 +5,13 @@ require_once('head.php');
 require_once('bodystart.php');
 ?>
 
-<style>
-   .modal {
-    display:    none;
-    position:   fixed;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .8 )
-                url('images/FhHRx.gif')
-                50% 50%
-                no-repeat;
-}
-   /* When the body has the loading class, we turn
-   the scrollbar off with overflow:hidden */
-   body.loading .modal {
-    overflow: hidden;
-}
-   /* Anytime the body has the loading class, our
-   modal element will be visible */
-   body.loading .modal {
-    display: block;
-}
-</style>
+
 <script type="text/javascript">
 
+let invoiceChangedList = [];
+let invoiceList = [];
 
   $(document).ready(function() {
-
-    $body = $("body");
-    $(document).on({
-      ajaxStart: function() { $body.addClass("loading");    },
-      ajaxStop: function() { $body.removeClass("loading"); }
-    });
-
-
-
-    let qry = 2;
-
-
     let chkBox = new Map();
     chkBox.set('indiaCHK',true);
     chkBox.set('meCHK',true);
@@ -55,14 +21,32 @@ require_once('bodystart.php');
     chkBox.set('sCHK',false);
     chkBox.set('lCHK',false);
     chkBox.set('pastCHK',false);
+    chkBox.set('modified',false);//Not checkbox but using the map
+
 
     var cfTable1RemArr = [];
     var cfTable2RemArr = [];
     var cfTable3RemArr = [];
-    var revenueArr = [];
+    var revenueArr = Array(12).fill(0);
     var expenseArr = [];
 
 
+
+
+    // Initialize popover component
+    $(function () {
+      $('[data-toggle="popover"]').popover({
+        html: true,
+        trigger: 'manual'
+      }).click(function(e) {
+        $(this).popover('toggle');
+        e.preventDefault();
+      });
+    });
+
+
+
+    //Draw Summary Expense table
     cfTable1 = $('#cfl-1').DataTable({
       "searching": false,
       "bInfo" : false,
@@ -88,20 +72,7 @@ require_once('bodystart.php');
       },
       "columns": [{
           "data": "region_name"
-          //,
-          // "render": function(data, type, row, meta) {
-          //   if (type === 'display') {
-          //     if(data === "TOTAL")
-          //       return data;
-          //     data =  '<button type="button" class="btn btn-link" id="' + data +
-          //       '" ><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> '+ data+'</button>';
-          //   }
-          //   return data;
-          // }
         },
-        // {
-        //   "data": "expense_det"
-        // },
         {
           "className": "text-right",
           "data": "M0",
@@ -197,6 +168,7 @@ require_once('bodystart.php');
       ]
     });
 
+    //Draw Revenue Table
     cfTable3 = $('#cfl-3').DataTable({
       "searching": false,
       "bInfo" : false,
@@ -204,14 +176,14 @@ require_once('bodystart.php');
       "paging": false,
       "cache": true,
       "ajax": {
-        url: "api/getGLData.php?qryid="+3,
+        url: "api/getGLData.php?qryid=3",
         "dataSrc": ""
       },
       "footerCallback": function(row, data, start, end, display) {
         var api = this.api();
         //$(this).deleteTFoot();
         //var footer = $(this).append('<tfoot><tr></tr></tfoot>');
-        revenueArr.splice(0, revenueArr.length);
+        //revenueArr.splice(0, revenueArr.length);
         for(var m = 2; m<14;m++) {
           var i = 0;
           var x = api.column(m).data().reduce( function ( a, b ) {
@@ -224,7 +196,7 @@ require_once('bodystart.php');
                 return parseFloat(a);
               }
           }, 0 );
-          revenueArr.push(x);
+          //revenueArr.push(x);
 
         }
 
@@ -263,16 +235,6 @@ require_once('bodystart.php');
       },
       "columns": [{
           "data": "region_name"
-          //,
-          // "render": function(data, type, row, meta) {
-          //   if (type === 'display') {
-          //     if(data === "TOTAL")
-          //       return data;
-          //     data =  '<button type="button" class="btn btn-link" id="' + data +
-          //       '" ><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> '+ data+'</button>';
-          //   }
-          //   return data;
-          // }
         },
         {
           "data": "Opp_Status"
@@ -365,8 +327,7 @@ require_once('bodystart.php');
       ]
     });
 
-
-    qry = 1;
+    //Draw Detailed Expense table
     cfTable2 = $('#cfl-2').DataTable({
       "searching": true,
       "bInfo" : false,
@@ -374,7 +335,7 @@ require_once('bodystart.php');
       "paging": false,
       "cache": true,
       "ajax": {
-        url: "api/getGLData.php?qryid="+qry,
+        url: "api/getGLData.php?qryid=1",
         "dataSrc": ""
       },
       rowCallback: function( row, data, index ) {
@@ -491,32 +452,23 @@ require_once('bodystart.php');
     });
 
 
-
-     updateData(expenseArr,revenueArr,chkBox);
-     //setTimeout(updateData(),3200);
-
     //set map  to hide or show a row based on check box abd then redraw all tables
     $('#cashflow-form :checkbox').change(function() {
       chkBox.set($(this).attr('id') , $(this).is(':checked'));
-      updateData(expenseArr,revenueArr,chkBox);
-
-
+      $.when( getInvoiceList(chkBox)).then(function(){
+        fillRevenueArray(revenueArr);
+        updateData(expenseArr,revenueArr,chkBox);
+      });
     });
 
+    //When Tab is changed
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      updateData(expenseArr,revenueArr,chkBox);
+      updateCashflowTable(expenseArr,revenueArr,chkBox);
     });
-
-    //When draw is done add a row for sum
-    // cfTable3.on( 'draw', function () {
-    //   console.log($(this).DataTable());
-    // } );
-
-    // cfTable3.column( 3 ).data().sum();
 
 
     //This fellow changes the header from M1, M2.... Current month, current month + 1.....
-    $("table").each(function(){
+    $(".mnthTBL").each(function(){
       $(this).find('thead th').each((th_idx,th) => {
         if($(th).text().slice(0,1) == "M") {
              const dt = new Date();
@@ -525,91 +477,262 @@ require_once('bodystart.php');
              const month = dt.toLocaleString('default', { month: 'long' });
              const year = String(dt.getFullYear());
              $(th).text(month.slice(0,3)+'-'+year.substr(-2,2));
-             //console.log(month.slice(0,3)+'-'+year.substr(-2,2));
 
         }
       });
     });
 
 
+    //Show the list of invoice on double click of revenue cells
+    $('#cfl-0').on( 'dblclick', 'tr', function (e) {
+      if(e.currentTarget.rowIndex!=1)
+        return;
+
+      showInvoiceList(invoiceList.filter(item => item["MX"] == "M"+e.target.cellIndex));
+    });
+
+
+    //When the date is changed
+    $(document).on('input', ".testdate", function (e) {
+
+      var x1 = new Date(e.target.value);
+      var newDate = new Date(x1.getFullYear(),x1.getMonth(),1);
+      var x1 = new Date(e.target.dataset["prevdate"]);
+      var prevDate = new Date(x1.getFullYear(),x1.getMonth(),1);
+      var x1 = new Date();
+      var currDate = new Date(x1.getFullYear(),x1.getMonth(),1);
+
+      newMonth = newDate.getMonth() - currDate.getMonth() + (12 * (newDate.getFullYear() - currDate.getFullYear()));
+      prevMonth = prevDate.getMonth() - currDate.getMonth() + (12 * (prevDate.getFullYear() - currDate.getFullYear()));
+
+      var x = invoiceChangedList.find(item => item["idkey"]===e.target.id);
+      if(x){
+        x["change_paid_date"] = e.target.value;
+        x["MX"] = "M"+(newMonth+1);
+      }
+      else{
+        var x = {
+          "idkey" : e.target.id,
+          "change_paid_date" : e.target.value,
+          "MX" : "M"+(newMonth+1)
+        };
+        invoiceChangedList.push(x);
+        chkBox.set('modified',true);
+
+      }
+      var y = invoiceList.find(item => item["idkey"]===e.target.id);
+      if(y){
+        y["change_paid_date"] = e.target.value;
+        y["MX"] = "M"+(newMonth+1);
+      }
+    });
+
+    //When the invoice list modal dialog is closed
+    $('#invoicelist').on('hidden.bs.modal', function () {
+      fillRevenueArray(revenueArr);
+      updateCashflowTable(expenseArr,revenueArr,chkBox,);
+    });
+
+    //call Invoicelist and then draw tables
+    $.when( getInvoiceList(chkBox)).then(function(){
+      fillRevenueArray(revenueArr);
+      updateData(expenseArr,revenueArr,chkBox);
+    });
+
+    //Click on reset button to clear all what Ifs
+    $('#resettbl').on('click', function(event) {
+        invoiceChangedList.splice(0);
+        $.when( getInvoiceList(chkBox)).then(function(){
+          fillRevenueArray(revenueArr);
+          updateData(expenseArr,revenueArr,chkBox);
+        });
+        $( "#modified" ).hide();
+        chkBox.set('modified',false);
+
+    });
+
+  });//End of ready
+
+//From the invoicelist array build revenue array
+function fillRevenueArray(revenueArr){
+  revenueArr.forEach(function(item,index){
+    x = invoiceList.reduce(function(total,value){
+            t = parseFloat(total);
+
+            if("M"+(index+1) === value["MX"]){
+              t += parseFloat(value["lcy_amount"]);
+            }
+            return t;
+         },0);
+
+    revenueArr[index] = x;
+  });
+}
+
+//For the check boxes get all the invoices and keep in array.
+//Better than going to server
+function getInvoiceList(chkBox){
+  var dfd = jQuery.Deferred();
+  var rgnArr = [];
+  var stsArr = ['WON'];
+
+  if(chkBox.get('indiaCHK')) rgnArr.push('India');
+  if(chkBox.get('meCHK')) rgnArr.push('Middle East');
+
+  if(chkBox.get('poCHK')) stsArr.push('Awaiting PO');
+  if(chkBox.get('hpCHK')) stsArr.push('Hot Prospect');
+  if(chkBox.get('pCHK')) stsArr.push('Prospect');
+  if(chkBox.get('sCHK')) stsArr.push('Suspect');
+  if(chkBox.get('lCHK')) stsArr.push('Lead');
+
+  var OnSuccess = function(data){
+    invoiceChangedList.forEach(function(chgItem){
+        var x = data.find(item => item["idkey"]===chgItem["idkey"]);
+        if(x){
+          x["change_paid_date"] = chgItem["change_paid_date"];
+          x["MX"] = chgItem["MX"];
+        }
+
+    });
+    invoiceList = data;
+    dfd.resolve( "Done" );
+
+  }
+  $.getJSON( "api/getCashflowRevenue.php",
+    {
+      oppStatus:"'" + stsArr.join("','") + "'",
+      region:"'" + rgnArr.join("','") + "'"
+    },OnSuccess);
+  return dfd.promise();
+}
+
+//Render tables in all the the tabs
+function updateData(expenseArr,revenueArr,chkBox){
+  $( ".srvTBL" ).each(function(){
+    $(this).DataTable().draw();
+  });
+  updateCashflowTable(expenseArr,revenueArr,chkBox,true);
+
+}
+
+//table in the Cashflow tab gets rendered here
+function updateCashflowTable(expenseArr,revenueArr,chkBox,updRev=false){
+
+  //SHow/hide modified
+  if(chkBox.get('modified') ){
+    $( "#modified" ).show();
+    $( "#chgpopup").attr("data-content",$( "#changestbl").html());
+  }
+  else{
+    $( "#modified" ).hide();
+  }
+
+  //This will delete all elements
+  expenseArr.splice(0, expenseArr.length);
+  var clone = jQuery("#cfl-1").clone(true);
+  clone[0].setAttribute('id', 'cfl-1A');
+  clone.appendTo('#cloneexp');
+
+  $("tr:visible:last",$("#cfl-1A")).map(function(){
+    return [$("td",this).map(function() {
+      return this.innerHTML;
+    }).get()];
+  }).get().forEach((item, i) => {
+    var retArr1 = item.slice(1).map((val) => {
+      return parseFloat(val.replace(/,/g,''));
+    });
+    if(chkBox.get('pastCHK') == false)
+      retArr1[1] +=  retArr1[0];
+    expenseArr =  retArr1.slice(1);
   });
 
+  $('#cloneexp').empty();
+  $("#cfl-0 > tbody").empty();
+  markup = "<tr><th>Total Revenue</th>";
+  markupRev = "";
 
+  revenueArr.forEach((item, i) => {
+    markupRev += "<td class='text-right'>"+amtFormat(item)+"</td>";
+  });
+  markup += markupRev + "</tr>";
 
+  markup += "<tr><th>Total Expense</th>";
+  expenseArr.forEach((item, i) => {
+    markup += "<td class='text-right'>"+amtFormat(item)+"</td>";
+  });
+  markup += "</tr>";
 
-function updateData(expenseArr,revenueArr,chkBox){
-  $body.addClass("loading");
-  $("table").each(function(){
-    if($(this).attr('id') != "cfl-0"){
-      $(this).DataTable().draw();
+  markup += "<tr><th>Total Cashflow</th>";
+  expenseArr.forEach((item, i) => {
+    markup += "<td class='text-right'>"+amtFormat(parseFloat(revenueArr[i]-item))+"</td>";
+  });
+  markup += "</tr>";
+
+  markup += "<tr><th>Cumulative Cashflow</th>";
+  prevCashflow = 0;
+
+  expenseArr.forEach((item, i) => {
+    prevCashflow = parseFloat(prevCashflow + revenueArr[i]-item)
+    if(prevCashflow >= 0) {
+      markup += "<td class='text-right'>"+amtFormat(prevCashflow)+"</td>";
+    }
+    else {
+      markup += "<td class='text-right danger'>"+amtFormat(prevCashflow)+"</td>";
     }
   });
 
-  setTimeout(function(){
-    //This will delete all elements
-    expenseArr.splice(0, expenseArr.length);
-    var clone = jQuery("#cfl-1").clone(true);
-    clone[0].setAttribute('id', 'cfl-1A');
-    clone.appendTo('#cloneexp');
+  markup += "</tr>";
+  $("#cfl-0 tbody").parent().append(markup);
 
-    $("tr:visible:last",$("#cfl-1A")).map(function(){
-      return [$("td",this).map(function() {
-        return this.innerHTML;
-      }).get()];
-    }).get().forEach((item, i) => {
-      var retArr1 = item.slice(1).map((val) => {
-        return parseFloat(val.replace(/,/g,''));
-      });
-      if(chkBox.get('pastCHK') == false)
-        retArr1[1] +=  retArr1[0];
-      expenseArr =  retArr1.slice(1);
-    });
-
-    $('#cloneexp').empty();
-    $("#cfl-0 > tbody").empty();
-    markup = "<tr><th>Total Revenue</th>";
-    markupRev = "";
-
-    revenueArr.forEach((item, i) => {
-      markupRev += "<td class='text-right'>"+amtFormat(item)+"</td>";
-    });
-    markup += markupRev + "</tr>";
-
-    markup += "<tr><th>Total Expense</th>";
-    expenseArr.forEach((item, i) => {
-      markup += "<td class='text-right'>"+amtFormat(item)+"</td>";
-    });
-    markup += "</tr>";
-
-    markup += "<tr><th>Total Cashflow</th>";
-    expenseArr.forEach((item, i) => {
-      markup += "<td class='text-right'>"+amtFormat(parseFloat(revenueArr[i]-item))+"</td>";
-    });
-    markup += "</tr>";
-
-    markup += "<tr><th>Cumulative Cashflow</th>";
-    prevCashflow = 0;
-
-    expenseArr.forEach((item, i) => {
-      prevCashflow = parseFloat(prevCashflow + revenueArr[i]-item)
-      if(prevCashflow >= 0) {
-        markup += "<td class='text-right'>"+amtFormat(prevCashflow)+"</td>";
-      }
-      else {
-        markup += "<td class='text-right danger'>"+amtFormat(prevCashflow)+"</td>";
-      }
-    });
-
-    markup += "</tr>";
-    $("#cfl-0 tbody").parent().append(markup);
-
-
+  if(updRev){
     markup = "<tr><th>Total Revenue</th><td></td>";
     markup += markupRev + "</tr>";
     $("#cfl-3 tbody").parent().append(markup);
-    $body.removeClass("loading");
-  },1250);//SetTimeout ends here with 250 ms
-}
+  }
+
+
+}//end of updateCashflowTable
+
+//Render the Invoice list modalbox
+function showInvoiceList(data){
+  $('#invoicelist').modal('show');
+  var x ;
+  if ( $.fn.DataTable.isDataTable( '#cfinvList' ) ) {
+    $('#cfinvList').DataTable().destroy();
+  }
+  $('#cfinvList').DataTable({
+    "data": data,
+    "columns" : [
+      { "data" : "region_name" },
+      { "data" : "project_name" },
+      { "data" : "Opp_Status" },
+      { "data" : "milestone_type" },
+      {
+      "data" : "lcy_amount",
+      "className": "text-right",
+      "render": function(data, type, row, meta) {
+      return amtFormat(data);
+      }
+      },
+      { "data" : "expected_paid_date" },
+      {
+      "className": "text-center",
+      "data" : "expected_paid_date" ,
+      "render": function(data, type, row, meta) {
+      if (type === 'display') {
+        x = row['idkey'];
+        y = row['change_paid_date']||row['expected_paid_date'];
+        datax = '<input type="date"  class="testdate" id="'+x+'" data-prevdate='+y+' data-amount='+row['lcy_amount']+' required value="'+y+'">';
+      }
+      return datax;
+      }
+      }
+    ]
+  });
+}//End of Function
+
+
+
 
 </script>
 
@@ -678,7 +801,7 @@ function updateData(expenseArr,revenueArr,chkBox){
   <div class="tab-pane fade in active" id="REV">
     <p>
       <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-        <table id="cfl-3" class="table table-striped" width="100%">
+        <table id="cfl-3" class="table table-striped srvTBL mnthTBL" width="100%">
           <thead>
             <tr>
               <th>REGION</th>
@@ -706,9 +829,27 @@ function updateData(expenseArr,revenueArr,chkBox){
 
   <!-- cashflow  -->
   <div class="tab-pane fade " id="CASH">
+    <div id="modified" class="pull-right" hidden>
+      <div class="row">
+        <div class="col-xs-7">
+          <a id = "chgpopup" class="bg-warning font-weight-bold"
+            data-toggle="popover" data-trigger="click"
+            data-html="true" data-placement="left"
+            data-content="<div id='popcontent'>Loading...</div>">
+            Modified
+          </a>
+        </div>
+        <div class="col-xs-5">
+          <button type="button" class="btn btn-primary btn-circle align-top btn-md " id="resettbl">
+              <i class="glyphicon glyphicon-remove"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
     <p>
       <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-        <table id="cfl-0" class="table table-striped" width="100%">
+        <table id="cfl-0" name="cfl-0" class="table table-striped  mnthTBL" width="100%">
           <thead>
             <tr>
               <th>LINES</th>
@@ -740,7 +881,7 @@ function updateData(expenseArr,revenueArr,chkBox){
   <div class="tab-pane fade" id="EXP">
     <p>
       <div class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-        <table id="cfl-1" class="table table-striped" width="100%">
+        <table id="cfl-1" class="table table-striped  srvTBL mnthTBL" width="100%">
           <thead>
             <tr>
               <th>REGION</th>
@@ -764,7 +905,7 @@ function updateData(expenseArr,revenueArr,chkBox){
       </div>
       <div class="clearfix"></div>
       <div id="dcfl-2" class="form-group col-xs-5 col-sm-8 col-md-8 col-lg-8">
-        <table id="cfl-2" class="table table-striped" width="100%">
+        <table id="cfl-2" class="table table-striped  srvTBL mnthTBL" width="100%">
           <thead>
             <tr>
               <th>REGION</th>
@@ -791,7 +932,54 @@ function updateData(expenseArr,revenueArr,chkBox){
 </div>
 
 
-<div class="modal"><!-- Place at bottom of page --></div>
+<!-- Modal for showing Invoice list -->
+<div class="modal fade" id="invoicelist" tabindex="-1" role="dialog" aria-labelledby="invoicelistLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="invoicelistLabel">Invoice Details</h4>
+      </div>
+      <div class="modal-body">
+        <table id="cfinvList" name="cfinvList" class="table table-striped"  width="100%">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Project</th>
+              <th>Status</th>
+              <th>Project Milestone</th>
+              <th>Invoice Amount</th>
+              <th>Expected Pay Date</th>
+              <th>Changed Date</th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- show changes -->
+<div id="changestbl" class="hidden">
+  <table id="changelist" name="changelist" class="table table-striped" width="100%">
+    <thead>
+      <tr>
+        <th>Detail</th>
+        <th>Original value</th>
+        <th>Changed value</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    <tbody>
+  </table>
+</div>
 
 <?php
 
